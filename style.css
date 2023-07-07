@@ -39,14 +39,19 @@ h1, h3, h5, p {
   position: absolute;
   margin: -2rem;
   z-index: 6;
-  /* margin: -1rem; */
+}
+
+.center {
+  font: 2em sans-serif;
+  position: absolute;
+  top: 9rem;
+  left: 9.5rem;
+}
+
+.ring-1-letter, .ring-2-letter, .ring-3-letter {
   font: 1em sans-serif;
   top: 9.75rem;
   left: 9.75rem;
-}
-
-.center a {
-  font: 10em sans-serif;
 }
 
 .deg0-3 { transform: translate(7rem); }
