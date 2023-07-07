@@ -1,4 +1,4 @@
-const WORDS = [
+export const WORDS = [
     "aahs",
     "abed",
     "abet",

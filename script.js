@@ -1,1 +1,2 @@
-console.log("Hello word")
+import { WORDS } from "./words.js"
+console.log(WORDS)
