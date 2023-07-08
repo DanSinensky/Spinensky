@@ -20,6 +20,7 @@ let ring = 0;
 let spins = 0;
 let checks = 0;
 const numberOfWords = [2, 4, 6];
+let playedBefore = false;
 
 const allRingsEqual = () => {
   zerothRing = letters[0]
@@ -29,8 +30,14 @@ const allRingsEqual = () => {
 }
 
 const initialize = () => {
+  const havePlayedBefore = localStorage.getItem("playedBefore")
+  if (havePlayedBefore) {
+    playedBefore = true
+  }
   const start = document.createElement("section")
-  body.appendChild(start)
+  if (playedBefore === false) {
+    body.appendChild(start)
+  }
   const startTitle = document.createElement("h1")
   startTitle.className = "start-title"
   startTitle.innerText = "Spinensky"
@@ -46,51 +53,54 @@ const initialize = () => {
 
   firstKeyword = WORDS[Math.floor(Math.random() * WORDS.length)]
   keywords.push(firstKeyword)
-  centralLetter = firstKeyword.charAt(firstKeyword.length-1)
+  centralLetter = firstKeyword.charAt(firstKeyword.length - 1)
   zerothRing.push(centralLetter)
-  for (let i = 1; i < layers.length; i++){
-      letters[i].push(firstKeyword.charAt(3-i))
+  for (let i = 1; i < layers.length; i++) {
+    letters[i].push(firstKeyword.charAt(3 - i))
   }
 
-  for (let i = 1; i < 3; i++){
-      let keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-      while (keywords.includes(keyword) || keyword.charAt(keyword.length-1) !== centralLetter){
-          keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-      }
-      keywords.push(keyword)
-      for (let j = 1; j < 4; j++){
-          letters[j].push(keyword.charAt(3-j))
-      }
+  for (let i = 1; i < 3; i++) {
+    let keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
+    while (keywords.includes(keyword) || keyword.charAt(keyword.length - 1) !== centralLetter) {
+      keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
+    }
+    keywords.push(keyword)
+    for (let j = 1; j < 4; j++) {
+      letters[j].push(keyword.charAt(3 - j))
+    }
   }
 
-  for (let i = 3; i < 6; i++){
-      let keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-      while (keywords.includes(keyword) || keyword.charAt(0) !== centralLetter){
-          keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-      }
-      keywords.push(keyword)
-      for (let j = 1; j < 4; j++){
-          letters[j].push(keyword.charAt(j))
-      }
+  for (let i = 3; i < 6; i++) {
+    let keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
+    while (keywords.includes(keyword) || keyword.charAt(0) !== centralLetter) {
+      keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
+    }
+    keywords.push(keyword)
+    for (let j = 1; j < 4; j++) {
+      letters[j].push(keyword.charAt(j))
+    }
   }
   solution = JSON.parse(JSON.stringify(letters))
 
-  for (let i = 0; i < letters.length; i++){
-      const thisRing = letters[i]
-      const rotatedAmount = [Math.floor(Math.random() * thisRing.length)]
-      const rotatedRing = thisRing.splice(rotatedAmount, thisRing.length-rotatedAmount)
-      const newRing = []
-      for (let j = 0; j < rotatedRing.length; j++){
-          newRing.push(rotatedRing[j])
-      }
-      for (let j = 0; j < thisRing.length; j++){
-          newRing.push(thisRing[j])
-      }
-      letters[i] = newRing
+  for (let i = 0; i < letters.length; i++) {
+    const thisRing = letters[i]
+    const rotatedAmount = [Math.floor(Math.random() * thisRing.length)]
+    const rotatedRing = thisRing.splice(rotatedAmount, thisRing.length - rotatedAmount)
+    const newRing = []
+    for (let j = 0; j < rotatedRing.length; j++) {
+      newRing.push(rotatedRing[j])
+    }
+    for (let j = 0; j < thisRing.length; j++) {
+      newRing.push(thisRing[j])
+    }
+    letters[i] = newRing
   }
   allRingsEqual()
 
   const whole = document.createElement("main")
+  if (playedBefore === true) {
+    whole.style.display = "block"
+  }
   body.appendChild(whole)
   const outerRing = document.createElement("div")
   outerRing.className = "ring"
@@ -103,12 +113,12 @@ const initialize = () => {
   title.innerText = "Spinensky"
   whole.prepend(title)
   
-  for (let i = 1; i < layers.length; i++){
-      const layer = document.createElement("div")
-      layer.className = "ring"
-      layer.setAttribute("id", layers[i])
-      rings.push(layer)
-      rings[i-1].appendChild(layer)
+  for (let i = 1; i < layers.length; i++) {
+    const layer = document.createElement("div")
+    layer.className = "ring"
+    layer.setAttribute("id", layers[i])
+    rings.push(layer)
+    rings[i - 1].appendChild(layer)
   }
 
   const notes = document.createElement("div")
@@ -121,22 +131,22 @@ const initialize = () => {
   rings[0].append(center)
   center.innerText = zerothRing[0]
 
-  for (let i = 1; i < letters.length; i++){
-      const ring = `ring-${i}-letter`
-      for (let j = 0; j < degrees.length; j++){
-          const degree = degrees[j]
-          const letter = document.createElement("a")
-          letter.className = `deg${degree}-${i} ${ring}`
-          letter.innerHTML = letters[i][j]
-          rings[0].append(letter)
-      }
+  for (let i = 1; i < letters.length; i++) {
+    const ring = `ring-${i}-letter`
+    for (let j = 0; j < degrees.length; j++) {
+      const degree = degrees[j]
+      const letter = document.createElement("a")
+      letter.className = `deg${degree}-${i} ${ring}`
+      letter.innerHTML = letters[i][j]
+      rings[0].append(letter)
+    }
   }
 
   const buttons = document.createElement("div")
   buttons.className = "buttons"
   whole.append(buttons)
 
-  for (let i = 0; i < turn.length; i++){
+  for (let i = 0; i < turn.length; i++) {
     const button = document.createElement("div")
     button.className = `button ${turn[i]}`
     buttons.appendChild(button)
@@ -146,14 +156,14 @@ const initialize = () => {
     const middle = document.createElement("div")
     middle.className = `middle ${turn[i]}`
     tail.appendChild(middle)
-    for (let j = 0; j < position.length; j++){
+    for (let j = 0; j < position.length; j++) {
       const arrow = document.createElement("div")
       arrow.className = `arrow ${turn[i]} ${position[j]}`
-      if (arrow.classList.contains("counterclockwise")){
+      if (arrow.classList.contains("counterclockwise")) {
         arrow.classList.add(`${arrows[j]}`)
       } else if (arrow.classList.contains("clockwise")) {
         if (j < 2) {
-              arrow.classList.add(`${arrows[j+2]}`)
+          arrow.classList.add(`${arrows[j + 2]}`)
         } else if (j > 1) {
           arrow.classList.add(`${arrows[j - 2]}`)
         }
@@ -162,10 +172,13 @@ const initialize = () => {
     }
   }
 
-  exit.addEventListener("click", e => {
-    start.style.display = "none"
-    whole.style.display = "block"
-  })
+    exit.addEventListener("click", e => {
+      start.style.display = "none"
+      whole.style.display = "block"
+      playedBefore = true
+      const setPlayedBefore = JSON.stringify(playedBefore)
+      localStorage.setItem("playedBefore", setPlayedBefore)
+    })
 }
 
 initialize()
