@@ -19,6 +19,7 @@ const arrows = ["triangle-down", "triangle-left", "triangle-up", "triangle-right
 let ring = 0;
 let spins = 0;
 let checks = 0;
+const numberOfWords = [2, 4, 6];
 
 const allRingsEqual = () => {
   zerothRing = letters[0]
@@ -28,6 +29,21 @@ const allRingsEqual = () => {
 }
 
 const initialize = () => {
+  const start = document.createElement("section")
+  body.appendChild(start)
+  const startTitle = document.createElement("h1")
+  startTitle.className = "start-title"
+  startTitle.innerText = "Spinensky"
+  start.appendChild(startTitle)
+  const exit = document.createElement("div")
+  exit.innerText = "x"
+  exit.className = "exit"
+  start.appendChild(exit)
+  const info = document.createElement("p")
+  info.className = "info"
+  info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you beat the round. There are three rounds: two-words, four-words, and six-words. </br> </br> Have fun!`
+  start.appendChild(info)
+
   firstKeyword = WORDS[Math.floor(Math.random() * WORDS.length)]
   keywords.push(firstKeyword)
   centralLetter = firstKeyword.charAt(firstKeyword.length-1)
@@ -145,6 +161,11 @@ const initialize = () => {
       tail.appendChild(arrow)
     }
   }
+
+  exit.addEventListener("click", e => {
+    start.style.display = "none"
+    whole.style.display = "block"
+  })
 }
 
 initialize()
