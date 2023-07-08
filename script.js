@@ -17,6 +17,9 @@ let solution = [];
 let turn = ["counterclockwise", "clockwise"];
 let position = ["left", "top", "right", "bottom"];
 let arrows = ["triangle-down", "triangle-left", "triangle-up", "triangle-right"];
+let ring = 0;
+let rotations = 0;
+let checks = 0;
 
 const initialize = () => {
   firstKeyword = WORDS[Math.floor(Math.random() * WORDS.length)]
@@ -105,7 +108,7 @@ const initialize = () => {
           let degree = degrees[j]
           let letter = document.createElement("a")
           letter.className = `deg${degree}-${i} ${ring}`
-          letter.innerText = letters[i][j]
+          letter.innerHTML = letters[i][j]
           rings[0].append(letter)
       }
   }
@@ -144,3 +147,153 @@ const initialize = () => {
 initialize()
 
 console.log(solution)
+
+const ring_title = document.querySelector("#ring-title")
+const counterclockwise = document.querySelectorAll('.counterclockwise');
+const clockwise = document.querySelectorAll('.clockwise')
+const rotationsText = document.querySelector("#rotations")
+const checksText = document.querySelector("#checks")
+
+const rotateCounterClockwise = (event) => {
+  let firstLetter = letters[ring][0]
+  letters[ring].shift()
+  letters[ring].push(firstLetter)
+  for (let j = 0; j < degrees.length; j++){
+    const degree = degrees[j]
+    const letter = document.querySelector(`.deg${degree}-${ring}`)
+    console.log(letter)
+    letter.innerHTML = letters[ring][j]
+  }
+  zerothRing = letters[0]
+  firstRing = letters[1]
+  secondRing = letters[2]
+  thirdRing = letters[3]
+  rotations++
+  rotationsText.innerText = rotations
+  event.stopPropagation();
+}
+
+const rotateClockwise = (event) => {
+  let lastLetter = letters[ring][5]
+  letters[ring].pop()
+  letters[ring].unshift(lastLetter)
+  for (let j = 0; j < degrees.length; j++){
+    const degree = degrees[j]
+    const letter = document.querySelector(`.deg${degree}-${ring}`)
+    console.log(letter)
+    letter.innerHTML = letters[ring][j]
+  }
+  zerothRing = letters[0]
+  firstRing = letters[1]
+  secondRing = letters[2]
+  thirdRing = letters[3]
+  rotations++
+  rotationsText.innerText = rotations
+  event.stopPropagation();
+}
+
+document.querySelectorAll('a').forEach(character => {
+  character.addEventListener('click', event => {
+      if (event.target.classList.contains("center")){
+          ring = 0
+          ring_title.innerHTML = "???"
+          for (let i=0; i<counterclockwise.length; i++){
+              counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
+          }
+          for (let i=0; i<clockwise.length; i++){
+              clockwise[i].removeEventListener("click", rotateClockwise)
+          }
+      } else if (event.target.classList.contains("ring-1-letter")){
+          ring = 1
+          ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+          // ring_title.innerHTML = "first"
+          for (let i=0; i<counterclockwise.length; i++){
+              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
+          }
+          for (let i=0; i<clockwise.length; i++){
+              clockwise[i].addEventListener("click", rotateClockwise)
+          }
+      } else if (event.target.classList.contains("ring-2-letter")){
+          ring = 2
+          ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+          // ring_title.innerHTML = "second"
+          for (let i=0; i<counterclockwise.length; i++){
+              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
+          }
+          for (let i=0; i<clockwise.length; i++){
+              clockwise[i].addEventListener("click", rotateClockwise)
+          }
+      } else if (event.target.classList.contains("ring-3-letter")){
+          ring = 3
+          ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+          // ring_title.innerHTML = "third"
+          for (let i=0; i<counterclockwise.length; i++){
+              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
+          }
+          for (let i=0; i<clockwise.length; i++){
+              clockwise[i].addEventListener("click", rotateClockwise)
+          }
+      }
+  }, true)
+})
+
+document.querySelectorAll('.ring').forEach(circle => {
+  circle.addEventListener('click', event => {
+      if (event.target.id !== "zeroth") {
+          ring_title.innerHTML = `${event.target.id.charAt(0).toUpperCase() + event.target.id.slice(1)}`
+          if (event.target.id === "first"){
+              ring = 1
+          } else if (event.target.id === "second"){
+              ring = 2
+          } else if (event.target.id === "third"){
+              ring = 3
+          }
+          for (let i=0; i<counterclockwise.length; i++){
+              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
+          }
+          for (let i=0; i<clockwise.length; i++){
+              clockwise[i].addEventListener("click", rotateClockwise)
+          }
+      } else if (event.target.id === "zeroth"){
+          ring_title.innerHTML = "???"
+          ring = 0
+              for (let i=0; i<counterclockwise.length; i++){
+                  counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
+              }
+              for (let i=0; i<clockwise.length; i++){
+                  clockwise[i].removeEventListener("click", rotateClockwise)
+              }
+      }
+  }, true)
+})
+  
+const check = document.querySelector("#check")
+const checked = document.querySelector("#checked")
+
+const checkRing = () => {
+  let right = true
+  for (let i = 1; i < letters.length; i++) {
+    if (letters[i][0] !== solution[i][3] || letters[i][1] !== solution[i][4] || letters[i][2] !== solution[i][5] || letters[i][3] !== solution[i][0] || letters[i][4] !== solution[i][1] || letters[i][5] !== solution[i][2]) {
+      right = false
+    }
+  }
+  if (right === true) {
+    checked.innerHTML = "You win!"
+  } else if (solution[ring][0] === letters[ring][0] && solution[ring][1] === letters[ring][1] && solution[ring][2] === letters[ring][2] && solution[ring][3] === letters[ring][3] && solution[ring][4] === letters[ring][4] && solution[ring][5] === letters[ring][5] && ring !== 0){
+      checked.innerHTML = `${ring_title.innerText} ring is off by three`
+  } else if ((solution[ring][0] === letters[ring][1] && solution[ring][1] === letters[ring][2] && solution[ring][2] === letters[ring][3] && solution[ring][3] === letters[ring][4] && solution[ring][4] === letters[ring][5] && solution[ring][5] === letters[ring][0]) && ring !== 0 ||
+    (solution[ring][0] === letters[ring][5] && solution[ring][1] === letters[ring][0] && solution[ring][2] === letters[ring][1] && solution[ring][3] === letters[ring][2] && solution[ring][4] === letters[ring][3] && solution[ring][5] === letters[ring][4] && ring !== 0)){
+    checked.innerHTML = `${ring_title.innerText} ring is off by two`
+  } else if ((solution[ring][0] === letters[ring][2] && solution[ring][1] === letters[ring][3] && solution[ring][2] === letters[ring][4] && solution[ring][3] === letters[ring][5] && solution[ring][4] === letters[ring][0] && solution[ring][5] === letters[ring][1]) && ring !== 0 ||
+    (solution[ring][0] === letters[ring][4] && solution[ring][1] === letters[ring][5] && solution[ring][2] === letters[ring][0] && solution[ring][3] === letters[ring][1] && solution[ring][4] === letters[ring][2] && solution[ring][5] === letters[ring][3] && ring !== 0)){
+    checked.innerHTML = `${ring_title.innerText} ring is off by one`
+  } else if (solution[ring][0] === letters[ring][3] && solution[ring][1] === letters[ring][4] && solution[ring][2] === letters[ring][5] && solution[ring][3] === letters[ring][0] && solution[ring][4] === letters[ring][1] && solution[ring][5] === letters[ring][2] && ring !== 0){
+      checked.innerHTML = `${ring_title.innerText} ring is right`
+  }
+  if (ring !== 0) {
+    checks++
+    checksText.innerText = checks
+  }
+}
+
+check.addEventListener("click", checkRing)
