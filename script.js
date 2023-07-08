@@ -1,32 +1,38 @@
 import { WORDS } from "./words.js";
-console.log(WORDS);
 
-let body = document.querySelector("body")
-let keywords = [];
+const body = document.querySelector("body")
+const keywords = [];
 let firstKeyword = "";
 let centralLetter = "";
 let zerothRing = [];
 let firstRing = [];
 let secondRing = [];
 let thirdRing = [];
-let letters = [zerothRing, firstRing, secondRing, thirdRing];
-let degrees = [300, 0, 60, 120, 180, 240];
-let layers = ["third", "second", "first", "zeroth"];
-let rings = [];
+const letters = [zerothRing, firstRing, secondRing, thirdRing];
+const degrees = [300, 0, 60, 120, 180, 240];
+const layers = ["third", "second", "first", "zeroth"];
+const rings = [];
 let solution = [];
-let turn = ["counterclockwise", "clockwise"];
-let position = ["left", "top", "right", "bottom"];
-let arrows = ["triangle-down", "triangle-left", "triangle-up", "triangle-right"];
+const turn = ["counterclockwise", "clockwise"];
+const position = ["left", "top", "right", "bottom"];
+const arrows = ["triangle-down", "triangle-left", "triangle-up", "triangle-right"];
 let ring = 0;
-let rotations = 0;
+let spins = 0;
 let checks = 0;
+
+const allRingsEqual = () => {
+  zerothRing = letters[0]
+  firstRing = letters[1]
+  secondRing = letters[2]
+  thirdRing = letters[3]
+}
 
 const initialize = () => {
   firstKeyword = WORDS[Math.floor(Math.random() * WORDS.length)]
   keywords.push(firstKeyword)
   centralLetter = firstKeyword.charAt(firstKeyword.length-1)
   zerothRing.push(centralLetter)
-  for (let i = 1; i < 4; i++){
+  for (let i = 1; i < layers.length; i++){
       letters[i].push(firstKeyword.charAt(3-i))
   }
 
@@ -54,47 +60,44 @@ const initialize = () => {
   solution = JSON.parse(JSON.stringify(letters))
 
   for (let i = 0; i < letters.length; i++){
-      let thisRing = letters[i]
-      let rotatedAmount = [Math.floor(Math.random() * thisRing.length)]
-      let rotatedRing = thisRing.splice(rotatedAmount, thisRing.length-rotatedAmount)
-      let unRotatedRing = []
+      const thisRing = letters[i]
+      const rotatedAmount = [Math.floor(Math.random() * thisRing.length)]
+      const rotatedRing = thisRing.splice(rotatedAmount, thisRing.length-rotatedAmount)
+      const newRing = []
       for (let j = 0; j < rotatedRing.length; j++){
-          unRotatedRing.push(rotatedRing[j])
+          newRing.push(rotatedRing[j])
       }
       for (let j = 0; j < thisRing.length; j++){
-          unRotatedRing.push(thisRing[j])
+          newRing.push(thisRing[j])
       }
-      letters[i] = unRotatedRing
+      letters[i] = newRing
   }
-  zerothRing = letters[0]
-  firstRing = letters[1]
-  secondRing = letters[2]
-  thirdRing = letters[3]
+  allRingsEqual()
 
-  let whole = document.createElement("main")
+  const whole = document.createElement("main")
   body.appendChild(whole)
-  let outerRing = document.createElement("div")
+  const outerRing = document.createElement("div")
   outerRing.className = "ring"
-  outerRing.setAttribute("id", "third");
+  outerRing.setAttribute("id", `${layers[0]}`);
   rings.unshift(outerRing)
   whole.appendChild(outerRing)
 
-  let title = document.createElement("h1")
+  const title = document.createElement("h1")
   title.className = "title"
   title.innerText = "Spinensky"
   whole.prepend(title)
   
   for (let i = 1; i < layers.length; i++){
-      let layer = document.createElement("div")
+      const layer = document.createElement("div")
       layer.className = "ring"
       layer.setAttribute("id", layers[i])
       rings.push(layer)
       rings[i-1].appendChild(layer)
   }
 
-  let notes = document.createElement("div")
+  const notes = document.createElement("div")
   notes.className = "notes"
-  notes.innerHTML = '<h3><span id="ring-title">???</span> ring</h3></br><p>Rotations <span id="rotations">0</span> Checks <span id="checks">0</span></p><h5 id="check">Check</h5><p id="checked"> </p></br><h5>Spin</h5>'
+  notes.innerHTML = '<h3><span id="ring-title">???</span> ring</h3></br><p>Spins <span id="spins">0</span> Checks <span id="checks">0</span></p><h5 id="check">Check</h5><p id="checked"> </p></br><h5>Spin</h5>'
   whole.appendChild(notes)
 
   let center = document.createElement("a")
@@ -103,44 +106,44 @@ const initialize = () => {
   center.innerText = zerothRing[0]
 
   for (let i = 1; i < letters.length; i++){
-      let ring = `ring-${i}-letter`
+      const ring = `ring-${i}-letter`
       for (let j = 0; j < degrees.length; j++){
-          let degree = degrees[j]
-          let letter = document.createElement("a")
+          const degree = degrees[j]
+          const letter = document.createElement("a")
           letter.className = `deg${degree}-${i} ${ring}`
           letter.innerHTML = letters[i][j]
           rings[0].append(letter)
       }
   }
 
-  let buttons = document.createElement("div")
+  const buttons = document.createElement("div")
   buttons.className = "buttons"
   whole.append(buttons)
 
   for (let i = 0; i < turn.length; i++){
-      let button = document.createElement("div")
-      button.className = `button ${turn[i]}`
-      buttons.appendChild(button)
-      let tail = document.createElement("div")
-      tail.className = `tail ${turn[i]}`
-      button.appendChild(tail)
-      let middle = document.createElement("div")
-      middle.className = `middle ${turn[i]}`
-      tail.appendChild(middle)
-      for (let j = 0; j < position.length; j++){
-          let arrow = document.createElement("div")
-          arrow.className = `arrow ${turn[i]} ${position[j]}`
-          if (arrow.classList.contains("counterclockwise")){
-              arrow.classList.add(`${arrows[j]}`)
-          } else if (arrow.classList.contains("clockwise")){
-              if (j < 2) {
-                  arrow.classList.add(`${arrows[j+2]}`)
-              } else if (j > 1) {
-                  arrow.classList.add(`${arrows[j-2]}`)
-              }
-          }
-          tail.appendChild(arrow)
+    const button = document.createElement("div")
+    button.className = `button ${turn[i]}`
+    buttons.appendChild(button)
+    const tail = document.createElement("div")
+    tail.className = `tail ${turn[i]}`
+    button.appendChild(tail)
+    const middle = document.createElement("div")
+    middle.className = `middle ${turn[i]}`
+    tail.appendChild(middle)
+    for (let j = 0; j < position.length; j++){
+      const arrow = document.createElement("div")
+      arrow.className = `arrow ${turn[i]} ${position[j]}`
+      if (arrow.classList.contains("counterclockwise")){
+        arrow.classList.add(`${arrows[j]}`)
+      } else if (arrow.classList.contains("clockwise")) {
+        if (j < 2) {
+              arrow.classList.add(`${arrows[j+2]}`)
+        } else if (j > 1) {
+          arrow.classList.add(`${arrows[j - 2]}`)
+        }
       }
+      tail.appendChild(arrow)
+    }
   }
 }
 
@@ -151,119 +154,94 @@ console.log(solution)
 const ring_title = document.querySelector("#ring-title")
 const counterclockwise = document.querySelectorAll('.counterclockwise');
 const clockwise = document.querySelectorAll('.clockwise')
-const rotationsText = document.querySelector("#rotations")
+const spinsText = document.querySelector("#spins")
 const checksText = document.querySelector("#checks")
 
+const rotate = d => {
+  const degree = degrees[d]
+  const letter = document.querySelector(`.deg${degree}-${ring}`)
+  letter.innerHTML = letters[ring][d]
+}
+
+const rotateFinish = (event) => {
+  allRingsEqual()
+  spins++
+  spinsText.innerText = spins
+  event.stopPropagation()
+}
+
 const rotateCounterClockwise = (event) => {
-  let firstLetter = letters[ring][0]
+  const firstLetter = letters[ring][0]
   letters[ring].shift()
   letters[ring].push(firstLetter)
-  for (let j = 0; j < degrees.length; j++){
-    const degree = degrees[j]
-    const letter = document.querySelector(`.deg${degree}-${ring}`)
-    console.log(letter)
-    letter.innerHTML = letters[ring][j]
+  for (let d = 0; d < degrees.length; d++){
+    rotate(d)
   }
-  zerothRing = letters[0]
-  firstRing = letters[1]
-  secondRing = letters[2]
-  thirdRing = letters[3]
-  rotations++
-  rotationsText.innerText = rotations
-  event.stopPropagation();
+  rotateFinish(event)
 }
 
 const rotateClockwise = (event) => {
-  let lastLetter = letters[ring][5]
+  const lastLetter = letters[ring][5]
   letters[ring].pop()
   letters[ring].unshift(lastLetter)
-  for (let j = 0; j < degrees.length; j++){
-    const degree = degrees[j]
-    const letter = document.querySelector(`.deg${degree}-${ring}`)
-    console.log(letter)
-    letter.innerHTML = letters[ring][j]
+  for (let d = 0; d < degrees.length; d++){
+    rotate(d)
   }
-  zerothRing = letters[0]
-  firstRing = letters[1]
-  secondRing = letters[2]
-  thirdRing = letters[3]
-  rotations++
-  rotationsText.innerText = rotations
-  event.stopPropagation();
+  rotateFinish(event)
+}
+
+const updateAndAdd = () => {
+  ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+  for (let i=0; i<counterclockwise.length; i++){
+    counterclockwise[i].addEventListener("click", rotateCounterClockwise)
+  }
+  for (let i=0; i<clockwise.length; i++){
+    clockwise[i].addEventListener("click", rotateClockwise)
+  }
+}
+
+const updateAndRemove = () => {
+  ring_title.innerHTML = "???"
+  ring = 0
+      for (let i=0; i<counterclockwise.length; i++){
+          counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
+      }
+      for (let i=0; i<clockwise.length; i++){
+          clockwise[i].removeEventListener("click", rotateClockwise)
+      }
 }
 
 document.querySelectorAll('a').forEach(character => {
   character.addEventListener('click', event => {
-      if (event.target.classList.contains("center")){
-          ring = 0
-          ring_title.innerHTML = "???"
-          for (let i=0; i<counterclockwise.length; i++){
-              counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
-          }
-          for (let i=0; i<clockwise.length; i++){
-              clockwise[i].removeEventListener("click", rotateClockwise)
-          }
-      } else if (event.target.classList.contains("ring-1-letter")){
-          ring = 1
-          ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
-          // ring_title.innerHTML = "first"
-          for (let i=0; i<counterclockwise.length; i++){
-              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
-          }
-          for (let i=0; i<clockwise.length; i++){
-              clockwise[i].addEventListener("click", rotateClockwise)
-          }
-      } else if (event.target.classList.contains("ring-2-letter")){
-          ring = 2
-          ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
-          // ring_title.innerHTML = "second"
-          for (let i=0; i<counterclockwise.length; i++){
-              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
-          }
-          for (let i=0; i<clockwise.length; i++){
-              clockwise[i].addEventListener("click", rotateClockwise)
-          }
-      } else if (event.target.classList.contains("ring-3-letter")){
-          ring = 3
-          ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
-          // ring_title.innerHTML = "third"
-          for (let i=0; i<counterclockwise.length; i++){
-              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
-          }
-          for (let i=0; i<clockwise.length; i++){
-              clockwise[i].addEventListener("click", rotateClockwise)
-          }
-      }
+    if (event.target.classList.contains("center")){
+      updateAndRemove()
+    } else if (event.target.classList.contains("ring-1-letter")){
+      ring = 1
+      updateAndAdd()  
+    } else if (event.target.classList.contains("ring-2-letter")){
+      ring = 2
+      updateAndAdd()
+    } else if (event.target.classList.contains("ring-3-letter")){
+      ring = 3
+      updateAndAdd()
+    }
   }, true)
 })
 
 document.querySelectorAll('.ring').forEach(circle => {
   circle.addEventListener('click', event => {
-      if (event.target.id !== "zeroth") {
-          ring_title.innerHTML = `${event.target.id.charAt(0).toUpperCase() + event.target.id.slice(1)}`
-          if (event.target.id === "first"){
-              ring = 1
-          } else if (event.target.id === "second"){
-              ring = 2
-          } else if (event.target.id === "third"){
-              ring = 3
-          }
-          for (let i=0; i<counterclockwise.length; i++){
-              counterclockwise[i].addEventListener("click", rotateCounterClockwise)
-          }
-          for (let i=0; i<clockwise.length; i++){
-              clockwise[i].addEventListener("click", rotateClockwise)
-          }
-      } else if (event.target.id === "zeroth"){
-          ring_title.innerHTML = "???"
-          ring = 0
-              for (let i=0; i<counterclockwise.length; i++){
-                  counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
-              }
-              for (let i=0; i<clockwise.length; i++){
-                  clockwise[i].removeEventListener("click", rotateClockwise)
-              }
+    if (event.target.id !== "zeroth") {
+      if (event.target.id === "first"){
+        ring = 1
+      } else if (event.target.id === "second"){
+        ring = 2
+      } else if (event.target.id === "third"){
+        ring = 3
       }
+      updateAndAdd()
+    } else if (event.target.id === "zeroth") {
+      updateAndRemove()
+    }
   }, true)
 })
   
