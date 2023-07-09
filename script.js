@@ -25,6 +25,14 @@ let spins = 0;
 let checks = 0;
 const numberOfWords = [4, 6, 8];
 let playedBefore = false;
+let won = false;
+const havePlayedBefore = localStorage.getItem("playedBefore");
+const getAverageSpins = localStorage.getItem("averageSpins");
+const getAverageChecks = localStorage.getItem("averageChecks");
+const previousGamesPlayed = localStorage.getItem("gamesPlayed");
+let averageSpins = 0;
+let averageChecks = 0;
+let gamesPlayed = 0;
 
 const allRingsEqual = () => {
   zerothRing = letters[0]
@@ -34,10 +42,22 @@ const allRingsEqual = () => {
 }
 
 const initialize = () => {
-  const havePlayedBefore = localStorage.getItem("playedBefore")
   if (havePlayedBefore) {
     playedBefore = true
   }
+  if (getAverageSpins) {
+    averageSpins = JSON.parse(getAverageSpins)
+  }
+  if (getAverageChecks) {
+    averageChecks = JSON.parse(getAverageChecks)
+  }
+  if (previousGamesPlayed) {
+    gamesPlayed = JSON.parse(previousGamesPlayed) + 1
+  } else {
+    gamesPlayed = 1
+  }
+  const gamesPlayedNow = JSON.stringify(gamesPlayed)
+  localStorage.setItem("gamesPlayed", gamesPlayedNow)
   const start = document.createElement("section")
   if (playedBefore === false) {
     body.appendChild(start)
@@ -215,7 +235,7 @@ const rotate = d => {
   const animatedLetter = document.querySelector(`.deg${animatedDegree}-${ring}`)
   letter.innerHTML = ""
   animatedLetter.innerHTML = letters[ring][d].toUpperCase()
-  sleep(750).then(() => {
+  sleep(500).then(() => {
     animatedLetter.innerHTML = ""
     letter.innerHTML = letters[ring][d].toUpperCase()
   })
@@ -317,18 +337,41 @@ const checkRing = () => {
   }
   if (right === true) {
     checked.innerHTML = "You win!"
+    won = true
   } else if (solution[ring][0] === letters[ring][0] && solution[ring][1] === letters[ring][1] && solution[ring][2] === letters[ring][2] && solution[ring][3] === letters[ring][3] && solution[ring][4] === letters[ring][4] && solution[ring][5] === letters[ring][5] && ring !== 0){
-      checked.innerHTML = `${ring_title.innerText} ring is off by three`
+    checked.innerHTML = `${ring_title.innerText} ring is off by three`
   } else if ((solution[ring][0] === letters[ring][1] && solution[ring][1] === letters[ring][2] && solution[ring][2] === letters[ring][3] && solution[ring][3] === letters[ring][4] && solution[ring][4] === letters[ring][5] && solution[ring][5] === letters[ring][0]) && ring !== 0 || (solution[ring][0] === letters[ring][5] && solution[ring][1] === letters[ring][0] && solution[ring][2] === letters[ring][1] && solution[ring][3] === letters[ring][2] && solution[ring][4] === letters[ring][3] && solution[ring][5] === letters[ring][4] && ring !== 0)){
     checked.innerHTML = `${ring_title.innerText} ring is off by two`
   } else if ((solution[ring][0] === letters[ring][2] && solution[ring][1] === letters[ring][3] && solution[ring][2] === letters[ring][4] && solution[ring][3] === letters[ring][5] && solution[ring][4] === letters[ring][0] && solution[ring][5] === letters[ring][1]) && ring !== 0 || (solution[ring][0] === letters[ring][4] && solution[ring][1] === letters[ring][5] && solution[ring][2] === letters[ring][0] && solution[ring][3] === letters[ring][1] && solution[ring][4] === letters[ring][2] && solution[ring][5] === letters[ring][3] && ring !== 0)){
     checked.innerHTML = `${ring_title.innerText} ring is off by one`
   } else if (solution[ring][0] === letters[ring][3] && solution[ring][1] === letters[ring][4] && solution[ring][2] === letters[ring][5] && solution[ring][3] === letters[ring][0] && solution[ring][4] === letters[ring][1] && solution[ring][5] === letters[ring][2] && ring !== 0){
-      checked.innerHTML = `${ring_title.innerText} ring is right`
+    checked.innerHTML = `${ring_title.innerText} ring is right`
   }
   if (ring !== 0) {
     checks++
     checksText.innerText = checks
+  }
+  if (won === true) {
+    const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks)/gamesPlayed)
+    localStorage.setItem("averageChecks", setAverageChecks)
+    const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins)/gamesPlayed)
+    localStorage.setItem("averageSpins", setAverageSpins)
+    const over = document.createElement("section")
+    const whole = document.querySelector("main")
+    whole.style.display = "none"
+    body.append(over)
+    const startTitle = document.createElement("h1")
+    startTitle.className = "start-title"
+    startTitle.innerText = "Spinensky"
+    over.appendChild(startTitle)
+    const exit = document.createElement("div")
+    exit.innerText = "x"
+    exit.className = "exit"
+    over.appendChild(exit)
+    const score = document.createElement("p")
+    score.className = "score"
+    score.innerHTML = `Spins: ${spins} Average Spins: ${(averageSpins * previousGamesPlayed + spins) / gamesPlayed} </br> </br> Checks: ${checks} Average Checks: ${(averageChecks * previousGamesPlayed + checks) / gamesPlayed}`
+    over.appendChild(score)
   }
 }
 
