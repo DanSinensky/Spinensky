@@ -75,87 +75,159 @@ button {
   font: 2em sans-serif;
   position: absolute;
   top: 9rem;
-  left: 9.5rem;
+  left: 9.365rem;
 }
 
 .ring-1-letter,
 .ring-2-letter,
 .ring-3-letter {
   font: 1em sans-serif;
-  top: 9.75rem;
-  left: 9.75rem;
+  top: 9.65rem;
+  left: 9.65rem;
 }
 
 .deg0-3 {
   transform: translate(7rem);
 }
 
+.deg30-3 {
+  transform: rotate(30deg) translate(7rem) rotate(-30deg);
+}
+
 .deg60-3 {
   transform: rotate(60deg) translate(7rem) rotate(-60deg);
+}
+
+.deg90-3 {
+  transform: rotate(90deg) translate(7rem) rotate(-90deg);
 }
 
 .deg120-3 {
   transform: rotate(120deg) translate(7rem) rotate(-120deg);
 }
 
+.deg150-3 {
+  transform: rotate(150deg) translate(7rem) rotate(-150deg);
+}
+
 .deg180-3 {
   transform: rotate(180deg) translate(7rem) rotate(-180deg);
+}
+
+.deg210-3 {
+  transform: rotate(210deg) translate(7rem) rotate(-210deg);
 }
 
 .deg240-3 {
   transform: rotate(240deg) translate(7rem) rotate(-240deg);
 }
 
+.deg270-3 {
+  transform: rotate(270deg) translate(7rem) rotate(-270deg);
+}
+
 .deg300-3 {
   transform: rotate(300deg) translate(7rem) rotate(-300deg);
+}
+
+.deg330-3 {
+  transform: rotate(330deg) translate(7rem) rotate(-330deg);
 }
 
 .deg0-2 {
   transform: translate(5rem);
 }
 
+.deg30-2 {
+  transform: rotate(30deg) translate(5rem) rotate(-30deg);
+}
+
 .deg60-2 {
   transform: rotate(60deg) translate(5rem) rotate(-60deg);
+}
+
+.deg90-2 {
+  transform: rotate(90deg) translate(5rem) rotate(-90deg);
 }
 
 .deg120-2 {
   transform: rotate(120deg) translate(5rem) rotate(-120deg);
 }
 
+.deg150-2 {
+  transform: rotate(150deg) translate(5rem) rotate(-150deg);
+}
+
 .deg180-2 {
   transform: rotate(180deg) translate(5rem) rotate(-180deg);
+}
+
+.deg210-2 {
+  transform: rotate(210deg) translate(5rem) rotate(-210deg);
 }
 
 .deg240-2 {
   transform: rotate(240deg) translate(5rem) rotate(-240deg);
 }
 
+.deg270-2 {
+  transform: rotate(270deg) translate(5rem) rotate(-270deg);
+}
+
 .deg300-2 {
   transform: rotate(300deg) translate(5rem) rotate(-300deg);
+}
+
+.deg330-2 {
+  transform: rotate(330deg) translate(5rem) rotate(-330deg);
 }
 
 .deg0-1 {
   transform: translate(3rem);
 }
 
+.deg30-1 {
+  transform: rotate(30deg) translate(3rem) rotate(-30deg);
+}
+
 .deg60-1 {
   transform: rotate(60deg) translate(3rem) rotate(-60deg);
+}
+
+.deg90-1 {
+  transform: rotate(90deg) translate(3rem) rotate(-90deg);
 }
 
 .deg120-1 {
   transform: rotate(120deg) translate(3rem) rotate(-120deg);
 }
 
+.deg150-1 {
+  transform: rotate(150deg) translate(3rem) rotate(-150deg);
+}
+
 .deg180-1 {
   transform: rotate(180deg) translate(3rem) rotate(-180deg);
+}
+
+.deg210-1 {
+  transform: rotate(210deg) translate(3rem) rotate(-210deg);
 }
 
 .deg240-1 {
   transform: rotate(240deg) translate(3rem) rotate(-240deg);
 }
 
+.deg270-1 {
+  transform: rotate(270deg) translate(3rem) rotate(-270deg);
+}
+
 .deg300-1 {
   transform: rotate(300deg) translate(3rem) rotate(-300deg);
+}
+
+.deg330-1 {
+  transform: rotate(330deg) translate(3rem) rotate(-330deg);
 }
 
 #zeroth {
@@ -165,21 +237,21 @@ button {
   height: 4rem;
 }
 
-#first {
+#inner {
   background-color: lightyellow;
   width: 8rem;
   z-index: 4;
   height: 8rem;
 }
 
-#second {
+#middle {
   background-color: lightgreen;
   width: 12rem;
   z-index: 3;
   height: 12rem;
 }
 
-#third {
+#outer {
   background-color: lightblue;
   width: 16rem;
   z-index: 2;

@@ -5,28 +5,32 @@ const keywords = [];
 let firstKeyword = "";
 let centralLetter = "";
 let zerothRing = [];
-let firstRing = [];
-let secondRing = [];
-let thirdRing = [];
-const letters = [zerothRing, firstRing, secondRing, thirdRing];
+let innerRing = [];
+let middleRing = [];
+let outerRing = [];
+const letters = [zerothRing, innerRing, middleRing, outerRing];
 const degrees = [300, 0, 60, 120, 180, 240];
-const layers = ["third", "second", "first", "zeroth"];
+const animateCounterClockwise = [330, 30, 90, 150, 210, 270];
+const animateClockwise = [270, 330, 30, 90, 150, 210];
+const layers = ["outer", "middle", "inner", "zeroth"];
 const rings = [];
 let solution = [];
 const turn = ["counterclockwise", "clockwise"];
+let direction
+let animatedDegree
 const position = ["left", "top", "right", "bottom"];
 const arrows = ["triangle-down", "triangle-left", "triangle-up", "triangle-right"];
 let ring = 0;
 let spins = 0;
 let checks = 0;
-const numberOfWords = [2, 4, 6];
+const numberOfWords = [4, 6, 8];
 let playedBefore = false;
 
 const allRingsEqual = () => {
   zerothRing = letters[0]
-  firstRing = letters[1]
-  secondRing = letters[2]
-  thirdRing = letters[3]
+  innerRing = letters[1]
+  middleRing = letters[2]
+  outerRing = letters[3]
 }
 
 const initialize = () => {
@@ -123,13 +127,13 @@ const initialize = () => {
 
   const notes = document.createElement("div")
   notes.className = "notes"
-  notes.innerHTML = '<h3><span id="ring-title">???</span> ring</h3></br><p>Spins <span id="spins">0</span> Checks <span id="checks">0</span></p><h5 id="check">Check</h5><p id="checked"> </p></br><h5>Spin</h5>'
+  notes.innerHTML = '<h3><span id="ring-title">Click on a</span> ring</h3></br><p>Spins: <span id="spins">0</span> Checks: <span id="checks">0</span></p><h5 id="check">Check</h5><p id="checked"> </p></br><h5>Spin</h5>'
   whole.appendChild(notes)
 
   let center = document.createElement("a")
   center.className = "center"
   rings[0].append(center)
-  center.innerText = zerothRing[0]
+  center.innerText = zerothRing[0].toUpperCase()
 
   for (let i = 1; i < letters.length; i++) {
     const ring = `ring-${i}-letter`
@@ -137,8 +141,13 @@ const initialize = () => {
       const degree = degrees[j]
       const letter = document.createElement("a")
       letter.className = `deg${degree}-${i} ${ring}`
-      letter.innerHTML = letters[i][j]
+      letter.innerHTML = letters[i][j].toUpperCase()
       rings[0].append(letter)
+      animatedDegree = animateCounterClockwise[j]
+      const animatedLetter = document.createElement("a")
+      animatedLetter.className = `deg${animatedDegree}-${i} ${ring}`
+      animatedLetter.innerHTML = ""
+      rings[0].append(animatedLetter)
     }
   }
 
@@ -191,10 +200,25 @@ const clockwise = document.querySelectorAll('.clockwise')
 const spinsText = document.querySelector("#spins")
 const checksText = document.querySelector("#checks")
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const rotate = d => {
+  if (direction === turn[0]) {
+    animatedDegree = animateCounterClockwise[d]
+  } else if (direction === turn[1]) {
+    animatedDegree = animateClockwise[d]
+  }
   const degree = degrees[d]
   const letter = document.querySelector(`.deg${degree}-${ring}`)
-  letter.innerHTML = letters[ring][d]
+  const animatedLetter = document.querySelector(`.deg${animatedDegree}-${ring}`)
+  letter.innerHTML = ""
+  animatedLetter.innerHTML = letters[ring][d].toUpperCase()
+  sleep(750).then(() => {
+    animatedLetter.innerHTML = ""
+    letter.innerHTML = letters[ring][d].toUpperCase()
+  })
 }
 
 const rotateFinish = (event) => {
@@ -208,6 +232,7 @@ const rotateCounterClockwise = (event) => {
   const firstLetter = letters[ring][0]
   letters[ring].shift()
   letters[ring].push(firstLetter)
+  direction = turn[0]
   for (let d = 0; d < degrees.length; d++){
     rotate(d)
   }
@@ -218,6 +243,7 @@ const rotateClockwise = (event) => {
   const lastLetter = letters[ring][5]
   letters[ring].pop()
   letters[ring].unshift(lastLetter)
+  direction = turn[1]
   for (let d = 0; d < degrees.length; d++){
     rotate(d)
   }
@@ -235,7 +261,7 @@ const updateAndAdd = () => {
 }
 
 const updateAndRemove = () => {
-  ring_title.innerHTML = "???"
+  ring_title.innerHTML = "Click on a"
   ring = 0
       for (let i=0; i<counterclockwise.length; i++){
           counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
@@ -265,11 +291,11 @@ document.querySelectorAll('a').forEach(character => {
 document.querySelectorAll('.ring').forEach(circle => {
   circle.addEventListener('click', event => {
     if (event.target.id !== "zeroth") {
-      if (event.target.id === "first"){
+      if (event.target.id === "inner"){
         ring = 1
-      } else if (event.target.id === "second"){
+      } else if (event.target.id === "middle"){
         ring = 2
-      } else if (event.target.id === "third"){
+      } else if (event.target.id === "outer"){
         ring = 3
       }
       updateAndAdd()
@@ -293,11 +319,9 @@ const checkRing = () => {
     checked.innerHTML = "You win!"
   } else if (solution[ring][0] === letters[ring][0] && solution[ring][1] === letters[ring][1] && solution[ring][2] === letters[ring][2] && solution[ring][3] === letters[ring][3] && solution[ring][4] === letters[ring][4] && solution[ring][5] === letters[ring][5] && ring !== 0){
       checked.innerHTML = `${ring_title.innerText} ring is off by three`
-  } else if ((solution[ring][0] === letters[ring][1] && solution[ring][1] === letters[ring][2] && solution[ring][2] === letters[ring][3] && solution[ring][3] === letters[ring][4] && solution[ring][4] === letters[ring][5] && solution[ring][5] === letters[ring][0]) && ring !== 0 ||
-    (solution[ring][0] === letters[ring][5] && solution[ring][1] === letters[ring][0] && solution[ring][2] === letters[ring][1] && solution[ring][3] === letters[ring][2] && solution[ring][4] === letters[ring][3] && solution[ring][5] === letters[ring][4] && ring !== 0)){
+  } else if ((solution[ring][0] === letters[ring][1] && solution[ring][1] === letters[ring][2] && solution[ring][2] === letters[ring][3] && solution[ring][3] === letters[ring][4] && solution[ring][4] === letters[ring][5] && solution[ring][5] === letters[ring][0]) && ring !== 0 || (solution[ring][0] === letters[ring][5] && solution[ring][1] === letters[ring][0] && solution[ring][2] === letters[ring][1] && solution[ring][3] === letters[ring][2] && solution[ring][4] === letters[ring][3] && solution[ring][5] === letters[ring][4] && ring !== 0)){
     checked.innerHTML = `${ring_title.innerText} ring is off by two`
-  } else if ((solution[ring][0] === letters[ring][2] && solution[ring][1] === letters[ring][3] && solution[ring][2] === letters[ring][4] && solution[ring][3] === letters[ring][5] && solution[ring][4] === letters[ring][0] && solution[ring][5] === letters[ring][1]) && ring !== 0 ||
-    (solution[ring][0] === letters[ring][4] && solution[ring][1] === letters[ring][5] && solution[ring][2] === letters[ring][0] && solution[ring][3] === letters[ring][1] && solution[ring][4] === letters[ring][2] && solution[ring][5] === letters[ring][3] && ring !== 0)){
+  } else if ((solution[ring][0] === letters[ring][2] && solution[ring][1] === letters[ring][3] && solution[ring][2] === letters[ring][4] && solution[ring][3] === letters[ring][5] && solution[ring][4] === letters[ring][0] && solution[ring][5] === letters[ring][1]) && ring !== 0 || (solution[ring][0] === letters[ring][4] && solution[ring][1] === letters[ring][5] && solution[ring][2] === letters[ring][0] && solution[ring][3] === letters[ring][1] && solution[ring][4] === letters[ring][2] && solution[ring][5] === letters[ring][3] && ring !== 0)){
     checked.innerHTML = `${ring_title.innerText} ring is off by one`
   } else if (solution[ring][0] === letters[ring][3] && solution[ring][1] === letters[ring][4] && solution[ring][2] === letters[ring][5] && solution[ring][3] === letters[ring][0] && solution[ring][4] === letters[ring][1] && solution[ring][5] === letters[ring][2] && ring !== 0){
       checked.innerHTML = `${ring_title.innerText} ring is right`
