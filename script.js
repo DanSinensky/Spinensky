@@ -302,7 +302,7 @@ const check = document.querySelector("#check")
 const checked = document.querySelector("#checked")
 
 const round = num => {
-  let p = Math.pow(10, 3);
+  let p = Math.pow(10, 2);
   let n = (num * p).toPrecision(15);
   return Math.round(n) / p;
 }
