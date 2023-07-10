@@ -98,6 +98,10 @@ const initialize = () => {
     whole.style.display = "block"
   }
   body.appendChild(whole)
+  const aside = document.createElement("aside")
+  aside.innerHTML = `<ul><li>Info</li><li>Stats</li><li>Settings</li></ul>`
+  aside.className = "hidden"
+  whole.appendChild(aside)
   const outerRing = document.createElement("div")
   outerRing.className = "ring"
   outerRing.setAttribute("id", `${layers[0]}`);
@@ -119,6 +123,7 @@ const initialize = () => {
     hamburger.appendChild(newBar)
     newBar.addEventListener("click", e => {
       hamburger.classList.toggle("change")
+      aside.classList.toggle("hidden")
     })
   })
   

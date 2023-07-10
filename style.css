@@ -8,6 +8,21 @@
   transition: 0.4s;
 }
 
+ul {
+  list-style: none;
+  position: fixed;
+  right: 0%;
+}
+
+li {
+  border: 0.0625rem solid black;
+  width: 3.75rem;
+}
+
+.hidden {
+  transform: translateX(100%);
+}
+
 main {
   display: none;
 }
