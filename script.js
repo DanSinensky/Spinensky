@@ -1,4 +1,6 @@
 import { WORDS } from "./words.js";
+import { SOLUTIONS } from "./storedArrayofArraysOfWords.js";
+import { SPUNSOLUTIONS } from "./storedArrayofArraysOfWords.js";
 
 const body = document.querySelector("body")
 const keywords = [];
@@ -80,51 +82,15 @@ const initialize = () => {
   info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you beat the round. There are three rounds: two-words, four-words, and six-words. </br> </br> Have fun!`
   start.appendChild(info)
 
-  firstKeyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-  keywords.push(firstKeyword)
-  centralLetter = firstKeyword.charAt(firstKeyword.length - 1)
-  zerothRing.push(centralLetter)
-  for (let i = 1; i < layers.length; i++) {
-    letters[i].push(firstKeyword.charAt(3 - i))
-  }
+  const todaysGame = Math.floor(Math.random() * SOLUTIONS.length)
+  solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysGame]))
+  const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysGame]))
 
-  for (let i = 1; i < 3; i++) {
-    let keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-    while (keywords.includes(keyword) || keyword.charAt(keyword.length - 1) !== centralLetter) {
-      keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-    }
-    keywords.push(keyword)
-    for (let j = 1; j < 4; j++) {
-      letters[j].push(keyword.charAt(3 - j))
+  for (let i = 0; i < letters.length; i++){
+    for (let j = 0; j < solution[i].length; j++){
+      letters[i][j] = importLetters[i][j]
     }
   }
-
-  for (let i = 3; i < 6; i++) {
-    let keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-    while (keywords.includes(keyword) || keyword.charAt(0) !== centralLetter) {
-      keyword = WORDS[Math.floor(Math.random() * WORDS.length)]
-    }
-    keywords.push(keyword)
-    for (let j = 1; j < 4; j++) {
-      letters[j].push(keyword.charAt(j))
-    }
-  }
-  solution = JSON.parse(JSON.stringify(letters))
-
-  for (let i = 0; i < letters.length; i++) {
-    const thisRing = letters[i]
-    const rotatedAmount = [Math.floor(Math.random() * thisRing.length)]
-    const rotatedRing = thisRing.splice(rotatedAmount, thisRing.length - rotatedAmount)
-    const newRing = []
-    for (let j = 0; j < rotatedRing.length; j++) {
-      newRing.push(rotatedRing[j])
-    }
-    for (let j = 0; j < thisRing.length; j++) {
-      newRing.push(thisRing[j])
-    }
-    letters[i] = newRing
-  }
-  allRingsEqual()
 
   const whole = document.createElement("main")
   if (playedBefore === true) {
@@ -398,7 +364,7 @@ const checkRing = () => {
       header.appendChild(exit)
       const score = document.createElement("p")
       score.className = "score"
-      score.innerHTML = `Spins: ${spins} Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)}`
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)}`
       over.appendChild(score)
   
       exit.addEventListener("click", e => {
