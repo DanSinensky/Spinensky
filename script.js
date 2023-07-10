@@ -35,7 +35,7 @@ const previousGamesPlayed = localStorage.getItem("gamesPlayed");
 let averageSpins = 0;
 let averageChecks = 0;
 let gamesPlayed = 0;
-const bars = ["bar1", "bar2", "bar3"]
+const bars = ["bar1", "bar2", "bar3"];
 
 const allRingsEqual = () => {
   zerothRing = letters[0]
@@ -99,9 +99,38 @@ const initialize = () => {
   }
   body.appendChild(whole)
   const aside = document.createElement("aside")
-  aside.innerHTML = `<ul><li>Info</li><li>Stats</li><li>Settings</li></ul>`
+  aside.innerHTML = `<ul><a class="information"><li>Info</li></a><a class="stats"><li>Stats</li></a><a class="settings"><li>Settings</li></a></ul>`
   aside.className = "hidden"
   whole.appendChild(aside)
+  const information = document.querySelector(".information")
+  information.addEventListener("click", e => {
+    whole.style.display = "none"
+    const infoPopUp = document.createElement("section")
+    body.appendChild(infoPopUp)
+    const infoHeader = document.createElement("header")
+    infoPopUp.appendChild(infoHeader)
+    const infoEmptyDiv = document.createElement("div")
+    infoEmptyDiv.className = "empty-div"
+    infoHeader.appendChild(infoEmptyDiv)
+    const infoTitle = document.createElement("h1")
+    infoTitle.className = "start-title"
+    infoTitle.innerText = "Spinensky"
+    infoHeader.appendChild(infoTitle)
+    const infoExit = document.createElement("div")
+    infoExit.innerText = "x"
+    infoExit.className = "exit"
+    infoHeader.appendChild(infoExit)
+    const infoInfo = document.createElement("p")
+    infoInfo.className = "info"
+    infoInfo.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you beat the round. There are three rounds: two-words, four-words, and six-words. </br> </br> Have fun!`
+    infoPopUp.appendChild(infoInfo)
+    infoExit.addEventListener("click", e => {
+      infoPopUp.style.display = "none"
+      whole.style.display = "block"
+    })
+  })
+  const stats = document.querySelector(".stats")
+  const settings = document.querySelector(".settings")
   const outerRing = document.createElement("div")
   outerRing.className = "ring"
   outerRing.setAttribute("id", `${layers[0]}`);
@@ -202,9 +231,9 @@ const initialize = () => {
       const setPlayedBefore = JSON.stringify(playedBefore)
       localStorage.setItem("playedBefore", setPlayedBefore)
     })
-}
-
-initialize()
+  }
+  
+  initialize()
 
 console.log(solution)
 
