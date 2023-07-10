@@ -35,6 +35,7 @@ const previousGamesPlayed = localStorage.getItem("gamesPlayed");
 let averageSpins = 0;
 let averageChecks = 0;
 let gamesPlayed = 0;
+const bars = ["bar1", "bar2", "bar3"]
 
 const allRingsEqual = () => {
   zerothRing = letters[0]
@@ -64,19 +65,19 @@ const initialize = () => {
   if (playedBefore === false) {
     body.appendChild(start)
   }
-  const header = document.createElement("header")
-  start.appendChild(header)
+  const startHeader = document.createElement("header")
+  start.appendChild(startHeader)
   const emptyDiv = document.createElement("div")
   emptyDiv.className = "empty-div"
-  header.appendChild(emptyDiv)
+  startHeader.appendChild(emptyDiv)
   const startTitle = document.createElement("h1")
   startTitle.className = "start-title"
   startTitle.innerText = "Spinensky"
-  header.appendChild(startTitle)
+  startHeader.appendChild(startTitle)
   const exit = document.createElement("div")
   exit.innerText = "x"
   exit.className = "exit"
-  header.appendChild(exit)
+  startHeader.appendChild(exit)
   const info = document.createElement("p")
   info.className = "info"
   info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you beat the round. There are three rounds: two-words, four-words, and six-words. </br> </br> Have fun!`
@@ -102,11 +103,24 @@ const initialize = () => {
   outerRing.setAttribute("id", `${layers[0]}`);
   rings.unshift(outerRing)
   whole.appendChild(outerRing)
-
+  const header = document.createElement("header")
   const title = document.createElement("h1")
   title.className = "title"
   title.innerText = "Spinensky"
-  whole.prepend(title)
+  const hamburger = document.createElement("div")
+  hamburger.className = "hamburger"
+  whole.prepend(header)
+  header.appendChild(emptyDiv)
+  header.appendChild(title)
+  header.appendChild(hamburger)
+  bars.forEach(bar => {
+    const newBar = document.createElement("div")
+    newBar.className = bar
+    hamburger.appendChild(newBar)
+    newBar.addEventListener("click", e => {
+      hamburger.classList.toggle("change")
+    })
+  })
   
   for (let i = 1; i < layers.length; i++) {
     const layer = document.createElement("div")
@@ -356,22 +370,22 @@ const checkRing = () => {
       const whole = document.querySelector("main")
       whole.style.display = "none"
       body.append(over)
-      const header = document.createElement("header")
+      const overHeader = document.createElement("header")
       over.appendChild(header)
       const emptyDiv = document.createElement("div")
       emptyDiv.className = "empty-div"
-      header.appendChild(emptyDiv)
+      overHeader.appendChild(emptyDiv)
       const startTitle = document.createElement("h1")
       startTitle.className = "start-title"
       startTitle.innerText = "Spinensky"
-      header.appendChild(startTitle)
+      overHeader.appendChild(startTitle)
       const exit = document.createElement("div")
       exit.innerText = "x"
       exit.className = "exit"
-      header.appendChild(exit)
+      overHeader.appendChild(exit)
       const score = document.createElement("p")
       score.className = "score"
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)}`
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
       over.appendChild(score)
   
       exit.addEventListener("click", e => {
