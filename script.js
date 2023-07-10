@@ -248,8 +248,10 @@ const rotate = d => {
 
 const rotateFinish = (event) => {
   allRingsEqual()
-  spins++
-  spinsText.innerText = spins
+  if (won === false) {
+    spins++
+    spinsText.innerText = spins
+  }
   event.stopPropagation()
 }
 
@@ -358,9 +360,11 @@ const checkRing = () => {
   } else if (solution[ring][0] === letters[ring][3] && solution[ring][1] === letters[ring][4] && solution[ring][2] === letters[ring][5] && solution[ring][3] === letters[ring][0] && solution[ring][4] === letters[ring][1] && solution[ring][5] === letters[ring][2] && ring !== 0){
     checked.innerHTML = `${ring_title.innerText} ring is right`
   }
-  if (ring !== 0) {
-    checks++
-    checksText.innerText = checks
+  if (won === false) {
+    if (ring !== 0) {
+      checks++
+      checksText.innerText = checks
+    }
   }
   if (won === true) {
     const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
