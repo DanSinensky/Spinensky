@@ -62,14 +62,19 @@ const initialize = () => {
   if (playedBefore === false) {
     body.appendChild(start)
   }
+  const header = document.createElement("header")
+  start.appendChild(header)
+  const emptyDiv = document.createElement("div")
+  emptyDiv.className = "empty-div"
+  header.appendChild(emptyDiv)
   const startTitle = document.createElement("h1")
   startTitle.className = "start-title"
   startTitle.innerText = "Spinensky"
-  start.appendChild(startTitle)
+  header.appendChild(startTitle)
   const exit = document.createElement("div")
   exit.innerText = "x"
   exit.className = "exit"
-  start.appendChild(exit)
+  header.appendChild(exit)
   const info = document.createElement("p")
   info.className = "info"
   info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you beat the round. There are three rounds: two-words, four-words, and six-words. </br> </br> Have fun!`
@@ -367,14 +372,19 @@ const checkRing = () => {
       const whole = document.querySelector("main")
       whole.style.display = "none"
       body.append(over)
+      const header = document.createElement("header")
+      over.appendChild(header)
+      const emptyDiv = document.createElement("div")
+      emptyDiv.className = "empty-div"
+      header.appendChild(emptyDiv)
       const startTitle = document.createElement("h1")
       startTitle.className = "start-title"
       startTitle.innerText = "Spinensky"
-      over.appendChild(startTitle)
+      header.appendChild(startTitle)
       const exit = document.createElement("div")
       exit.innerText = "x"
       exit.className = "exit"
-      over.appendChild(exit)
+      header.appendChild(exit)
       const score = document.createElement("p")
       score.className = "score"
       score.innerHTML = `Spins: ${spins} Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)}`

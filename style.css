@@ -38,6 +38,11 @@ main {
   padding: 0.0625rem 0.25rem;
 }
 
+.empty-div {
+  width: 3.25rem;
+  height: 1.25rem;
+}
+
 h1,
 h3,
 h5,
@@ -396,4 +401,10 @@ section {
   border: 0.0625rem solid black;
   width: 16rem;
   margin: 0 auto;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
