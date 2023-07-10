@@ -118,7 +118,7 @@ const initialize = () => {
 
   const notes = document.createElement("div")
   notes.className = "notes"
-  notes.innerHTML = '<h3><span id="ring-title">Click on a</span> ring</h3></br><p>Spins: <span id="spins">0</span> Checks: <span id="checks">0</span></p><h5 id="check">Check</h5><p id="checked"> </p></br><h5>Spin</h5>'
+  notes.innerHTML = '<div class="ring-title-and-checked"><h3><span id="ring-title">Click on a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">0</span> Checks: <span id="checks">0</span></p></br><div class="check-button"><button id="check">Check</button></div></br>'
   whole.appendChild(notes)
 
   let center = document.createElement("a")
@@ -156,6 +156,10 @@ const initialize = () => {
     const middle = document.createElement("div")
     middle.className = `middle ${turn[i]}`
     tail.appendChild(middle)
+    const middleText = document.createElement("p")
+    middleText.innerText = "Spin"
+    middleText.className = "middle-text"
+    middle.appendChild(middleText)
     for (let j = 0; j < position.length; j++) {
       const arrow = document.createElement("div")
       arrow.className = `arrow ${turn[i]} ${position[j]}`
@@ -196,6 +200,7 @@ function sleep(ms) {
 }
 
 const rotate = d => {
+  checked.innerHTML = ""
   if (direction === turn[0]) {
     animatedDegree = animateCounterClockwise[d]
   } else if (direction === turn[1]) {
@@ -244,6 +249,7 @@ const rotateClockwise = (event) => {
 }
 
 const updateAndAdd = () => {
+  checked.innerHTML = ""
   ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
   for (let i=0; i<counterclockwise.length; i++){
     counterclockwise[i].addEventListener("click", rotateCounterClockwise)
@@ -255,6 +261,7 @@ const updateAndAdd = () => {
 
 const updateAndRemove = () => {
   ring_title.innerHTML = "Click on a"
+  checked.innerHTML = ""
   ring = 0
       for (let i=0; i<counterclockwise.length; i++){
           counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
@@ -266,7 +273,7 @@ const updateAndRemove = () => {
 
 document.querySelectorAll('a').forEach(character => {
   character.addEventListener('click', event => {
-    if (event.target.classList.contains("center")){
+    if (event.target.classList.contains("center")) {
       updateAndRemove()
     } else if (event.target.classList.contains("ring-1-letter")){
       ring = 1
@@ -327,13 +334,13 @@ const checkRing = () => {
       won = true
       updateChecks()
     } else if (solution[ring][0] === letters[ring][0] && solution[ring][1] === letters[ring][1] && solution[ring][2] === letters[ring][2] && solution[ring][3] === letters[ring][3] && solution[ring][4] === letters[ring][4] && solution[ring][5] === letters[ring][5] && ring !== 0){
-      checked.innerHTML = `${ring_title.innerText} ring is off by three`
+      checked.innerHTML = `is off by three`
     } else if ((solution[ring][0] === letters[ring][1] && solution[ring][1] === letters[ring][2] && solution[ring][2] === letters[ring][3] && solution[ring][3] === letters[ring][4] && solution[ring][4] === letters[ring][5] && solution[ring][5] === letters[ring][0]) && ring !== 0 || (solution[ring][0] === letters[ring][5] && solution[ring][1] === letters[ring][0] && solution[ring][2] === letters[ring][1] && solution[ring][3] === letters[ring][2] && solution[ring][4] === letters[ring][3] && solution[ring][5] === letters[ring][4] && ring !== 0)){
-      checked.innerHTML = `${ring_title.innerText} ring is off by two`
+      checked.innerHTML = `is off by two`
     } else if ((solution[ring][0] === letters[ring][2] && solution[ring][1] === letters[ring][3] && solution[ring][2] === letters[ring][4] && solution[ring][3] === letters[ring][5] && solution[ring][4] === letters[ring][0] && solution[ring][5] === letters[ring][1]) && ring !== 0 || (solution[ring][0] === letters[ring][4] && solution[ring][1] === letters[ring][5] && solution[ring][2] === letters[ring][0] && solution[ring][3] === letters[ring][1] && solution[ring][4] === letters[ring][2] && solution[ring][5] === letters[ring][3] && ring !== 0)){
-      checked.innerHTML = `${ring_title.innerText} ring is off by one`
+      checked.innerHTML = `is off by one`
     } else if (solution[ring][0] === letters[ring][3] && solution[ring][1] === letters[ring][4] && solution[ring][2] === letters[ring][5] && solution[ring][3] === letters[ring][0] && solution[ring][4] === letters[ring][1] && solution[ring][5] === letters[ring][2] && ring !== 0){
-      checked.innerHTML = `${ring_title.innerText} ring is right`
+      checked.innerHTML = `is right`
     }
   }
   if (won === false) {

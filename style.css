@@ -408,3 +408,17 @@ header {
   flex-direction: row;
   justify-content: space-between;
 }
+
+.ring-title-and-checked {
+  height: 2rem;
+}
+
+.middle-text {
+  position: fixed;
+  top: 35%;
+  left: 30%;
+}
+
+.check-button {
+  display: flex;
+}
