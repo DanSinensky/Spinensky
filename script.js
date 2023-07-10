@@ -328,6 +328,12 @@ document.querySelectorAll('.ring').forEach(circle => {
 const check = document.querySelector("#check")
 const checked = document.querySelector("#checked")
 
+const round = num => {
+  let p = Math.pow(10, 3);
+  let n = (num * p).toPrecision(15);
+  return Math.round(n) / p;
+}
+
 const checkRing = () => {
   let right = true
   for (let i = 1; i < letters.length; i++) {
@@ -352,26 +358,33 @@ const checkRing = () => {
     checksText.innerText = checks
   }
   if (won === true) {
-    const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks)/gamesPlayed)
-    localStorage.setItem("averageChecks", setAverageChecks)
+    const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
+    localStorage.setItem("averageChecks", round(setAverageChecks))
     const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins)/gamesPlayed)
-    localStorage.setItem("averageSpins", setAverageSpins)
-    const over = document.createElement("section")
-    const whole = document.querySelector("main")
-    whole.style.display = "none"
-    body.append(over)
-    const startTitle = document.createElement("h1")
-    startTitle.className = "start-title"
-    startTitle.innerText = "Spinensky"
-    over.appendChild(startTitle)
-    const exit = document.createElement("div")
-    exit.innerText = "x"
-    exit.className = "exit"
-    over.appendChild(exit)
-    const score = document.createElement("p")
-    score.className = "score"
-    score.innerHTML = `Spins: ${spins} Average Spins: ${(averageSpins * previousGamesPlayed + spins) / gamesPlayed} </br> </br> Checks: ${checks} Average Checks: ${(averageChecks * previousGamesPlayed + checks) / gamesPlayed}`
-    over.appendChild(score)
+    localStorage.setItem("averageSpins", round(setAverageSpins))
+    sleep(750).then(() => { 
+      const over = document.createElement("section")
+      const whole = document.querySelector("main")
+      whole.style.display = "none"
+      body.append(over)
+      const startTitle = document.createElement("h1")
+      startTitle.className = "start-title"
+      startTitle.innerText = "Spinensky"
+      over.appendChild(startTitle)
+      const exit = document.createElement("div")
+      exit.innerText = "x"
+      exit.className = "exit"
+      over.appendChild(exit)
+      const score = document.createElement("p")
+      score.className = "score"
+      score.innerHTML = `Spins: ${spins} Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)}`
+      over.appendChild(score)
+  
+      exit.addEventListener("click", e => {
+        over.style.display = "none"
+        whole.style.display = "block"
+      })
+    })
   }
 }
 
