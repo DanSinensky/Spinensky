@@ -36,6 +36,10 @@ let averageSpins = 0;
 let averageChecks = 0;
 let gamesPlayed = 0;
 const bars = ["bar1", "bar2", "bar3"];
+const zeroDate = new Date('July 10, 2023');
+const zeroDateIndex = zeroDate.getDate();
+const todaysDate = new Date();
+const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime())/(1000*60*60*24)); 
 
 const allRingsEqual = () => {
   zerothRing = letters[0]
@@ -83,9 +87,8 @@ const initialize = () => {
   info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
   start.appendChild(info)
 
-  const todaysGame = Math.floor(Math.random() * SOLUTIONS.length)
-  solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysGame]))
-  const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysGame]))
+  solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
+  const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex]))
 
   for (let i = 0; i < letters.length; i++){
     for (let j = 0; j < solution[i].length; j++){
