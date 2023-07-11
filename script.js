@@ -80,7 +80,7 @@ const initialize = () => {
   startHeader.appendChild(exit)
   const info = document.createElement("p")
   info.className = "info"
-  info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you beat the round. There are three rounds: two-words, four-words, and six-words. </br> </br> Have fun!`
+  info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
   start.appendChild(info)
 
   const todaysGame = Math.floor(Math.random() * SOLUTIONS.length)
@@ -122,7 +122,7 @@ const initialize = () => {
     infoHeader.appendChild(infoExit)
     const infoInfo = document.createElement("p")
     infoInfo.className = "info"
-    infoInfo.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you beat the round. There are three rounds: two-words, four-words, and six-words. </br> </br> Have fun!`
+    infoInfo.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
     infoPopUp.appendChild(infoInfo)
     infoExit.addEventListener("click", e => {
       infoPopUp.style.display = "none"
@@ -130,6 +130,32 @@ const initialize = () => {
     })
   })
   const stats = document.querySelector(".stats")
+  stats.addEventListener("click", e => {
+    whole.style.display = "none"
+    const statsDuring = document.createElement("section")
+    body.append(statsDuring)
+    const statsHeader = document.createElement("header")
+    statsDuring.appendChild(statsHeader)
+    const statsEmptyDiv = document.createElement("div")
+    statsEmptyDiv.className = "empty-div"
+    statsHeader.appendChild(statsEmptyDiv)
+    const statsTitle = document.createElement("h1")
+    statsTitle.className = "start-title"
+    statsTitle.innerText = "Spinensky"
+    statsHeader.appendChild(statsTitle)
+    const statsExit = document.createElement("div")
+    statsExit.innerText = "x"
+    statsExit.className = "exit"
+    statsHeader.appendChild(statsExit)
+    const score = document.createElement("p")
+    score.className = "score"
+    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
+    statsDuring.appendChild(score)
+    statsExit.addEventListener("click", e => {
+      statsDuring.style.display = "none"
+      whole.style.display = "block"
+    })
+  })
   const settings = document.querySelector(".settings")
   const outerRing = document.createElement("div")
   outerRing.className = "ring"
@@ -403,9 +429,9 @@ const checkRing = () => {
       const over = document.createElement("section")
       const whole = document.querySelector("main")
       whole.style.display = "none"
-      body.append(over)
+      body.appendChild(over)
       const overHeader = document.createElement("header")
-      over.appendChild(header)
+      over.appendChild(overHeader)
       const emptyDiv = document.createElement("div")
       emptyDiv.className = "empty-div"
       overHeader.appendChild(emptyDiv)
