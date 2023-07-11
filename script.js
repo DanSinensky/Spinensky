@@ -45,10 +45,17 @@ const getAverageSpins = localStorage.getItem("averageSpins");
 const getAverageChecks = localStorage.getItem("averageChecks");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
 
- // for chosing today's words
+ // for chosing today's words, learned from MDN
 const zeroDate = new Date('July 10, 2023');
 const todaysDate = new Date();
 const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime())/(1000*60*60*24)); 
+
+// Copies todays score to clipboard, learned from MDN
+let todaysScore = ""
+const copyTodaysScore = () => {
+  todaysScore = `Spinensky ${todaysIndex}\n\nSpins: ${spins}\nChecks: ${checks}\n\nhttps://dansinensky.github.io/spinensky/`
+  navigator.clipboard.writeText(todaysScore)
+}
 
 // Starts game
 // TODO - check if needs to be function
@@ -171,6 +178,10 @@ const initialize = () => {
     score.className = "score"
     score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
     statsDuring.appendChild(score)
+    if (won === true) {
+      copyTodaysScore()
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
+    }
     statsExit.addEventListener("click", e => {
       statsDuring.style.display = "none"
       whole.style.display = "block"
@@ -500,9 +511,9 @@ const checkRing = () => {
       overHeader.appendChild(exit)
       const score = document.createElement("p")
       score.className = "score"
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
+      copyTodaysScore()
       over.appendChild(score)
-  
       exit.addEventListener("click", e => {
         over.style.display = "none"
         whole.style.display = "block"

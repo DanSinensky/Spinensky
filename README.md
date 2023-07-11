@@ -12,10 +12,9 @@ A daily word unscrambling game
 - JavaScript
 
 ## Unsolved Problems
-- Share score
 - Dark mode
 - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
-- UI is too plain
+- UI is wonky and too plain
 
 ## Links
 [Website](https://dansinensky.github.io/spinensky/)
