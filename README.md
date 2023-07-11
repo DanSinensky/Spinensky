@@ -11,4 +11,5 @@ A daily word unscrambling game
 ## Unsolved Problems
 - Share score
 - Dark mode
+- Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
 - UI is too plain

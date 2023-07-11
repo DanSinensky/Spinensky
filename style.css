@@ -1,3 +1,22 @@
+/* /* Headers and elements in them
+TODO - Make DRYer */
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.empty-div {
+  width: 3.25rem;
+  height: 1.25rem;
+}
+
+/* Hamburger code copied and modified from https://codepen.io/designcouch/pen/ExvwPY */
+.hamburger {
+  width: 3.25rem;
+  height: 1.35rem;
+}
+
 .bar1,
 .bar2,
 .bar3 {
@@ -6,29 +25,6 @@
   background-color: black;
   margin: 0.2rem 0;
   transition: 1s;
-}
-
-ul {
-  list-style: none;
-  position: fixed;
-  right: 0%;
-}
-
-li {
-  border: 0.0625rem solid black;
-  width: 3.75rem;
-}
-
-.hidden {
-  transform: translateX(100%);
-}
-
-main {
-  display: none;
-}
-
-.start-title, .exit {
-  display: inline;
 }
 
 .change .bar1 {
@@ -43,24 +39,39 @@ main {
   transform: translate(0, -0.5rem) rotate(45deg);
 }
 
+ul {
+  list-style: none;
+  position: fixed;
+  right: 0%;
+}
+
+li {
+  border: 0.0625rem solid black;
+  width: 3.75rem;
+}
+
+aside {
+  position: fixed;
+  right: 100%;
+}
+
+.hidden {
+  transform: translateX(100%);
+}
+
 .exit {
   width: 1.25rem;
   height: 1.25rem;
-  border: 0.0625rem solid black;
   text-align: center;
   font-family: sans-serif;
-  margin: 0.5rem;
-  padding: 0.0625rem 0.25rem;
 }
 
-.empty-div {
-  width: 3.25rem;
-  height: 1.35rem;
+.start-title, .title, .empty-div, .exit {
+  display: inline;
 }
 
-.hamburger {
-  width: 3.25rem;
-  height: 1.35rem;
+main {
+  display: none;
 }
 
 h1,
@@ -80,9 +91,9 @@ button {
   margin: 0 0.25rem;
 }
 
+/* Used an example that is no longer available online on how to position elements in a circle as a guide for both the letters and the spin buttons. It was instructions from the creator of Chirpty. Similar instructions can be found at https://stackoverflow.com/questions/12813573/position-icons-into-circle#:~:text=There%20is%20no%20way%20to,left%20to%20target%20it's%20place.*/
 .ring {
   position: relative;
-  /*2.8em = 2em*1.4 (2em = half the width of a link with img, 1.4 = sqrt(2))*/
   border: solid 1px;
   border-radius: 50%;
   margin: 2rem auto;
@@ -291,7 +302,6 @@ button {
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  display: flex;
   justify-content: space-around;
   display: flex;
   align-items: center;
@@ -323,38 +333,6 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-}
-
-.triangle-left {
-  width: 0;
-  height: 0;
-  border-top: 1.12rem solid transparent;
-  border-right: 1.6rem solid gray;
-  border-bottom: 1.12rem solid transparent;
-}
-
-.triangle-right {
-  width: 0;
-  height: 0;
-  border-top: 1.12rem solid transparent;
-  border-left: 1.6rem solid gray;
-  border-bottom: 1.12rem solid transparent;
-}
-
-.triangle-up {
-  width: 0;
-  height: 0;
-  border-left: 1.12rem solid transparent;
-  border-right: 1.12rem solid transparent;
-  border-bottom: 1.6rem solid gray;
-}
-
-.triangle-down {
-  width: 0;
-  height: 0;
-  border-left: 1.12rem solid transparent;
-  border-right: 1.12rem solid transparent;
-  border-top: 1.6rem solid gray;
 }
 
 .counterclockwise .top {
@@ -413,24 +391,41 @@ button {
   transform: translate(-25%, -50%);
 }
 
+/*Copied code on triangles from https://css-tricks.com/the-shapes-of-css/*/
+.triangle-left {
+  width: 0;
+  height: 0;
+  border-top: 1.12rem solid transparent;
+  border-right: 1.6rem solid gray;
+  border-bottom: 1.12rem solid transparent;
+}
+
+.triangle-right {
+  width: 0;
+  height: 0;
+  border-top: 1.12rem solid transparent;
+  border-left: 1.6rem solid gray;
+  border-bottom: 1.12rem solid transparent;
+}
+
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-left: 1.12rem solid transparent;
+  border-right: 1.12rem solid transparent;
+  border-bottom: 1.6rem solid gray;
+}
+
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-left: 1.12rem solid transparent;
+  border-right: 1.12rem solid transparent;
+  border-top: 1.6rem solid gray;
+}
+
 .arrow {
   z-index: 3;
-}
-
-section {
-  border: 0.0625rem solid black;
-  width: 16rem;
-  margin: 0 auto;
-}
-
-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.ring-title-and-checked {
-  height: 2rem;
 }
 
 .middle-text {
@@ -439,6 +434,17 @@ header {
   left: 30%;
 }
 
+/*Info and stats*/
+section {
+  border: 0.0625rem solid black;
+  width: 16rem;
+  margin: 0 auto;
+}
+
+.ring-title-and-checked {
+  height: 2rem;
+}
+
 .check-button {
   display: flex;
-}
+} 

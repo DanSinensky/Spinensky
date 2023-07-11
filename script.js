@@ -1,11 +1,11 @@
-import { WORDS } from "./words.js";
+// Import arrays of solutions and start positions
 import { SOLUTIONS } from "./storedArrayofArraysOfWords.js";
 import { SPUNSOLUTIONS } from "./storedArrayofArraysOfWords.js";
 
+// Global variables
 const body = document.querySelector("body")
-const keywords = [];
-let firstKeyword = "";
-let centralLetter = "";
+
+  // for spinning letters
 let zerothRing = [];
 let innerRing = [];
 let middleRing = [];
@@ -16,39 +16,45 @@ const animateCounterClockwise = [330, 30, 90, 150, 210, 270];
 const animateClockwise = [270, 330, 30, 90, 150, 210];
 const layers = ["outer", "middle", "inner", "zeroth"];
 const rings = [];
-let solution = [];
-const turn = ["counterclockwise", "clockwise"];
 let direction
 let animatedDegree
+
+let solution = [];
+
+  // for making spin buttons
+const turn = ["counterclockwise", "clockwise"];
 const position = ["left", "top", "right", "bottom"];
 const arrows = ["triangle-down", "triangle-left", "triangle-up", "triangle-right"];
+
+// for making hamburger menu
+const bars = ["bar1", "bar2", "bar3"];
+
+  // for updating score
 let ring = 0;
 let spins = 0;
 let checks = 0;
-const numberOfWords = [4, 6, 8];
-let playedBefore = false;
 let won = false;
+
+  // for data storage
+let playedBefore = false;
+let averageSpins = 0;
+let averageChecks = 0;
+let gamesPlayed = 0;
 const havePlayedBefore = localStorage.getItem("playedBefore");
 const getAverageSpins = localStorage.getItem("averageSpins");
 const getAverageChecks = localStorage.getItem("averageChecks");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
-let averageSpins = 0;
-let averageChecks = 0;
-let gamesPlayed = 0;
-const bars = ["bar1", "bar2", "bar3"];
+
+ // for chosing today's words
 const zeroDate = new Date('July 10, 2023');
-const zeroDateIndex = zeroDate.getDate();
 const todaysDate = new Date();
 const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime())/(1000*60*60*24)); 
 
-const allRingsEqual = () => {
-  zerothRing = letters[0]
-  innerRing = letters[1]
-  middleRing = letters[2]
-  outerRing = letters[3]
-}
-
+// Starts game
+// TODO - check if needs to be function
 const initialize = () => {
+  // Checks for stored data and updates global variables accordingly
+  // TODO - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
   if (havePlayedBefore) {
     playedBefore = true
   }
@@ -65,6 +71,8 @@ const initialize = () => {
   }
   const gamesPlayedNow = JSON.stringify(gamesPlayed)
   localStorage.setItem("gamesPlayed", gamesPlayedNow)
+
+  // Generates DOM element with info about game, but only if first game
   const start = document.createElement("section")
   if (playedBefore === false) {
     body.appendChild(start)
@@ -78,7 +86,7 @@ const initialize = () => {
   startTitle.className = "start-title"
   startTitle.innerText = "Spinensky"
   startHeader.appendChild(startTitle)
-  const exit = document.createElement("div")
+  const exit = document.createElement("button")
   exit.innerText = "x"
   exit.className = "exit"
   startHeader.appendChild(exit)
@@ -87,25 +95,32 @@ const initialize = () => {
   info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
   start.appendChild(info)
 
+  // Chooses today's solution and start positions
+  // Modeled off of lesson on local storage
   solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
   const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex]))
 
+  // Updates common variable for today's start positions
   for (let i = 0; i < letters.length; i++){
     for (let j = 0; j < solution[i].length; j++){
       letters[i][j] = importLetters[i][j]
     }
   }
 
+  // Creates main, but only displays if have played before
   const whole = document.createElement("main")
   if (playedBefore === true) {
     whole.style.display = "block"
   }
   body.appendChild(whole)
+  // Creates dropdown menu
   const aside = document.createElement("aside")
   aside.innerHTML = `<ul><a class="information"><li>Info</li></a><a class="stats"><li>Stats</li></a><a class="settings"><li>Settings</li></a></ul>`
   aside.className = "hidden"
   whole.appendChild(aside)
   const information = document.querySelector(".information")
+  // Generates DOM element with info about game identical to start DOM element
+  // TODO - make DRYer
   information.addEventListener("click", e => {
     whole.style.display = "none"
     const infoPopUp = document.createElement("section")
@@ -119,7 +134,7 @@ const initialize = () => {
     infoTitle.className = "start-title"
     infoTitle.innerText = "Spinensky"
     infoHeader.appendChild(infoTitle)
-    const infoExit = document.createElement("div")
+    const infoExit = document.createElement("button")
     infoExit.innerText = "x"
     infoExit.className = "exit"
     infoHeader.appendChild(infoExit)
@@ -132,6 +147,8 @@ const initialize = () => {
       whole.style.display = "block"
     })
   })
+  // Generates DOM element with stats for current game and running stats, identical to one generated on winning
+  // TODO - make DRYer
   const stats = document.querySelector(".stats")
   stats.addEventListener("click", e => {
     whole.style.display = "none"
@@ -146,7 +163,7 @@ const initialize = () => {
     statsTitle.className = "start-title"
     statsTitle.innerText = "Spinensky"
     statsHeader.appendChild(statsTitle)
-    const statsExit = document.createElement("div")
+    const statsExit = document.createElement("button")
     statsExit.innerText = "x"
     statsExit.className = "exit"
     statsHeader.appendChild(statsExit)
@@ -159,12 +176,17 @@ const initialize = () => {
       whole.style.display = "block"
     })
   })
+  // TODO - make settings popup that lets you play in dark mode, maybe other settings???
   const settings = document.querySelector(".settings")
+
+  // Makes first ring that contains other rings and letter
   const outerRing = document.createElement("div")
   outerRing.className = "ring"
   outerRing.setAttribute("id", `${layers[0]}`);
   rings.unshift(outerRing)
   whole.appendChild(outerRing)
+
+  // Makes header with title and hamburger menu
   const header = document.createElement("header")
   const title = document.createElement("h1")
   title.className = "title"
@@ -185,6 +207,7 @@ const initialize = () => {
     })
   })
   
+  // Makes DOM elements for rings besides outermost ring
   for (let i = 1; i < layers.length; i++) {
     const layer = document.createElement("div")
     layer.className = "ring"
@@ -193,16 +216,20 @@ const initialize = () => {
     rings[i - 1].appendChild(layer)
   }
 
+  // Makes DOM elements for information that will update during game
   const notes = document.createElement("div")
   notes.className = "notes"
   notes.innerHTML = '<div class="ring-title-and-checked"><h3><span id="ring-title">Click on a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">0</span> Checks: <span id="checks">0</span></p></br><div class="check-button"><button id="check">Check</button></div></br>'
   whole.appendChild(notes)
 
+  // Makes DOM element for central letter
   let center = document.createElement("a")
   center.className = "center"
   rings[0].append(center)
   center.innerText = zerothRing[0].toUpperCase()
 
+  // Makes DOM elements for all other letters, including empty keyframes
+  // Modeled off of code on how to make wordle from https://www.freecodecamp.org/news/build-a-wordle-clone-in-javascript/
   for (let i = 1; i < letters.length; i++) {
     const ring = `ring-${i}-letter`
     for (let j = 0; j < degrees.length; j++) {
@@ -219,10 +246,12 @@ const initialize = () => {
     }
   }
 
+  // Makes container for spin buttons
   const buttons = document.createElement("div")
   buttons.className = "buttons"
   whole.append(buttons)
 
+  // Makes spin buttons
   for (let i = 0; i < turn.length; i++) {
     const button = document.createElement("div")
     button.className = `button ${turn[i]}`
@@ -253,6 +282,7 @@ const initialize = () => {
     }
   }
 
+  // Adds event listener to all exit buttons for info and stat screens
     exit.addEventListener("click", e => {
       start.style.display = "none"
       whole.style.display = "block"
@@ -262,18 +292,23 @@ const initialize = () => {
     })
   }
   
+  // Calls initialize
   initialize()
 
+// Selects all DOM element needed to update spins and checks in events
 const ring_title = document.querySelector("#ring-title")
 const counterclockwise = document.querySelectorAll('.counterclockwise');
 const clockwise = document.querySelectorAll('.clockwise')
 const spinsText = document.querySelector("#spins")
 const checksText = document.querySelector("#checks")
 
+// Creates a pause
+// Copied from https://www.sitepoint.com/delay-sleep-pause-wait/
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// Updates letters with animation
 const rotate = d => {
   checked.innerHTML = ""
   if (direction === turn[0]) {
@@ -292,16 +327,22 @@ const rotate = d => {
   })
 }
 
-const rotateFinish = (event) => {
-  allRingsEqual()
+// Resets rings and updates spin count once per button click
+// stopPropagation learned from bubbling lesson
+const rotateFinish = (e) => {
+  zerothRing = letters[0]
+  innerRing = letters[1]
+  middleRing = letters[2]
+  outerRing = letters[3]
   if (won === false) {
     spins++
     spinsText.innerText = spins
   }
-  event.stopPropagation()
+  e.stopPropagation()
 }
 
-const rotateCounterClockwise = (event) => {
+// Spins counterclockwise by moving a letter from the beginning of the array to the end and choosing correct animation
+const rotateCounterClockwise = (e) => {
   const firstLetter = letters[ring][0]
   letters[ring].shift()
   letters[ring].push(firstLetter)
@@ -309,10 +350,11 @@ const rotateCounterClockwise = (event) => {
   for (let d = 0; d < degrees.length; d++){
     rotate(d)
   }
-  rotateFinish(event)
+  rotateFinish(e)
 }
 
-const rotateClockwise = (event) => {
+// Spins clockwise by moving a letter from the end of the array to the beginning and choosing correct animation
+const rotateClockwise = (e) => {
   const lastLetter = letters[ring][5]
   letters[ring].pop()
   letters[ring].unshift(lastLetter)
@@ -320,12 +362,13 @@ const rotateClockwise = (event) => {
   for (let d = 0; d < degrees.length; d++){
     rotate(d)
   }
-  rotateFinish(event)
+  rotateFinish(e)
 }
 
+// Adds event listener to every element in spin buttons when a ring with multiple letters or one of those letters is clicked
 const updateAndAdd = () => {
-  checked.innerHTML = ""
   ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+  checked.innerHTML = ""
   for (let i=0; i<counterclockwise.length; i++){
     counterclockwise[i].addEventListener("click", rotateCounterClockwise)
   }
@@ -334,6 +377,7 @@ const updateAndAdd = () => {
   }
 }
 
+// Removes event listener from every element in spin buttons when the central ring or the letter in it is clicked
 const updateAndRemove = () => {
   ring_title.innerHTML = "Click on a"
   checked.innerHTML = ""
@@ -346,49 +390,47 @@ const updateAndRemove = () => {
       }
 }
 
+// Adds event listener to every letter that either removes event listeners from every spin button element or adds them
 document.querySelectorAll('a').forEach(character => {
-  character.addEventListener('click', event => {
-    if (event.target.classList.contains("center")) {
+  character.addEventListener('click', e => {
+    if (e.target.classList.contains("center")) {
       updateAndRemove()
-    } else if (event.target.classList.contains("ring-1-letter")){
+    } else if (e.target.classList.contains("ring-1-letter")){
       ring = 1
       updateAndAdd()  
-    } else if (event.target.classList.contains("ring-2-letter")){
+    } else if (e.target.classList.contains("ring-2-letter")){
       ring = 2
       updateAndAdd()
-    } else if (event.target.classList.contains("ring-3-letter")){
+    } else if (e.target.classList.contains("ring-3-letter")){
       ring = 3
       updateAndAdd()
     }
   }, true)
 })
 
+// Adds event listener to every ring that either removes event listeners from every spin button element or adds them
 document.querySelectorAll('.ring').forEach(circle => {
-  circle.addEventListener('click', event => {
-    if (event.target.id !== "zeroth") {
-      if (event.target.id === "inner"){
+  circle.addEventListener('click', e => {
+    if (e.target.id !== "zeroth") {
+      if (e.target.id === "inner"){
         ring = 1
-      } else if (event.target.id === "middle"){
+      } else if (e.target.id === "middle"){
         ring = 2
-      } else if (event.target.id === "outer"){
+      } else if (e.target.id === "outer"){
         ring = 3
       }
       updateAndAdd()
-    } else if (event.target.id === "zeroth") {
+    } else if (e.target.id === "zeroth") {
       updateAndRemove()
     }
   }, true)
 })
-  
+
+// Selects DOM elements that update when checked
 const check = document.querySelector("#check")
 const checked = document.querySelector("#checked")
 
-const round = num => {
-  let p = Math.pow(10, 2);
-  let n = (num * p).toPrecision(15);
-  return Math.round(n) / p;
-}
-
+// Updates checks if the selected ring is not zero
 const updateChecks = () => {
   if (ring !== 0) {
     checks++
@@ -396,6 +438,16 @@ const updateChecks = () => {
   }
 }
 
+// Rounds averages to nearest hundredth
+// Copied with slight modification from https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+const round = num => {
+  let p = Math.pow(10, 2);
+  let n = (num * p).toPrecision(15);
+  return Math.round(n) / p;
+}
+
+// Checks if all rings are in right position or if not, if selected ring is in right position or how much it is off by, then updates check count
+// TODO - make all checks loops with conditionals
 const checkRing = () => {
   if (won === false) {
     let right = true
@@ -421,11 +473,13 @@ const checkRing = () => {
   if (won === false) {
     updateChecks()
   }
+  // Updates stored data
   if (won === true) {
     const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
     localStorage.setItem("averageChecks", round(setAverageChecks))
     const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins)/gamesPlayed)
     localStorage.setItem("averageSpins", round(setAverageSpins))
+    // Creates pop-up with stats
     sleep(750).then(() => { 
       const over = document.createElement("section")
       const whole = document.querySelector("main")
@@ -440,7 +494,7 @@ const checkRing = () => {
       startTitle.className = "start-title"
       startTitle.innerText = "Spinensky"
       overHeader.appendChild(startTitle)
-      const exit = document.createElement("div")
+      const exit = document.createElement("button")
       exit.innerText = "x"
       exit.className = "exit"
       overHeader.appendChild(exit)
