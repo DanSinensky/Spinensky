@@ -264,8 +264,6 @@ const initialize = () => {
   
   initialize()
 
-console.log(solution)
-
 const ring_title = document.querySelector("#ring-title")
 const counterclockwise = document.querySelectorAll('.counterclockwise');
 const clockwise = document.querySelectorAll('.clockwise')
