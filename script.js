@@ -80,6 +80,7 @@ const initialize = () => {
   localStorage.setItem("gamesPlayed", gamesPlayedNow)
 
   // Generates DOM element with info about game, but only if first game
+   // TODO - make DRYer (a modal?)
   const start = document.createElement("section")
   if (playedBefore === false) {
     body.appendChild(start)
@@ -127,7 +128,7 @@ const initialize = () => {
   whole.appendChild(aside)
   const information = document.querySelector(".information")
   // Generates DOM element with info about game identical to start DOM element
-  // TODO - make DRYer
+  // TODO - make DRYer (a modal?)
   information.addEventListener("click", e => {
     whole.style.display = "none"
     const infoPopUp = document.createElement("section")
@@ -155,7 +156,7 @@ const initialize = () => {
     })
   })
   // Generates DOM element with stats for current game and running stats, identical to one generated on winning
-  // TODO - make DRYer
+  // TODO - make DRYer (a modal?)
   const stats = document.querySelector(".stats")
   stats.addEventListener("click", e => {
     whole.style.display = "none"
@@ -179,6 +180,7 @@ const initialize = () => {
     score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
     statsDuring.appendChild(score)
     if (won === true) {
+       // TODO - add to a share button
       copyTodaysScore()
       score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
     }
@@ -190,7 +192,7 @@ const initialize = () => {
   // TODO - make settings popup that lets you play in dark mode, maybe other settings???
   const settings = document.querySelector(".settings")
 
-  // Makes first ring that contains other rings and letter
+  // Makes DOM element for first ring that contains other rings and letter
   const outerRing = document.createElement("div")
   outerRing.className = "ring"
   outerRing.setAttribute("id", `${layers[0]}`);
@@ -491,6 +493,7 @@ const checkRing = () => {
     const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins)/gamesPlayed)
     localStorage.setItem("averageSpins", round(setAverageSpins))
     // Creates pop-up with stats
+     // TODO - make DRYer (a modal?)
     sleep(750).then(() => { 
       const over = document.createElement("section")
       const whole = document.querySelector("main")
@@ -511,6 +514,7 @@ const checkRing = () => {
       overHeader.appendChild(exit)
       const score = document.createElement("p")
       score.className = "score"
+       // TODO - add to a share button
       score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
       copyTodaysScore()
       over.appendChild(score)
