@@ -4,7 +4,7 @@
 A daily word unscrambling game
 
 ## Example
-![An image of the day zero Spinensky starting position](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Spinensky Day Zero Starting Position")
+![An image of the day zero Spinensky starting position](https://raw.githubusercontent.com/DanSinensky/spinensky/main/SpinenskyDayZeroStartingPosition.png "Spinensky Day Zero Starting Position")
 
 ## Technologies Used
 - HTML
