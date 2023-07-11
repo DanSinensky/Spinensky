@@ -13,3 +13,7 @@ A daily word unscrambling game
 - Dark mode
 - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
 - UI is too plain
+
+## Links
+[Website](https://dansinensky.github.io/spinensky/)
+[Repo](https://github.com/DanSinensky/spinensky)
