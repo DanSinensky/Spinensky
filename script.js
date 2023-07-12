@@ -45,10 +45,12 @@ const getAverageSpins = localStorage.getItem("averageSpins");
 const getAverageChecks = localStorage.getItem("averageChecks");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
 
- // for chosing today's words, learned from MDN
+ // for chosing today's words and time to tomorrow, learned from MDN
 const zeroDate = new Date('July 10, 2023');
 const todaysDate = new Date();
-const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime())/(1000*60*60*24)); 
+const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime()) / (1000 * 60 * 60 * 24));
+const tomorrow = new Date(todaysDate.getTime() + (1000 * 60 * 60 * 24));
+const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
