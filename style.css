@@ -1,8 +1,22 @@
+body {
+  grid-template-columns: 3.75rem 1fr 3.75rem;
+  grid-template-rows: 2rem repeat(7, auto);
+}
+
 /* /* Headers and elements in them
 TODO - Make DRYer */
 header {
+  grid-row: 1;
+  grid-column: 1/ span 3;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+}
+
+.fake-header {
+  width: 100%;
+  display: flex;
+  flex: row;
   justify-content: space-between;
 }
 
@@ -43,6 +57,8 @@ ul {
   list-style: none;
   position: fixed;
   right: 0%;
+  grid-row: 2;
+  grid-column: 3/ span 1;
 }
 
 li {
@@ -65,10 +81,8 @@ aside {
   text-align: center;
   font-family: sans-serif;
   color: black;
-}
-
-.start-title, .title, .empty-div, .exit {
-  display: inline;
+  margin-right: 0.25rem;
+  margin-top: 0.25rem;
 }
 
 main {

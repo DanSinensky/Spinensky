@@ -85,19 +85,16 @@ const initialize = () => {
   if (playedBefore === false) {
     body.appendChild(start)
   }
-  const startHeader = document.createElement("header")
-  start.appendChild(startHeader)
+  const fakeHeader = document.createElement("div")
+  fakeHeader.className = "fake-header"
+  start.appendChild(fakeHeader)
   const emptyDiv = document.createElement("div")
   emptyDiv.className = "empty-div"
-  startHeader.appendChild(emptyDiv)
-  const startTitle = document.createElement("h1")
-  startTitle.className = "start-title"
-  startTitle.innerText = "Spinensky"
-  startHeader.appendChild(startTitle)
+  fakeHeader.appendChild(emptyDiv)
   const exit = document.createElement("button")
-  exit.innerText = "x"
+  exit.innerText = "X"
   exit.className = "exit"
-  startHeader.appendChild(exit)
+  fakeHeader.appendChild(exit)
   const info = document.createElement("p")
   info.className = "info"
   info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
@@ -133,25 +130,22 @@ const initialize = () => {
     whole.style.display = "none"
     const infoPopUp = document.createElement("section")
     body.appendChild(infoPopUp)
-    const infoHeader = document.createElement("header")
-    infoPopUp.appendChild(infoHeader)
-    const infoEmptyDiv = document.createElement("div")
-    infoEmptyDiv.className = "empty-div"
-    infoHeader.appendChild(infoEmptyDiv)
-    const infoTitle = document.createElement("h1")
-    infoTitle.className = "start-title"
-    infoTitle.innerText = "Spinensky"
-    infoHeader.appendChild(infoTitle)
+    const fakeHeader = document.createElement("div")
+    fakeHeader.className = "fake-header"
+    infoPopUp.appendChild(fakeHeader)
+    const emptyDiv = document.createElement("div")
+    emptyDiv.className = "empty-div"
+    fakeHeader.appendChild(emptyDiv)
     const infoExit = document.createElement("button")
-    infoExit.innerText = "x"
+    infoExit.innerText = "X"
     infoExit.className = "exit"
-    infoHeader.appendChild(infoExit)
+    fakeHeader.appendChild(infoExit)
     const infoInfo = document.createElement("p")
     infoInfo.className = "info"
     infoInfo.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
     infoPopUp.appendChild(infoInfo)
     infoExit.addEventListener("click", e => {
-      infoPopUp.style.display = "none"
+      infoPopUp.remove()
       whole.style.display = "block"
     })
   })
@@ -162,19 +156,16 @@ const initialize = () => {
     whole.style.display = "none"
     const statsDuring = document.createElement("section")
     body.append(statsDuring)
-    const statsHeader = document.createElement("header")
-    statsDuring.appendChild(statsHeader)
-    const statsEmptyDiv = document.createElement("div")
-    statsEmptyDiv.className = "empty-div"
-    statsHeader.appendChild(statsEmptyDiv)
-    const statsTitle = document.createElement("h1")
-    statsTitle.className = "start-title"
-    statsTitle.innerText = "Spinensky"
-    statsHeader.appendChild(statsTitle)
+    const fakeHeader = document.createElement("div")
+    fakeHeader.className = "fake-header"
+    statsDuring.appendChild(fakeHeader)
+    const emptyDiv = document.createElement("div")
+    emptyDiv.className = "empty-div"
+    fakeHeader.appendChild(emptyDiv)
     const statsExit = document.createElement("button")
-    statsExit.innerText = "x"
+    statsExit.innerText = "X"
     statsExit.className = "exit"
-    statsHeader.appendChild(statsExit)
+    fakeHeader.appendChild(statsExit)
     const score = document.createElement("p")
     score.className = "score"
     score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
@@ -185,7 +176,7 @@ const initialize = () => {
       score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
     }
     statsExit.addEventListener("click", e => {
-      statsDuring.style.display = "none"
+      statsDuring.remove()
       whole.style.display = "block"
     })
   })
@@ -297,7 +288,7 @@ const initialize = () => {
 
   // Adds event listener to all exit buttons for info and stat screens
     exit.addEventListener("click", e => {
-      start.style.display = "none"
+      start.remove()
       whole.style.display = "block"
       playedBefore = true
       const setPlayedBefore = JSON.stringify(playedBefore)
@@ -499,19 +490,16 @@ const checkRing = () => {
       const whole = document.querySelector("main")
       whole.style.display = "none"
       body.appendChild(over)
-      const overHeader = document.createElement("header")
-      over.appendChild(overHeader)
+      const fakeHeader = document.createElement("div")
+      fakeHeader.className = "fake-header"
+      over.appendChild(fakeHeader)
       const emptyDiv = document.createElement("div")
       emptyDiv.className = "empty-div"
-      overHeader.appendChild(emptyDiv)
-      const startTitle = document.createElement("h1")
-      startTitle.className = "start-title"
-      startTitle.innerText = "Spinensky"
-      overHeader.appendChild(startTitle)
+      fakeHeader.appendChild(emptyDiv)
       const exit = document.createElement("button")
-      exit.innerText = "x"
+      exit.innerText = "X"
       exit.className = "exit"
-      overHeader.appendChild(exit)
+      fakeHeader.appendChild(exit)
       const score = document.createElement("p")
       score.className = "score"
        // TODO - add to a share button
@@ -519,7 +507,7 @@ const checkRing = () => {
       copyTodaysScore()
       over.appendChild(score)
       exit.addEventListener("click", e => {
-        over.style.display = "none"
+        over.remove()
         whole.style.display = "block"
       })
     })
