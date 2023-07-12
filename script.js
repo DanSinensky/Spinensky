@@ -62,17 +62,17 @@ const round = num => {
 
 // for checking if played/won already today
 // TODO - finish
-let playedToday = false
-let wonToday = false
-const havePlayedToday = localStorage.getItem("playedToday")
-const haveWonToday = localStorage.getItem("wonToday")
+// let playedToday = false
+// let wonToday = false
+// const havePlayedToday = localStorage.getItem("playedToday")
+// const haveWonToday = localStorage.getItem("wonToday")
 
-if (havePlayedToday) {
-  playedToday = true
-}
-if (haveWonToday) {
-  wonToday = true
-}
+// if (havePlayedToday) {
+//   playedToday = true
+// }
+// if (haveWonToday) {
+//   wonToday = true
+// }
 
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
@@ -160,7 +160,7 @@ if (wonToday === true) {
 
 // Creates main, but only displays if have played before
 const whole = document.createElement("main")
-if (playedBefore === true && wonToday === false) {
+if (playedBefore === true) {
   whole.style.display = "block"
 }
 body.appendChild(whole)
