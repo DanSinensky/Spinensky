@@ -72,7 +72,6 @@ if (havePlayedToday) {
 }
 if (haveWonToday) {
   wonToday = true
-  won = true
 }
 
 // Copies todays score to clipboard, learned from MDN
