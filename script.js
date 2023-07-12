@@ -62,17 +62,18 @@ const round = num => {
 
 // for checking if played/won already today
 // TODO - finish
-// let playedToday = false
-// let wonToday = false
-// const havePlayedToday = localStorage.getItem("playedToday")
-// const haveWonToday = localStorage.getItem("wonToday")
+let playedToday = false
+let wonToday = false
+const havePlayedToday = localStorage.getItem("playedToday")
+const haveWonToday = localStorage.getItem("wonToday")
 
-// if (havePlayedToday) {
-//   playedToday = true
-// }
-// if (haveWonToday) {
-//   wonToday = true
-// }
+if (havePlayedToday) {
+  playedToday = true
+}
+if (haveWonToday) {
+  wonToday = true
+  won = true
+}
 
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
@@ -160,7 +161,7 @@ if (wonToday === true) {
 
 // Creates main, but only displays if have played before
 const whole = document.createElement("main")
-if (playedBefore === true) {
+if (playedBefore === true && wonToday === false) {
   whole.style.display = "block"
 }
 body.appendChild(whole)
@@ -498,8 +499,8 @@ const checkRing = () => {
     if (right === true) {
       checked.innerHTML = "You win!"
       won = true
-      // const setWonToday = JSON.stringify(true)
-      // localStorage.setItem("wonToday", setWonToday)
+      const setWonToday = JSON.stringify(true)
+      localStorage.setItem("wonToday", setWonToday)
       updateChecks()
     } else if (solution[ring][0] === letters[ring][0] && solution[ring][1] === letters[ring][1] && solution[ring][2] === letters[ring][2] && solution[ring][3] === letters[ring][3] && solution[ring][4] === letters[ring][4] && solution[ring][5] === letters[ring][5] && ring !== 0) {
       checked.innerHTML = `is off by three`
