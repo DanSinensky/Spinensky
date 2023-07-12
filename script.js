@@ -498,8 +498,8 @@ const checkRing = () => {
     if (right === true) {
       checked.innerHTML = "You win!"
       won = true
-      const setWonToday = JSON.stringify(true)
-      localStorage.setItem("wonToday", setWonToday)
+      // const setWonToday = JSON.stringify(true)
+      // localStorage.setItem("wonToday", setWonToday)
       updateChecks()
     } else if (solution[ring][0] === letters[ring][0] && solution[ring][1] === letters[ring][1] && solution[ring][2] === letters[ring][2] && solution[ring][3] === letters[ring][3] && solution[ring][4] === letters[ring][4] && solution[ring][5] === letters[ring][5] && ring !== 0) {
       checked.innerHTML = `is off by three`
