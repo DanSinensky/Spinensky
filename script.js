@@ -40,10 +40,13 @@ let playedBefore = false;
 let averageSpins = 0;
 let averageChecks = 0;
 let gamesPlayed = 0;
+let gamesWon = [];
+let gamesWonSoFar = [];
 const havePlayedBefore = localStorage.getItem("playedBefore");
 const getAverageSpins = localStorage.getItem("averageSpins");
 const getAverageChecks = localStorage.getItem("averageChecks");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
+const previousGamesWon = localStorage.getItem("gamesWon");
 
  // for chosing today's words and time to tomorrow, learned from MDN
 const zeroDate = new Date('July 10, 2023');
@@ -76,7 +79,11 @@ const copyTodaysScore = () => {
     gamesPlayed = 1
   }
   const gamesPlayedNow = JSON.stringify(gamesPlayed)
-  localStorage.setItem("gamesPlayed", gamesPlayedNow)
+localStorage.setItem("gamesPlayed", gamesPlayedNow)
+  
+if (previousGamesWon) {
+  gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
+}
 
   // Generates DOM element with info about game, but only if first game
    // TODO - make DRYer (a modal?)
@@ -474,6 +481,9 @@ const checkRing = () => {
   }
   // Updates stored data
   if (won === true) {
+    gamesWonSoFar.push(todaysIndex)
+    const gamesWonNow = JSON.stringify(gamesWonSoFar)
+    localStorage.setItem("gamesWon", gamesWonNow)
     const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
     localStorage.setItem("averageChecks", round(setAverageChecks))
     const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins)/gamesPlayed)
