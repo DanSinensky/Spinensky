@@ -37,12 +37,12 @@ let won = false;
 
 // for data storage
 let playedBefore = false;
-let averagedSpins = 0;
-let averagedChecks = 0;
+let averageSpins = 0;
+let averageChecks = 0;
 let gamesPlayed = 0;
 const havePlayedBefore = localStorage.getItem("playedBefore");
-const getAveragedSpins = localStorage.getItem("averagedSpins");
-const getAveragedChecks = localStorage.getItem("averagedChecks");
+const getAverageSpins = localStorage.getItem("averageSpins");
+const getAverageChecks = localStorage.getItem("averageChecks");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
 
 // for chosing today's words and time to tomorrow, learned from MDN
@@ -72,7 +72,6 @@ if (havePlayedToday) {
 }
 if (haveWonToday) {
   wonToday = true
-  won = true
 }
 
 // Copies todays score to clipboard, learned from MDN
@@ -82,20 +81,18 @@ const copyTodaysScore = () => {
   navigator.clipboard.writeText(todaysScore)
 }
 
-// Starts game
-// TODO - check if needs to be function
-
-  // Checks for stored data and updates global variables accordingly
-  // TODO - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
-  if (havePlayedBefore) {
-    playedBefore = true
-  }
-  if (getAveragedSpins) {
-    averagedSpins = JSON.parse(getAveragedSpins)
-  }
-  if (getAveragedChecks) {
-    averagedChecks = JSON.parse(getAveragedChecks)
-  }
+// Checks for stored data and updates global variables accordingly
+// TODO - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
+if (havePlayedBefore) {
+  playedBefore = true
+}
+if (getAverageSpins) {
+  averageSpins = JSON.parse(getAverageSpins)
+}
+if (getAverageChecks) {
+  averageChecks = JSON.parse(getAverageChecks)
+}
+if (won === false) {
   if (previousGamesPlayed) {
     gamesPlayed = JSON.parse(previousGamesPlayed) + 1
   } else {
@@ -103,7 +100,7 @@ const copyTodaysScore = () => {
   }
   const gamesPlayedNow = JSON.stringify(gamesPlayed)
   localStorage.setItem("gamesPlayed", gamesPlayedNow)
-
+}
 
 // Generates DOM element with info about game, but only if first game
 // TODO - make DRYer (a modal?)
@@ -138,76 +135,99 @@ for (let i = 0; i < letters.length; i++) {
   }
 }
 
-  // Creates main, but only displays if have played before
-  const whole = document.createElement("main")
-  if (playedBefore === true) {
+if (wonToday === true) {
+  const wonStats = document.createElement("section")
+  body.appendChild(wonStats)
+  const fakeHeader = document.createElement("div")
+  fakeHeader.className = "fake-header"
+  wonStats.appendChild(fakeHeader)
+  const emptyDiv = document.createElement("div")
+  emptyDiv.className = "empty-div"
+  fakeHeader.appendChild(emptyDiv)
+  const exit = document.createElement("button")
+  exit.innerText = "X"
+  exit.className = "exit"
+  fakeHeader.appendChild(exit)
+  const score = document.createElement("p")
+  score.className = "score"
+  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> <button class="share">Share</button>`
+  wonStats.appendChild(score)
+  exit.addEventListener("click", e => {
+    wonStats.remove()
     whole.style.display = "block"
+  })
+}
+
+// Creates main, but only displays if have played before
+const whole = document.createElement("main")
+if (playedBefore === true && wonToday === false) {
+  whole.style.display = "block"
+}
+body.appendChild(whole)
+// Creates dropdown menu
+const aside = document.createElement("aside")
+aside.innerHTML = `<ul><a class="information"><li>Info</li></a><a class="stats"><li>Stats</li></a><a class="settings"><li>Settings</li></a></ul>`
+aside.className = "hidden"
+whole.appendChild(aside)
+const information = document.querySelector(".information")
+// Generates DOM element with info about game identical to start DOM element
+// TODO - make DRYer (a modal?)
+information.addEventListener("click", e => {
+  whole.style.display = "none"
+  const infoPopUp = document.createElement("section")
+  body.appendChild(infoPopUp)
+  const fakeHeader = document.createElement("div")
+  fakeHeader.className = "fake-header"
+  infoPopUp.appendChild(fakeHeader)
+  const emptyDiv = document.createElement("div")
+  emptyDiv.className = "empty-div"
+  fakeHeader.appendChild(emptyDiv)
+  const infoExit = document.createElement("button")
+  infoExit.innerText = "X"
+  infoExit.className = "exit"
+  fakeHeader.appendChild(infoExit)
+  const infoInfo = document.createElement("p")
+  infoInfo.className = "info"
+  infoInfo.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
+  infoPopUp.appendChild(infoInfo)
+  infoExit.addEventListener("click", e => {
+    infoPopUp.remove()
+    whole.style.display = "block"
+  })
+})
+// Generates DOM element with stats for current game and running stats, identical to one generated on winning
+// TODO - make DRYer (a modal?)
+const stats = document.querySelector(".stats")
+stats.addEventListener("click", e => {
+  whole.style.display = "none"
+  const statsDuring = document.createElement("section")
+  body.append(statsDuring)
+  const fakeHeader = document.createElement("div")
+  fakeHeader.className = "fake-header"
+  statsDuring.appendChild(fakeHeader)
+  const emptyDiv = document.createElement("div")
+  emptyDiv.className = "empty-div"
+  fakeHeader.appendChild(emptyDiv)
+  const statsExit = document.createElement("button")
+  statsExit.innerText = "X"
+  statsExit.className = "exit"
+  fakeHeader.appendChild(statsExit)
+  const score = document.createElement("p")
+  score.className = "score"
+  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
+  statsDuring.appendChild(score)
+  if (won === true) {
+    // TODO - add to a share button
+    copyTodaysScore()
+    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
   }
-  body.appendChild(whole)
-  // Creates dropdown menu
-  const aside = document.createElement("aside")
-  aside.innerHTML = `<ul><a class="information"><li>Info</li></a><a class="stats"><li>Stats</li></a><a class="settings"><li>Settings</li></a></ul>`
-  aside.className = "hidden"
-  whole.appendChild(aside)
-  const information = document.querySelector(".information")
-  // Generates DOM element with info about game identical to start DOM element
-  // TODO - make DRYer (a modal?)
-  information.addEventListener("click", e => {
-    whole.style.display = "none"
-    const infoPopUp = document.createElement("section")
-    body.appendChild(infoPopUp)
-    const fakeHeader = document.createElement("div")
-    fakeHeader.className = "fake-header"
-    infoPopUp.appendChild(fakeHeader)
-    const emptyDiv = document.createElement("div")
-    emptyDiv.className = "empty-div"
-    fakeHeader.appendChild(emptyDiv)
-    const infoExit = document.createElement("button")
-    infoExit.innerText = "X"
-    infoExit.className = "exit"
-    fakeHeader.appendChild(infoExit)
-    const infoInfo = document.createElement("p")
-    infoInfo.className = "info"
-    infoInfo.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
-    infoPopUp.appendChild(infoInfo)
-    infoExit.addEventListener("click", e => {
-      infoPopUp.remove()
-      whole.style.display = "block"
-    })
+  statsExit.addEventListener("click", e => {
+    statsDuring.remove()
+    whole.style.display = "block"
   })
-  // Generates DOM element with stats for current game and running stats, identical to one generated on winning
-  // TODO - make DRYer (a modal?)
-  const stats = document.querySelector(".stats")
-  stats.addEventListener("click", e => {
-    whole.style.display = "none"
-    const statsDuring = document.createElement("section")
-    body.append(statsDuring)
-    const fakeHeader = document.createElement("div")
-    fakeHeader.className = "fake-header"
-    statsDuring.appendChild(fakeHeader)
-    const emptyDiv = document.createElement("div")
-    emptyDiv.className = "empty-div"
-    fakeHeader.appendChild(emptyDiv)
-    const statsExit = document.createElement("button")
-    statsExit.innerText = "X"
-    statsExit.className = "exit"
-    fakeHeader.appendChild(statsExit)
-    const score = document.createElement("p")
-    score.className = "score"
-    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
-    statsDuring.appendChild(score)
-    if (won === true) {
-       // TODO - add to a share button
-      copyTodaysScore()
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
-    }
-    statsExit.addEventListener("click", e => {
-      statsDuring.remove()
-      whole.style.display = "block"
-    })
-  })
-  // TODO - make settings popup that lets you play in dark mode, maybe other settings???
-  const settings = document.querySelector(".settings")
+})
+// TODO - make settings popup that lets you play in dark mode, maybe other settings???
+const settings = document.querySelector(".settings")
 
 // Makes DOM element for first ring that contains other rings and letter
 const outerRingElement = document.createElement("div")
@@ -496,10 +516,10 @@ const checkRing = () => {
   }
   // Updates stored data
   if (won === true) {
-    const setAveragedChecks = JSON.stringify((averagedChecks * previousGamesPlayed + checks) / gamesPlayed)
-    localStorage.setItem("averagedChecks", round(setAveragedChecks))
-    const setAveragedSpins = JSON.stringify((averagedSpins * previousGamesPlayed + spins)/gamesPlayed)
-    localStorage.setItem("averagedSpins", round(setAveragedSpins))
+    const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
+    localStorage.setItem("averageChecks", round(setAverageChecks))
+    const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins) / gamesPlayed)
+    localStorage.setItem("averageSpins", round(setAverageSpins))
     // Creates pop-up with stats
     // TODO - make DRYer (a modal?)
     sleep(750).then(() => {
@@ -519,8 +539,8 @@ const checkRing = () => {
       fakeHeader.appendChild(exit)
       const score = document.createElement("p")
       score.className = "score"
-       // TODO - add to a share button
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averagedSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averagedChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
+      // TODO - add to a share button
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
       copyTodaysScore()
       over.appendChild(score)
       exit.addEventListener("click", e => {
