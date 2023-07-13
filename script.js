@@ -59,9 +59,6 @@ const copyTodaysScore = () => {
   navigator.clipboard.writeText(todaysScore)
 }
 
-// Starts game
-// TODO - check if needs to be function
-const initialize = () => {
   // Checks for stored data and updates global variables accordingly
   // TODO - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
   if (havePlayedBefore) {
@@ -186,11 +183,11 @@ const initialize = () => {
   const settings = document.querySelector(".settings")
 
   // Makes DOM element for first ring that contains other rings and letter
-  const outerRing = document.createElement("div")
-  outerRing.className = "ring"
-  outerRing.setAttribute("id", `${layers[0]}`);
-  rings.unshift(outerRing)
-  whole.appendChild(outerRing)
+  const outerRingElement = document.createElement("div")
+  outerRingElement.className = "ring"
+  outerRingElement.setAttribute("id", `${layers[0]}`);
+  rings.unshift(outerRingElement)
+  whole.appendChild(outerRingElement)
 
   // Makes header with title and hamburger menu
   const header = document.createElement("header")
@@ -296,10 +293,6 @@ const initialize = () => {
       const setPlayedBefore = JSON.stringify(playedBefore)
       localStorage.setItem("playedBefore", setPlayedBefore)
     })
-  }
-  
-  // Calls initialize
-  initialize()
 
 // Selects all DOM element needed to update spins and checks in events
 const ring_title = document.querySelector("#ring-title")
