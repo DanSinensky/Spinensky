@@ -55,6 +55,17 @@ const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime()) / (10
 const tomorrow = new Date(todaysDate.getTime() + (1000 * 60 * 60 * 24));
 const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 
+
+// const timeToNewGame = setInterval(function() {
+//     const timeRemaining = midnightTomorrow.getTime() - new Date().getTime();
+//     const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//     const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+//     const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+//     document.querySelector(".hours").innerHTML = hours
+//     document.querySelector(".minutes").innerHTML = minutes
+//     document.querySelector(".seconds").innerHTML = seconds
+//     }, 1000)
+
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
 const copyTodaysScore = () => {
