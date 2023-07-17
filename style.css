@@ -74,12 +74,12 @@ li {
 }
 
 aside {
-  grid-row: 2;
-  grid-column: 3/ span 1;
+  position: fixed;
+  right: 0;
 }
 
 .hidden {
-  transform: translateX(100%);
+  visibility: hidden;
 }
 
 .exit {

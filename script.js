@@ -217,10 +217,10 @@ exit1.addEventListener("click", e => {
     const newBar = document.createElement("div")
     newBar.className = bar
     hamburger.appendChild(newBar)
-    newBar.addEventListener("click", e => {
-      hamburger.classList.toggle("change")
-      aside.classList.toggle("hidden")
-    })
+  })
+hamburger.addEventListener("click", e => {
+  hamburger.classList.toggle("change")
+  aside.classList.toggle("hidden")
   })
   
   // Makes DOM elements for rings besides outermost ring
