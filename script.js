@@ -19,8 +19,6 @@ const rings = [];
 let direction
 let animatedDegree
 
-let solution = [];
-
   // for making spin buttons
 const turn = ["counterclockwise", "clockwise"];
 const position = ["left", "top", "right", "bottom"];
@@ -55,16 +53,13 @@ const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime()) / (10
 const tomorrow = new Date(todaysDate.getTime() + (1000 * 60 * 60 * 24));
 const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 
+// Calculates time to midnightTomorrow
+const timeToMidnight = () => {
+  const timeRemaining = midnightTomorrow.getTime() - new Date().getTime()
+  console.log(timeRemaining)
+}
 
-// const timeToNewGame = setInterval(function() {
-//     const timeRemaining = midnightTomorrow.getTime() - new Date().getTime();
-//     const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-//     const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-//     const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-//     document.querySelector(".hours").innerHTML = hours
-//     document.querySelector(".minutes").innerHTML = minutes
-//     document.querySelector(".seconds").innerHTML = seconds
-//     }, 1000)
+timeToMidnight()
 
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
@@ -98,28 +93,71 @@ if (previousGamesWon) {
 
   // Generates DOM element with info about game, but only if first game
    // TODO - make DRYer (a modal?)
-  const start = document.createElement("section")
-  if (playedBefore === false) {
-    body.appendChild(start)
-  }
-  const fakeHeader = document.createElement("div")
-  fakeHeader.className = "fake-header"
-  start.appendChild(fakeHeader)
-  const emptyDiv = document.createElement("div")
-  emptyDiv.className = "empty-div"
-  fakeHeader.appendChild(emptyDiv)
-  const exit = document.createElement("button")
-  exit.innerText = "X"
-  exit.className = "exit"
-  fakeHeader.appendChild(exit)
-  const info = document.createElement("p")
-  info.className = "info"
-  info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
-  start.appendChild(info)
+const infoPopUp = document.createElement("section")
+infoPopUp.className = "info-pop-up"
+if (playedBefore === false) {
+  infoPopUp.style.visibility = "visible"
+}
+const fakeHeader = document.createElement("div")
+fakeHeader.className = "fake-header"
+infoPopUp.appendChild(fakeHeader)
+const emptyDiv = document.createElement("div")
+emptyDiv.className = "empty-div"
+fakeHeader.appendChild(emptyDiv)
+const exit = document.createElement("button")
+exit.innerText = "X"
+exit.className = "exit"
+fakeHeader.appendChild(exit)
+const info = document.createElement("p")
+info.className = "info"
+info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
+infoPopUp.appendChild(info)
+body.appendChild(infoPopUp)
+
+// Rounds averages to nearest hundredth
+// Copied with slight modification from https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+const round = num => {
+  let p = Math.pow(10, 2);
+  let n = (num * p).toPrecision(15);
+  return Math.round(n) / p;
+}
+
+const statsPopUp = document.createElement("section")
+statsPopUp.className = "stats-pop-up"
+const fakeHeader1 = document.createElement("div")
+fakeHeader1.className = "fake-header"
+statsPopUp.appendChild(fakeHeader1)
+const emptyDiv1 = document.createElement("div")
+emptyDiv1.className = "empty-div"
+fakeHeader1.appendChild(emptyDiv1)
+const exit1 = document.createElement("button")
+exit1.innerText = "X"
+exit1.className = "exit"
+fakeHeader1.appendChild(exit1)
+const score = document.createElement("p")
+score.className = "score"
+score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
+statsPopUp.appendChild(score)
+if (won === true) {
+   // TODO - add to a share button
+  copyTodaysScore()
+  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
+}
+body.appendChild(statsPopUp)
+
+exit.addEventListener("click", e => {
+  infoPopUp.style.visibility = "hidden"
+  whole.style.display = "block"
+})
+
+exit1.addEventListener("click", e => {
+  statsPopUp.style.visibility = "hidden"
+  whole.style.display = "block"
+})
 
   // Chooses today's solution and start positions
   // Modeled off of lesson on local storage
-  solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
+  const solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
   const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex]))
 
   // Updates common variable for today's start positions
@@ -145,57 +183,14 @@ if (previousGamesWon) {
   // TODO - make DRYer (a modal?)
   information.addEventListener("click", e => {
     whole.style.display = "none"
-    const infoPopUp = document.createElement("section")
-    body.appendChild(infoPopUp)
-    const fakeHeader = document.createElement("div")
-    fakeHeader.className = "fake-header"
-    infoPopUp.appendChild(fakeHeader)
-    const emptyDiv = document.createElement("div")
-    emptyDiv.className = "empty-div"
-    fakeHeader.appendChild(emptyDiv)
-    const infoExit = document.createElement("button")
-    infoExit.innerText = "X"
-    infoExit.className = "exit"
-    fakeHeader.appendChild(infoExit)
-    const infoInfo = document.createElement("p")
-    infoInfo.className = "info"
-    infoInfo.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> Click on a ring to select it, then spin it counterclockwise or clockwise by clicking the button with that symbol. Click "Check" to see how close that ring is to the correct position. </br> </br> If you click "Check" when all of the rings are in the correct position, you win! </br> </br> Have fun!`
-    infoPopUp.appendChild(infoInfo)
-    infoExit.addEventListener("click", e => {
-      infoPopUp.remove()
-      whole.style.display = "block"
-    })
+    infoPopUp.style.visibility = "visible"
   })
   // Generates DOM element with stats for current game and running stats, identical to one generated on winning
   // TODO - make DRYer (a modal?)
   const stats = document.querySelector(".stats")
   stats.addEventListener("click", e => {
     whole.style.display = "none"
-    const statsDuring = document.createElement("section")
-    body.append(statsDuring)
-    const fakeHeader = document.createElement("div")
-    fakeHeader.className = "fake-header"
-    statsDuring.appendChild(fakeHeader)
-    const emptyDiv = document.createElement("div")
-    emptyDiv.className = "empty-div"
-    fakeHeader.appendChild(emptyDiv)
-    const statsExit = document.createElement("button")
-    statsExit.innerText = "X"
-    statsExit.className = "exit"
-    fakeHeader.appendChild(statsExit)
-    const score = document.createElement("p")
-    score.className = "score"
-    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
-    statsDuring.appendChild(score)
-    if (won === true) {
-       // TODO - add to a share button
-      copyTodaysScore()
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
-    }
-    statsExit.addEventListener("click", e => {
-      statsDuring.remove()
-      whole.style.display = "block"
-    })
+    statsPopUp.style.visibility = "visible"
   })
   // TODO - make settings popup that lets you play in dark mode, maybe other settings???
   const settings = document.querySelector(".settings")
@@ -305,7 +300,8 @@ if (previousGamesWon) {
 
   // Adds event listener to all exit buttons for info and stat screens
     exit.addEventListener("click", e => {
-      start.remove()
+      infoPopUp.style.zIndex = -1
+      statsPopUp.style.zIndex = -2
       whole.style.display = "block"
       playedBefore = true
       const setPlayedBefore = JSON.stringify(playedBefore)
@@ -455,13 +451,6 @@ const updateChecks = () => {
   }
 }
 
-// Rounds averages to nearest hundredth
-// Copied with slight modification from https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
-const round = num => {
-  let p = Math.pow(10, 2);
-  let n = (num * p).toPrecision(15);
-  return Math.round(n) / p;
-}
 
 // Checks if all rings are in right position or if not, if selected ring is in right position or how much it is off by, then updates check count
 // TODO - make all checks loops with conditionals
@@ -500,34 +489,27 @@ const checkRing = () => {
     const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins)/gamesPlayed)
     localStorage.setItem("averageSpins", round(setAverageSpins))
     // Creates pop-up with stats
-     // TODO - make DRYer (a modal?)
     sleep(750).then(() => { 
-      const over = document.createElement("section")
       const whole = document.querySelector("main")
       whole.style.display = "none"
-      body.appendChild(over)
-      const fakeHeader = document.createElement("div")
-      fakeHeader.className = "fake-header"
-      over.appendChild(fakeHeader)
-      const emptyDiv = document.createElement("div")
-      emptyDiv.className = "empty-div"
-      fakeHeader.appendChild(emptyDiv)
-      const exit = document.createElement("button")
-      exit.innerText = "X"
-      exit.className = "exit"
-      fakeHeader.appendChild(exit)
-      const score = document.createElement("p")
-      score.className = "score"
-       // TODO - add to a share button
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
+      statsPopUp.style.visibility = "visible"
       copyTodaysScore()
-      over.appendChild(score)
-      exit.addEventListener("click", e => {
-        over.remove()
-        whole.style.display = "block"
-      })
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
+      statsPopUp.style.zIndex = 7
     })
   }
 }
 
 check.addEventListener("click", checkRing)
+
+timeToMidnight()
+
+// const timeToNewGame = setInterval(function() {
+//   const timeRemaining = midnightTomorrow.getTime() - new Date().getTime();
+//   const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+//   const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+//   document.querySelector(".hours").innerHTML = hours
+//   document.querySelector(".minutes").innerHTML = minutes
+//   document.querySelector(".seconds").innerHTML = seconds
+//   }, 1000)

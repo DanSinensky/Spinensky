@@ -3,6 +3,14 @@ body {
   grid-template-rows: 2rem repeat(7, auto);
 }
 
+.info-pop-up, .stats-pop-up {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  visibility: hidden;
+}
+
 /* /* Headers and elements in them
 TODO - Make DRYer */
 header {
@@ -55,10 +63,9 @@ header {
 
 ul {
   list-style: none;
-  position: fixed;
-  right: 0%;
-  grid-row: 2;
-  grid-column: 3/ span 1;
+  /* grid-row: 2;
+  grid-column: 3/ span 1; */
+  width: 3.75rem;
 }
 
 li {
@@ -67,8 +74,8 @@ li {
 }
 
 aside {
-  position: fixed;
-  right: 100%;
+  grid-row: 2;
+  grid-column: 3/ span 1;
 }
 
 .hidden {
