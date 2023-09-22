@@ -138,11 +138,18 @@ const score = document.createElement("p")
 score.className = "score"
 score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
 statsPopUp.appendChild(score)
-if (won === true) {
-   // TODO - add to a share button
-  copyTodaysScore()
-  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
-}
+const countdown = document.createElement("div")
+countdown.className = "countdown"
+const hoursCounter = document.createElement("span")
+hoursCounter.setAttribute("id", "hours")
+countdown.appendChild(hoursCounter)
+const minutesCounter = document.createElement("span")
+minutesCounter.setAttribute("id", "minutes")
+countdown.appendChild(minutesCounter)
+const secondsCounter = document.createElement("span")
+secondsCounter.setAttribute("id", "seconds")
+countdown.appendChild(secondsCounter)
+statsPopUp.appendChild(countdown)
 body.appendChild(statsPopUp)
 
 exit.addEventListener("click", e => {
@@ -486,10 +493,10 @@ const checkRing = () => {
     localStorage.setItem("gamesWon", gamesWonNow)
     const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
     localStorage.setItem("averageChecks", round(setAverageChecks))
-    const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins)/gamesPlayed)
+    const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins) / gamesPlayed)
     localStorage.setItem("averageSpins", round(setAverageSpins))
     // Creates pop-up with stats
-    sleep(750).then(() => { 
+    sleep(750).then(() => {
       const whole = document.querySelector("main")
       whole.style.display = "none"
       statsPopUp.style.visibility = "visible"
@@ -498,18 +505,42 @@ const checkRing = () => {
       statsPopUp.style.zIndex = 7
     })
   }
+  if (won === true) {
+    // Function to update the countdown clock
+    function updateClock() {
+
+      const { hours, minutes, seconds } = timeToNewGame();
+    
+      hoursCounter.innerHTML = String(hours).padStart(2, '0');
+      minutesCounter.innerHTML = String(minutes).padStart(3, ':0');
+      secondsCounter.innerHTML = String(seconds).padStart(3, ':0');
+    
+      if (hours === 0 && minutes === 0 && seconds === 0) {
+        clearInterval(countdownInterval);
+      }
+    }
+
+    // Update the countdown immediately and then every 1 second
+    updateClock();
+    const countdownInterval = setInterval(updateClock, 1000);
+
+    // Function to calculate time to new game
+    function timeToNewGame() {
+      const timeRemaining = midnightTomorrow.getTime() - new Date().getTime();
+      const seconds = Math.floor((timeRemaining / 1000) % 60);
+      const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+      const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+      return {
+        total: timeRemaining,
+        hours,
+        minutes,
+        seconds,
+      };
+    }
+  }
 }
 
 check.addEventListener("click", checkRing)
 
 timeToMidnight()
 
-// const timeToNewGame = setInterval(function() {
-//   const timeRemaining = midnightTomorrow.getTime() - new Date().getTime();
-//   const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-//   const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-//   const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-//   document.querySelector(".hours").innerHTML = hours
-//   document.querySelector(".minutes").innerHTML = minutes
-//   document.querySelector(".seconds").innerHTML = seconds
-//   }, 1000)

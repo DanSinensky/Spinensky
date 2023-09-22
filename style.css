@@ -469,4 +469,8 @@ section {
 
 .check-button {
   display: flex;
-} 
+}
+
+.countdown {
+  text-align: center;
+}
