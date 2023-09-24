@@ -46,6 +46,34 @@ const getAverageChecks = localStorage.getItem("averageChecks");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
 const previousGamesWon = localStorage.getItem("gamesWon");
 
+// for timer
+let timerInterval;
+let startTime;
+const startTimer = () => {
+  startTime = new Date().getTime();
+  timerInterval = setInterval(updateTimer, 1000);
+};
+const updateTimer = () => {
+  const currentTime = new Date().getTime();
+  const elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
+
+  const hoursTimer = Math.floor(elapsedTimeInSeconds / 3600);
+  const minutesTimer = Math.floor((elapsedTimeInSeconds % 3600) / 60);
+  const secondsTimer = elapsedTimeInSeconds % 60;
+
+  hoursCounterTimer.innerHTML = String(hoursTimer).padStart(2, '0');
+  minutesCounterTimer.innerHTML = String(minutesTimer).padStart(3, ':0');
+  secondsCounterTimer.innerHTML = String(secondsTimer).padStart(3, ':0');
+};
+const stopTimer = () => {
+  clearInterval(timerInterval);
+};
+window.addEventListener('load', () => {
+  if (!won) {
+    startTimer();
+  }
+});
+
  // for chosing today's words and time to tomorrow, learned from MDN
 const zeroDate = new Date('July 10, 2023');
 const todaysDate = new Date();
@@ -216,7 +244,23 @@ exit1.addEventListener("click", e => {
   title.innerText = "Spinensky"
   const hamburger = document.createElement("div")
   hamburger.className = "hamburger"
+  const timer = document.createElement("div")
+  timer.className = "timer"
+  const hoursCounterTimer = document.createElement("span")
+  hoursCounterTimer.setAttribute("id", "hours-timer")
+  hoursCounterTimer.innerHTML = String(0).padStart(2, '0')
+  timer.appendChild(hoursCounterTimer)
+  const minutesCounterTimer = document.createElement("span")
+  minutesCounterTimer.setAttribute("id", "minutes-timer")
+  minutesCounterTimer.innerHTML = String(0).padStart(3, ':0')
+  timer.appendChild(minutesCounterTimer)
+  const secondsCounterTimer = document.createElement("span")
+  secondsCounterTimer.setAttribute("id", "seconds-timer")
+  secondsCounterTimer.innerHTML = String(0).padStart(3, ':0')
+  timer.appendChild(secondsCounterTimer)
+  header.appendChild(timer)
   whole.prepend(header)
+  
   header.appendChild(emptyDiv)
   header.appendChild(title)
   header.appendChild(hamburger)
@@ -488,6 +532,7 @@ const checkRing = () => {
   }
   // Updates stored data
   if (won === true) {
+    stopTimer();
     gamesWonSoFar.push(todaysIndex)
     const gamesWonNow = JSON.stringify(gamesWonSoFar)
     localStorage.setItem("gamesWon", gamesWonNow)
