@@ -31,6 +31,7 @@ const bars = ["bar1", "bar2", "bar3"];
 let ring = 0;
 let spins = 0;
 let checks = 0;
+let time = "";
 let won = false;
 
   // for data storage
@@ -67,6 +68,7 @@ const updateTimer = () => {
 };
 const stopTimer = () => {
   clearInterval(timerInterval);
+  time = timer.innerText
 };
 window.addEventListener('load', () => {
   if (!won) {
@@ -92,7 +94,7 @@ timeToMidnight()
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
 const copyTodaysScore = () => {
-  todaysScore = `Spinensky ${todaysIndex}\n\nSpins: ${spins}\nChecks: ${checks}\n\nhttps://dansinensky.github.io/spinensky/`
+  todaysScore = `Spinensky ${todaysIndex}\n\nSpins: ${spins}\nChecks: ${checks}\nTime: ${time}\n\nhttps://dansinensky.github.io/spinensky/`
   navigator.clipboard.writeText(todaysScore)
 }
 
