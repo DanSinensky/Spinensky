@@ -260,8 +260,7 @@ exit1.addEventListener("click", e => {
   timer.appendChild(secondsCounterTimer)
   header.appendChild(timer)
   whole.prepend(header)
-  
-  header.appendChild(emptyDiv)
+
   header.appendChild(title)
   header.appendChild(hamburger)
   bars.forEach(bar => {
