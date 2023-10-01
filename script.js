@@ -16,8 +16,18 @@ const animateCounterClockwise = [330, 30, 90, 150, 210, 270];
 const animateClockwise = [270, 330, 30, 90, 150, 210];
 const layers = ["outer", "middle", "inner", "zeroth"];
 const rings = [];
-let direction
-let animatedDegree
+let direction;
+let animatedDegree;
+
+// for spinning letters
+let isDragging = false;
+let initialMouseX;
+let initialMouseY;
+let currentElement;
+let deltaX;
+let deltaY;
+let newX;
+let newY;
 
   // for making spin buttons
 const turn = ["counterclockwise", "clockwise"];
@@ -303,12 +313,12 @@ hamburger.addEventListener("click", e => {
     for (let j = 0; j < degrees.length; j++) {
       const degree = degrees[j]
       const letter = document.createElement("a")
-      letter.className = `deg${degree}-${i} ${ring}`
+      letter.className = `deg${degree}-${i} deg${degree} ${ring} letter`
       letter.innerHTML = letters[i][j].toUpperCase()
       rings[0].append(letter)
       animatedDegree = animateCounterClockwise[j]
       const animatedLetter = document.createElement("a")
-      animatedLetter.className = `deg${animatedDegree}-${i} ${ring}`
+      animatedLetter.className = `deg${animatedDegree}-${i} deg${animatedDegree} ${ring}`
       animatedLetter.innerHTML = ""
       rings[0].append(animatedLetter)
     }
@@ -386,10 +396,64 @@ const rotate = d => {
   const animatedLetter = document.querySelector(`.deg${animatedDegree}-${ring}`)
   letter.innerHTML = ""
   animatedLetter.innerHTML = letters[ring][d].toUpperCase()
-  sleep(500).then(() => {
+  setTimeout(() => {
     animatedLetter.innerHTML = ""
     letter.innerHTML = letters[ring][d].toUpperCase()
-  })
+  }, 500)
+}
+
+const spin1 = d => {
+  checked.innerHTML = ""
+  if (direction === turn[0]) {
+    animatedDegree = animateCounterClockwise[d]
+  } else if (direction === turn[1]) {
+    animatedDegree = animateClockwise[d]
+  }
+  const degree = degrees[d]
+  const letter = document.querySelector(`.deg${degree}-${ring}`)
+  const animatedLetter = document.querySelector(`.deg${animatedDegree}-${ring}`)
+  letter.innerHTML = ""
+  animatedLetter.innerHTML = letters[1][d].toUpperCase()
+  setTimeout(() => {
+    animatedLetter.innerHTML = ""
+    letter.innerHTML = letters[1][d].toUpperCase()
+  }, 500)
+}
+
+const spin2 = d => {
+  checked.innerHTML = ""
+  if (direction === turn[0]) {
+    animatedDegree = animateCounterClockwise[d]
+  } else if (direction === turn[1]) {
+    animatedDegree = animateClockwise[d]
+  }
+  const degree = degrees[d]
+  const letter = document.querySelector(`.deg${degree}-${ring}`)
+  const animatedLetter = document.querySelector(`.deg${animatedDegree}-${ring}`)
+  letter.innerHTML = ""
+  animatedLetter.innerHTML = letters[2][d].toUpperCase()
+  setTimeout(() => {
+    animatedLetter.innerHTML = ""
+    letter.innerHTML = letters[2][d].toUpperCase()
+  }, 500)
+}
+
+const spin3 = d => {
+  checked.innerHTML = ""
+  if (direction === turn[0]) {
+    animatedDegree = animateCounterClockwise[d]
+  } else if (direction === turn[1]) {
+    animatedDegree = animateClockwise[d]
+  }
+  const degree = degrees[d]
+  const letter = document.querySelector(`.deg${degree}-${ring}`)
+  const animatedLetter = document.querySelector(`.deg${animatedDegree}-${ring}`)
+  letter.innerHTML = ""
+  animatedLetter.innerHTML = letters[3][d].toUpperCase()
+  setTimeout(() => {
+    animatedLetter.innerHTML = ""
+    letter.innerHTML = letters[3][d].toUpperCase()
+  }, 500)
 }
 
 // Resets rings and updates spin count once per button click
@@ -418,6 +482,39 @@ const rotateCounterClockwise = (e) => {
   rotateFinish(e)
 }
 
+const spinCounterClockwise1 = (e) => {
+  const firstLetter = letters[1][0]
+  letters[1].shift()
+  letters[1].push(firstLetter)
+  direction = turn[0]
+  for (let d = 0; d < degrees.length; d++){
+    spin1(d)
+  }
+  rotateFinish(e)
+}
+
+const spinCounterClockwise2 = (e) => {
+  const firstLetter = letters[2][0]
+  letters[2].shift()
+  letters[2].push(firstLetter)
+  direction = turn[0]
+  for (let d = 0; d < degrees.length; d++){
+    spin2(d)
+  }
+  rotateFinish(e)
+}
+
+const spinCounterClockwise3 = (e) => {
+  const firstLetter = letters[3][0]
+  letters[3].shift()
+  letters[3].push(firstLetter)
+  direction = turn[0]
+  for (let d = 0; d < degrees.length; d++){
+    spin3(d)
+  }
+  rotateFinish(e)
+}
+
 // Spins clockwise by moving a letter from the end of the array to the beginning and choosing correct animation
 const rotateClockwise = (e) => {
   const lastLetter = letters[ring][5]
@@ -426,6 +523,40 @@ const rotateClockwise = (e) => {
   direction = turn[1]
   for (let d = 0; d < degrees.length; d++){
     rotate(d)
+  }
+  rotateFinish(e)
+}
+
+const spinClockwise1 = (e) => {
+  const lastLetter = letters[1][5]
+  letters[1].pop()
+  letters[1].unshift(lastLetter)
+  direction = turn[1]
+  for (let d = 0; d < degrees.length; d++){
+    spin1(d)
+  }
+  rotateFinish(e)
+}
+
+
+const spinClockwise2 = (e) => {
+  const lastLetter = letters[2][5]
+  letters[2].pop()
+  letters[2].unshift(lastLetter)
+  direction = turn[1]
+  for (let d = 0; d < degrees.length; d++){
+    spin2(d)
+  }
+  rotateFinish(e)
+}
+
+const spinClockwise3 = (e) => {
+  const lastLetter = letters[3][5]
+  letters[3].pop()
+  letters[3].unshift(lastLetter)
+  direction = turn[1]
+  for (let d = 0; d < degrees.length; d++){
+    spin3(d)
   }
   rotateFinish(e)
 }
@@ -453,6 +584,140 @@ const updateAndRemove = () => {
       for (let i=0; i<clockwise.length; i++){
           clockwise[i].removeEventListener("click", rotateClockwise)
       }
+}
+
+  // adds drag function to each letter
+  document.querySelectorAll('.letter').forEach(letter => {
+    letter.addEventListener('mousedown', startDrag);
+  });
+
+// Function to start dragging
+function startDrag(event) {
+  isDragging = true;
+  initialMouseX = event.clientX;
+  initialMouseY = event.clientY;
+  currentElement = this;
+
+  if (currentElement.classList.contains("ring-1-letter")) {
+    ring = 1
+  } else if (currentElement.classList.contains("ring-2-letter")) {
+    ring = 2
+  } else if (currentElement.classList.contains("ring-3-letter")) {
+    ring = 3
+  }
+
+  // Add global event listeners for mousemove and mouseup
+  document.body.addEventListener('mousemove', handleDrag);
+  document.body.addEventListener('mouseup', endDrag);
+}
+
+// Function to handle dragging
+function handleDrag(event) {
+  if (!isDragging) return;
+
+  // Calculate the mouse movement
+  deltaX = event.clientX - initialMouseX;
+  deltaY = event.clientY - initialMouseY;
+
+  newX = event.clientX
+  newY = event.clientY
+}
+
+// Function to end dragging
+function endDrag() {
+  if (!isDragging) return;
+
+  // Remove the global event listeners
+  document.body.removeEventListener('mousemove', handleDrag);
+  document.body.removeEventListener('mouseup', endDrag);
+
+  console.log(initialMouseX, initialMouseY)
+  console.log(deltaX, deltaY)
+  console.log(newX, newY)
+
+  if (currentElement.classList.contains("ring-1-letter")) {
+    if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
+      if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+        spinClockwise1()
+      } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+        spinCounterClockwise1()
+      }
+    } else if (currentElement.classList.contains("deg0")) {
+      if (newY > initialMouseY) {
+        spinClockwise1()
+      } else if (newY < initialMouseY) {
+        spinCounterClockwise1()
+      }
+    } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
+      if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+        spinClockwise1()
+      } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+        spinCounterClockwise1()
+      }
+    } else if (currentElement.classList.contains("deg180")) {
+      if (newY < initialMouseY) {
+        spinClockwise1()
+      } else if (newY > initialMouseY) {
+        spinCounterClockwise1()
+      }
+    } 
+  } else if (currentElement.classList.contains("ring-2-letter")) {
+    if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
+      if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+        spinClockwise2()
+      } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+        spinCounterClockwise2()
+      }
+    } else if (currentElement.classList.contains("deg0")) {
+      if (newY > initialMouseY) {
+        spinClockwise2()
+      } else if (newY < initialMouseY) {
+        spinCounterClockwise2()
+      }
+    } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
+      if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+        spinClockwise2()
+      } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+        spinCounterClockwise2()
+      }
+    } else if (currentElement.classList.contains("deg180")) {
+      if (newY < initialMouseY) {
+        spinClockwise2()
+      } else if (newY > initialMouseY) {
+        spinCounterClockwise2()
+      }
+    } 
+  } else if (currentElement.classList.contains("ring-3-letter")) {
+    if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
+      if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+        spinClockwise3()
+      } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+        spinCounterClockwise3()
+      }
+    } else if (currentElement.classList.contains("deg0")) {
+      if (newY > initialMouseY) {
+        spinClockwise3()
+      } else if (newY < initialMouseY) {
+        spinCounterClockwise3()
+      }
+    } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
+      if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+        spinClockwise3()
+      } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+        spinCounterClockwise3()
+      }
+    } else if (currentElement.classList.contains("deg180")) {
+      if (newY < initialMouseY) {
+        spinClockwise3()
+      } else if (newY > initialMouseY) {
+        spinCounterClockwise3()
+      }
+    } 
+  }
+
+  // Reset the dragging state
+  isDragging = false;
+  currentElement = null;
 }
 
 // Adds event listener to every letter that either removes event listeners from every spin button element or adds them
