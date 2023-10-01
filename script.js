@@ -325,9 +325,9 @@ hamburger.addEventListener("click", e => {
   }
 
   // Makes container for spin buttons
-  const buttons = document.createElement("div")
-  buttons.className = "buttons"
-  whole.append(buttons)
+  // const buttons = document.createElement("div")
+  // buttons.className = "buttons"
+  // whole.append(buttons)
 
   // Makes spin buttons
   // for (let i = 0; i < turn.length; i++) {
@@ -588,7 +588,7 @@ const updateAndRemove = () => {
 
   // adds drag function to each letter
   document.querySelectorAll('.letter').forEach(letter => {
-    letter.addEventListener('mousedown', startDrag);
+    letter.addEventListener('pointerdown', startDrag);
   });
 
 // Function to start dragging
@@ -606,9 +606,9 @@ function startDrag(event) {
     ring = 3
   }
 
-  // Add global event listeners for mousemove and mouseup
-  document.body.addEventListener('mousemove', handleDrag);
-  document.body.addEventListener('mouseup', endDrag);
+  // Add global event listeners for pointermove and pointerup
+  document.body.addEventListener('pointermove', handleDrag);
+  document.body.addEventListener('pointerup', endDrag);
 }
 
 // Function to handle dragging
@@ -628,8 +628,8 @@ function endDrag() {
   if (!isDragging) return;
 
   // Remove the global event listeners
-  document.body.removeEventListener('mousemove', handleDrag);
-  document.body.removeEventListener('mouseup', endDrag);
+  document.body.removeEventListener('pointermove', handleDrag);
+  document.body.removeEventListener('pointerup', endDrag);
 
   console.log(initialMouseX, initialMouseY)
   console.log(deltaX, deltaY)
