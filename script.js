@@ -330,35 +330,35 @@ hamburger.addEventListener("click", e => {
   whole.append(buttons)
 
   // Makes spin buttons
-  for (let i = 0; i < turn.length; i++) {
-    const button = document.createElement("div")
-    button.className = `button ${turn[i]}`
-    buttons.appendChild(button)
-    const tail = document.createElement("div")
-    tail.className = `tail ${turn[i]}`
-    button.appendChild(tail)
-    const middle = document.createElement("div")
-    middle.className = `middle ${turn[i]}`
-    tail.appendChild(middle)
-    const middleText = document.createElement("p")
-    middleText.innerText = "Spin"
-    middleText.className = "middle-text"
-    middle.appendChild(middleText)
-    for (let j = 0; j < position.length; j++) {
-      const arrow = document.createElement("div")
-      arrow.className = `arrow ${turn[i]} ${position[j]}`
-      if (arrow.classList.contains("counterclockwise")) {
-        arrow.classList.add(`${arrows[j]}`)
-      } else if (arrow.classList.contains("clockwise")) {
-        if (j < 2) {
-          arrow.classList.add(`${arrows[j + 2]}`)
-        } else if (j > 1) {
-          arrow.classList.add(`${arrows[j - 2]}`)
-        }
-      }
-      tail.appendChild(arrow)
-    }
-  }
+  // for (let i = 0; i < turn.length; i++) {
+  //   const button = document.createElement("div")
+  //   button.className = `button ${turn[i]}`
+  //   buttons.appendChild(button)
+  //   const tail = document.createElement("div")
+  //   tail.className = `tail ${turn[i]}`
+  //   button.appendChild(tail)
+  //   const middle = document.createElement("div")
+  //   middle.className = `middle ${turn[i]}`
+  //   tail.appendChild(middle)
+  //   const middleText = document.createElement("p")
+  //   middleText.innerText = "Spin"
+  //   middleText.className = "middle-text"
+  //   middle.appendChild(middleText)
+  //   for (let j = 0; j < position.length; j++) {
+  //     const arrow = document.createElement("div")
+  //     arrow.className = `arrow ${turn[i]} ${position[j]}`
+  //     if (arrow.classList.contains("counterclockwise")) {
+  //       arrow.classList.add(`${arrows[j]}`)
+  //     } else if (arrow.classList.contains("clockwise")) {
+  //       if (j < 2) {
+  //         arrow.classList.add(`${arrows[j + 2]}`)
+  //       } else if (j > 1) {
+  //         arrow.classList.add(`${arrows[j - 2]}`)
+  //       }
+  //     }
+  //     tail.appendChild(arrow)
+  //   }
+  // }
 
   // Adds event listener to all exit buttons for info and stat screens
     exit.addEventListener("click", e => {
