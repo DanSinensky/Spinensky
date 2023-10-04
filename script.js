@@ -21,6 +21,9 @@ let animatedDegree;
 
 // for spinning letters
 let isDragging = false;
+let letterClass;
+let startX;
+let startY;
 let initialMouseX;
 let initialMouseY;
 let currentElement;
@@ -586,139 +589,303 @@ const updateAndRemove = () => {
       }
 }
 
-  // adds drag function to each letter
-  document.querySelectorAll('.letter').forEach(letter => {
-    letter.addEventListener('pointerdown', startDrag);
-  });
+  // // adds drag function to each letter
+  // document.querySelectorAll('.letter').forEach(letter => {
+  //   letter.addEventListener('pointerdown', startDrag);
+  // });
 
-// Function to start dragging
-function startDrag(event) {
+let dragElement = null;
+let shiftX, shiftY;
+
+document.addEventListener('mousedown', function(event) {
+  dragElement = event.target.closest('.letter');
+
+  if (!dragElement) return;
+
+  event.preventDefault();
+
+  dragElement.ondragstart = function() {
+    return false;
+  };
+
+  startX = dragElement.getBoundingClientRect().left;
+  startY = dragElement.getBoundingClientRect().top;
+  startDrag(event.clientX, event.clientY);
+  letterClass = dragElement.classList
+  console.log(letterClass)
+});
+
+// LEAVE AS IS
+function onMouseUp(event) {
+  finishDrag();
+}
+
+// LEAVE AS IS
+function onMouseMove(event) {
+  moveAt(event.clientX, event.clientY);
+}
+
+function startDrag(clientX, clientY) {
+  if (isDragging) {
+    return;
+  }
+
   isDragging = true;
-  initialMouseX = event.clientX;
-  initialMouseY = event.clientY;
-  currentElement = this;
 
-  if (currentElement.classList.contains("ring-1-letter")) {
+  if (dragElement.classList.contains("ring-1-letter")) {
     ring = 1
-  } else if (currentElement.classList.contains("ring-2-letter")) {
+  } else if (dragElement.classList.contains("ring-2-letter")) {
     ring = 2
-  } else if (currentElement.classList.contains("ring-3-letter")) {
+  } else if (dragElement.classList.contains("ring-3-letter")) {
     ring = 3
   }
 
-  // Add global event listeners for pointermove and pointerup
-  document.body.addEventListener('pointermove', handleDrag);
-  document.body.addEventListener('pointerup', endDrag);
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+  shiftX = clientX - dragElement.getBoundingClientRect().left;
+  shiftY = clientY - dragElement.getBoundingClientRect().top;
+
+  // dragElement.style.position = 'fixed';
+
+  moveAt(clientX, clientY);
 }
 
-// Function to handle dragging
-function handleDrag(event) {
-  if (!isDragging) return;
+function finishDrag() {
+  if (!isDragging) {
+    return;
+  }
 
-  // Calculate the mouse movement
-  deltaX = event.clientX - initialMouseX;
-  deltaY = event.clientY - initialMouseY;
+  isDragging = false;
 
-  newX = event.clientX
-  newY = event.clientY
-}
+  document.removeEventListener('mousemove', onMouseMove);
+  document.removeEventListener('mouseup', onMouseUp);
 
-// Function to end dragging
-function endDrag() {
-  if (!isDragging) return;
-
-  // Remove the global event listeners
-  document.body.removeEventListener('pointermove', handleDrag);
-  document.body.removeEventListener('pointerup', endDrag);
-
-  console.log(initialMouseX, initialMouseY)
-  console.log(deltaX, deltaY)
+  console.log(dragElement.classList)
   console.log(newX, newY)
-
-  if (currentElement.classList.contains("ring-1-letter")) {
-    if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
-      if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+  console.log(startX, startY)
+  if (dragElement.classList.contains("ring-1-letter")) {
+    if (dragElement.classList.contains("deg300") || dragElement.classList.contains("deg240")) {
+      if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
         spinClockwise1()
-      } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+      } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
         spinCounterClockwise1()
       }
-    } else if (currentElement.classList.contains("deg0")) {
-      if (newY > initialMouseY) {
+    } else if (dragElement.classList.contains("deg0")) {
+      if (newY > startY) {
         spinClockwise1()
-      } else if (newY < initialMouseY) {
+      } else if (newY < startY) {
         spinCounterClockwise1()
       }
-    } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
-      if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+    } else if (dragElement.classList.contains("deg60") || dragElement.classList.contains("deg120")) {
+      if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
         spinClockwise1()
-      } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+      } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
         spinCounterClockwise1()
       }
-    } else if (currentElement.classList.contains("deg180")) {
-      if (newY < initialMouseY) {
+    } else if (dragElement.classList.contains("deg180")) {
+      if (newY < startY) {
         spinClockwise1()
-      } else if (newY > initialMouseY) {
+      } else if (newY > startY) {
         spinCounterClockwise1()
       }
     } 
-  } else if (currentElement.classList.contains("ring-2-letter")) {
-    if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
-      if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+  } else if (dragElement.classList.contains("ring-2-letter")) {
+    if (dragElement.classList.contains("deg300") || dragElement.classList.contains("deg240")) {
+      if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
         spinClockwise2()
-      } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+      } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
         spinCounterClockwise2()
       }
-    } else if (currentElement.classList.contains("deg0")) {
-      if (newY > initialMouseY) {
+    } else if (dragElement.classList.contains("deg0")) {
+      if (newY > startY) {
         spinClockwise2()
-      } else if (newY < initialMouseY) {
+      } else if (newY < startY) {
         spinCounterClockwise2()
       }
-    } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
-      if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+    } else if (dragElement.classList.contains("deg60") || dragElement.classList.contains("deg120")) {
+      if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
         spinClockwise2()
-      } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+      } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
         spinCounterClockwise2()
       }
-    } else if (currentElement.classList.contains("deg180")) {
-      if (newY < initialMouseY) {
+    } else if (dragElement.classList.contains("deg180")) {
+      if (newY < startY) {
         spinClockwise2()
-      } else if (newY > initialMouseY) {
+      } else if (newY > startY) {
         spinCounterClockwise2()
       }
     } 
-  } else if (currentElement.classList.contains("ring-3-letter")) {
-    if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
-      if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+  } else if (dragElement.classList.contains("ring-3-letter")) {
+    if (dragElement.classList.contains("deg300") || dragElement.classList.contains("deg240")) {
+      if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
         spinClockwise3()
-      } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+      } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
         spinCounterClockwise3()
       }
-    } else if (currentElement.classList.contains("deg0")) {
-      if (newY > initialMouseY) {
+    } else if (dragElement.classList.contains("deg0")) {
+      if (newY > startY) {
         spinClockwise3()
-      } else if (newY < initialMouseY) {
+      } else if (newY < startY) {
         spinCounterClockwise3()
       }
-    } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
-      if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+    } else if (dragElement.classList.contains("deg60") || dragElement.classList.contains("deg120")) {
+      if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
         spinClockwise3()
-      } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+      } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
         spinCounterClockwise3()
       }
-    } else if (currentElement.classList.contains("deg180")) {
-      if (newY < initialMouseY) {
+    } else if (dragElement.classList.contains("deg180")) {
+      if (newY < startY) {
         spinClockwise3()
-      } else if (newY > initialMouseY) {
+      } else if (newY > startY) {
         spinCounterClockwise3()
       }
     } 
   }
-
-  // Reset the dragging state
-  isDragging = false;
-  currentElement = null;
 }
+
+// LEAVE AS IS
+function moveAt(clientX, clientY) {
+  newX = clientX - shiftX;
+  newY = clientY - shiftY;
+
+  // Your code to limit the new coordinates and handle scrolling goes here
+
+  // Set the new element position
+  // dragElement.style.left = newX + 'px';
+  // dragElement.style.top = newY + 'px';
+}
+
+
+// // Function to start dragging
+// function startDrag(event) {
+//   isDragging = true;
+//   initialMouseX = event.clientX;
+//   initialMouseY = event.clientY;
+//   currentElement = this;
+
+//   if (currentElement.classList.contains("ring-1-letter")) {
+//     ring = 1
+//   } else if (currentElement.classList.contains("ring-2-letter")) {
+//     ring = 2
+//   } else if (currentElement.classList.contains("ring-3-letter")) {
+//     ring = 3
+//   }
+
+//   // Add global event listeners for pointermove and pointerup
+//   document.body.addEventListener('pointermove', handleDrag);
+//   document.body.addEventListener('pointerup', endDrag);
+// }
+
+// // Function to handle dragging
+// function handleDrag(event) {
+//   if (!isDragging) return;
+
+//   // Calculate the mouse movement
+//   deltaX = event.clientX - initialMouseX;
+//   deltaY = event.clientY - initialMouseY;
+
+//   newX = event.clientX
+//   newY = event.clientY
+// }
+
+// // Function to end dragging
+// function endDrag() {
+//   if (!isDragging) return;
+
+//   // Remove the global event listeners
+//   document.body.removeEventListener('pointermove', handleDrag);
+//   document.body.removeEventListener('pointerup', endDrag);
+
+//   console.log(initialMouseX, initialMouseY)
+//   console.log(deltaX, deltaY)
+//   console.log(newX, newY)
+
+//   if (currentElement.classList.contains("ring-1-letter")) {
+//     if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
+//       if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+//         spinClockwise1()
+//       } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+//         spinCounterClockwise1()
+//       }
+//     } else if (currentElement.classList.contains("deg0")) {
+//       if (newY > initialMouseY) {
+//         spinClockwise1()
+//       } else if (newY < initialMouseY) {
+//         spinCounterClockwise1()
+//       }
+//     } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
+//       if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+//         spinClockwise1()
+//       } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+//         spinCounterClockwise1()
+//       }
+//     } else if (currentElement.classList.contains("deg180")) {
+//       if (newY < initialMouseY) {
+//         spinClockwise1()
+//       } else if (newY > initialMouseY) {
+//         spinCounterClockwise1()
+//       }
+//     } 
+//   } else if (currentElement.classList.contains("ring-2-letter")) {
+//     if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
+//       if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+//         spinClockwise2()
+//       } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+//         spinCounterClockwise2()
+//       }
+//     } else if (currentElement.classList.contains("deg0")) {
+//       if (newY > initialMouseY) {
+//         spinClockwise2()
+//       } else if (newY < initialMouseY) {
+//         spinCounterClockwise2()
+//       }
+//     } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
+//       if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+//         spinClockwise2()
+//       } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+//         spinCounterClockwise2()
+//       }
+//     } else if (currentElement.classList.contains("deg180")) {
+//       if (newY < initialMouseY) {
+//         spinClockwise2()
+//       } else if (newY > initialMouseY) {
+//         spinCounterClockwise2()
+//       }
+//     } 
+//   } else if (currentElement.classList.contains("ring-3-letter")) {
+//     if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
+//       if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+//         spinClockwise3()
+//       } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+//         spinCounterClockwise3()
+//       }
+//     } else if (currentElement.classList.contains("deg0")) {
+//       if (newY > initialMouseY) {
+//         spinClockwise3()
+//       } else if (newY < initialMouseY) {
+//         spinCounterClockwise3()
+//       }
+//     } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
+//       if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
+//         spinClockwise3()
+//       } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
+//         spinCounterClockwise3()
+//       }
+//     } else if (currentElement.classList.contains("deg180")) {
+//       if (newY < initialMouseY) {
+//         spinClockwise3()
+//       } else if (newY > initialMouseY) {
+//         spinCounterClockwise3()
+//       }
+//     } 
+//   }
+
+//   // Reset the dragging state
+//   isDragging = false;
+//   currentElement = null;
+// }
 
 // Adds event listener to every letter that either removes event listeners from every spin button element or adds them
 document.querySelectorAll('a').forEach(character => {
