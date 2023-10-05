@@ -120,6 +120,7 @@ button {
   border-radius: 50%;
   margin: 2rem auto;
   box-sizing: border-box;
+  touch-action: none;
 }
 
 .ring a {
@@ -127,6 +128,7 @@ button {
   position: absolute;
   margin: -2rem;
   z-index: 6;
+  touch-action: none;
 }
 
 .center {
