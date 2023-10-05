@@ -597,7 +597,7 @@ const updateAndRemove = () => {
 let dragElement = null;
 let shiftX, shiftY;
 
-document.addEventListener('mousedown', function(event) {
+document.addEventListener('pointerdown', function(event) {
   dragElement = event.target.closest('.letter');
 
   if (!dragElement) return;
@@ -616,12 +616,12 @@ document.addEventListener('mousedown', function(event) {
 });
 
 // LEAVE AS IS
-function onMouseUp(event) {
+function onPointerUp(event) {
   finishDrag();
 }
 
 // LEAVE AS IS
-function onMouseMove(event) {
+function onPointerMove(event) {
   moveAt(event.clientX, event.clientY);
 }
 
@@ -640,8 +640,8 @@ function startDrag(clientX, clientY) {
     ring = 3
   }
 
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
+  document.addEventListener('pointermove', onPointerMove);
+  document.addEventListener('pointerup', onPointerUp);
 
   shiftX = clientX - dragElement.getBoundingClientRect().left;
   shiftY = clientY - dragElement.getBoundingClientRect().top;
@@ -658,8 +658,8 @@ function finishDrag() {
 
   isDragging = false;
 
-  document.removeEventListener('mousemove', onMouseMove);
-  document.removeEventListener('mouseup', onMouseUp);
+  document.removeEventListener('pointermove', onPointerMove);
+  document.removeEventListener('pointerup', onPointerUp);
 
   console.log(dragElement.classList)
   console.log(newX, newY)
