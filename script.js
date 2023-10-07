@@ -321,7 +321,7 @@ hamburger.addEventListener("click", e => {
       rings[0].append(letter)
       animatedDegree = animateCounterClockwise[j]
       const animatedLetter = document.createElement("a")
-      animatedLetter.className = `deg${animatedDegree}-${i} deg${animatedDegree} ${ring}`
+      animatedLetter.className = `deg${animatedDegree}-${i} deg${animatedDegree} ${ring} animated-letter`
       animatedLetter.innerHTML = ""
       rings[0].append(animatedLetter)
     }
@@ -610,14 +610,13 @@ document.addEventListener('pointerdown', function(event) {
 
   startX = dragElement.getBoundingClientRect().left;
   startY = dragElement.getBoundingClientRect().top;
-  startDrag(event.clientX, event.clientY);
+  startDrag1(event.clientX, event.clientY);
   letterClass = dragElement.classList
-  console.log(letterClass)
 });
 
 // LEAVE AS IS
-function onPointerUp(event) {
-  finishDrag();
+function onPointerUp1(event) {
+  finishDrag1();
 }
 
 // LEAVE AS IS
@@ -625,7 +624,7 @@ function onPointerMove(event) {
   moveAt(event.clientX, event.clientY);
 }
 
-function startDrag(clientX, clientY) {
+function startDrag1(clientX, clientY) {
   if (isDragging) {
     return;
   }
@@ -641,7 +640,7 @@ function startDrag(clientX, clientY) {
   }
 
   document.addEventListener('pointermove', onPointerMove);
-  document.addEventListener('pointerup', onPointerUp);
+  document.addEventListener('pointerup', onPointerUp1);
 
   shiftX = clientX - dragElement.getBoundingClientRect().left;
   shiftY = clientY - dragElement.getBoundingClientRect().top;
@@ -651,7 +650,7 @@ function startDrag(clientX, clientY) {
   moveAt(clientX, clientY);
 }
 
-function finishDrag() {
+function finishDrag1() {
   if (!isDragging) {
     return;
   }
@@ -659,11 +658,8 @@ function finishDrag() {
   isDragging = false;
 
   document.removeEventListener('pointermove', onPointerMove);
-  document.removeEventListener('pointerup', onPointerUp);
+  document.removeEventListener('pointerup', onPointerUp1);
 
-  console.log(dragElement.classList)
-  console.log(newX, newY)
-  console.log(startX, startY)
   if (dragElement.classList.contains("ring-1-letter")) {
     if (dragElement.classList.contains("deg300") || dragElement.classList.contains("deg240")) {
       if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
@@ -749,14 +745,143 @@ function finishDrag() {
 function moveAt(clientX, clientY) {
   newX = clientX - shiftX;
   newY = clientY - shiftY;
-
-  // Your code to limit the new coordinates and handle scrolling goes here
-
-  // Set the new element position
-  // dragElement.style.left = newX + 'px';
-  // dragElement.style.top = newY + 'px';
 }
 
+document.addEventListener('pointerdown', function (event) {
+  dragElement = event.target.closest('.animated-letter');
+
+  if (!dragElement) return;
+
+  event.preventDefault();
+
+  dragElement.ondragstart = function() {
+    return false;
+  };
+
+  startX = dragElement.getBoundingClientRect().left;
+  startY = dragElement.getBoundingClientRect().top;
+  startDrag2(event.clientX, event.clientY);
+  letterClass = dragElement.classList
+})
+
+function onPointerUp2(event) {
+  finishDrag2();
+}
+
+function startDrag2(clientX, clientY) {
+  if (isDragging) {
+    return;
+  }
+
+  isDragging = true;
+
+  if (dragElement.classList.contains("ring-1-letter")) {
+    ring = 1
+  } else if (dragElement.classList.contains("ring-2-letter")) {
+    ring = 2
+  } else if (dragElement.classList.contains("ring-3-letter")) {
+    ring = 3
+  }
+
+  document.addEventListener('pointermove', onPointerMove);
+  document.addEventListener('pointerup', onPointerUp2);
+
+  shiftX = clientX - dragElement.getBoundingClientRect().left;
+  shiftY = clientY - dragElement.getBoundingClientRect().top;
+
+  moveAt(clientX, clientY);
+}
+
+function finishDrag2() {
+  if (!isDragging) {
+    return;
+  }
+
+  isDragging = false;
+
+  document.removeEventListener('pointermove', onPointerMove);
+  document.removeEventListener('pointerup', onPointerUp2);
+
+  if (dragElement.classList.contains("ring-1-letter")) {
+    if (dragElement.classList.contains("deg330") || dragElement.classList.contains("deg210")) {
+      if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
+        spinClockwise1()
+      } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
+        spinCounterClockwise1()
+      }
+    } else if (dragElement.classList.contains("deg270")) {
+      if (newX > startX) {
+        spinClockwise1()
+      } else if (newX < startX) {
+        spinCounterClockwise1()
+      }
+    } else if (dragElement.classList.contains("deg30") || dragElement.classList.contains("deg150")) {
+      if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
+        spinClockwise1()
+      } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
+        spinCounterClockwise1()
+      }
+    } else if (dragElement.classList.contains("deg90")) {
+      if (newX < startX) {
+        spinClockwise1()
+      } else if (newX > startX) {
+        spinCounterClockwise1()
+      }
+    } 
+  } else if (dragElement.classList.contains("ring-2-letter")) {
+    if (dragElement.classList.contains("deg330") || dragElement.classList.contains("deg210")) {
+      if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
+        spinClockwise2()
+      } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
+        spinCounterClockwise2()
+      }
+    } else if (dragElement.classList.contains("deg270")) {
+      if (newX > startX) {
+        spinClockwise2()
+      } else if (newX < startX) {
+        spinCounterClockwise2()
+      }
+    } else if (dragElement.classList.contains("deg30") || dragElement.classList.contains("deg150")) {
+      if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
+        spinClockwise2()
+      } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
+        spinCounterClockwise2()
+      }
+    } else if (dragElement.classList.contains("deg90")) {
+      if (newX < startX) {
+        spinClockwise2()
+      } else if (newX > startX) {
+        spinCounterClockwise2()
+      }
+    }
+  } else if (dragElement.classList.contains("ring-3-letter")) {
+    if (dragElement.classList.contains("deg330") || dragElement.classList.contains("deg210")) {
+      if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
+        spinClockwise3()
+      } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
+        spinCounterClockwise3()
+      }
+    } else if (dragElement.classList.contains("deg270")) {
+      if (newX > startX) {
+        spinClockwise3()
+      } else if (newX < startX) {
+        spinCounterClockwise3()
+      }
+    } else if (dragElement.classList.contains("deg30") || dragElement.classList.contains("deg150")) {
+      if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
+        spinClockwise3()
+      } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
+        spinCounterClockwise3()
+      }
+    } else if (dragElement.classList.contains("deg90")) {
+      if (newX < startX) {
+        spinClockwise3()
+      } else if (newX > startX) {
+        spinCounterClockwise3()
+      }
+    }
+  }
+}
 
 // // Function to start dragging
 // function startDrag(event) {
