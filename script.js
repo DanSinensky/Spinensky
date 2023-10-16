@@ -260,12 +260,6 @@ exit1.addEventListener("click", e => {
   outerRingElement.setAttribute("id", `${layers[0]}`);
   rings.unshift(outerRingElement)
   whole.appendChild(outerRingElement)
-  
-  radius = (outerRingElement.getBoundingClientRect().right - outerRingElement.getBoundingClientRect().left)/2
-  xAxis = outerRingElement.getBoundingClientRect().top + radius
-  yAxis = outerRingElement.getBoundingClientRect().left + radius
-  
-  console.log(xAxis, yAxis, radius)
 
   // Makes header with title and hamburger menu
   const header = document.createElement("header")
@@ -323,6 +317,12 @@ hamburger.addEventListener("click", e => {
   center.className = "center"
   rings[0].append(center)
   center.innerText = zerothRing[0].toUpperCase()
+  
+  radius = (outerRingElement.getBoundingClientRect().right - outerRingElement.getBoundingClientRect().left)/2
+  yAxis = center.getBoundingClientRect().left + (center.getBoundingClientRect().right - center.getBoundingClientRect().left)/2
+  xAxis = center.getBoundingClientRect().top + (center.getBoundingClientRect().bottom - center.getBoundingClientRect().top) / 2
+  
+  console.log(xAxis, yAxis, radius)
 
   // Makes DOM elements for all other letters, including empty keyframes
   // Modeled off of code on how to make wordle from https://www.freecodecamp.org/news/build-a-wordle-clone-in-javascript/
@@ -485,7 +485,7 @@ const rotateFinish = (e) => {
     spins++
     spinsText.innerText = spins
   }
-  e.stopPropagation()
+  //e.stopPropagation()
 }
 
 // Spins counterclockwise by moving a letter from the beginning of the array to the end and choosing correct animation
@@ -676,231 +676,227 @@ function finishDrag1() {
   document.removeEventListener('pointermove', onPointerMove);
   document.removeEventListener('pointerup', onPointerUp1);
 
-  if (dragElement.classList.contains("ring-1-letter")) {
-    if (dragElement.classList.contains("deg300") || dragElement.classList.contains("deg330")) {
-      if ((newX > startX && (newX - startX >= startY - newY)) || (newY > startY && (newY - startY >= startX - newX))) {
-        spinClockwise1()
-      } else if ((newX < startX && (newX - startX <= startY - newY)) || (newY < startY && (newY - startY <= startX - newX))) {
-        spinCounterClockwise1()
-      }
-    } else if (dragElement.classList.contains("deg240") || dragElement.classList.contains("deg210")) {
-      if ((newX > startX && (newX - startX >= newY - startY)) || (newY > startY && (newY - startY >= newX - startX))) {
-        spinClockwise1()
-      } else if ((newX < startX && (newX - startX <= newY - startY)) || (newY < startY && (newY - startY <= newX - startX))) {
-        spinCounterClockwise1()
-      }
-    } else if (dragElement.classList.contains("deg0")) {
-      if (newY > startY) {
-        spinClockwise1()
-      } else if (newY < startY) {
-        spinCounterClockwise1()
-      }
-    } else if (dragElement.classList.contains("deg270")) {
-      if (newX > startX) {
-        spinClockwise1()
-      } else if (newX < startX) {
-        spinCounterClockwise1()
-      }
-    } else if (dragElement.classList.contains("deg60") || dragElement.classList.contains("deg30")) {
-      if ((newX < startX && (startX - newX >= startY - newY)) || (newY < startY && (startY - newY >= startX - newX))) {
-        spinClockwise1()
-      } else if ((newX > startX && (startX - newX <= startY - newY)) || (newY > startY && (startY - newY <= startX - newX))) {
-        spinCounterClockwise1()
-      }
-    } else if (dragElement.classList.contains("deg120") || dragElement.classList.contains("deg150")) {
-      if ((newX < startX && (startX - newX >= newY - startY)) || (newY < startY && (startY - newY >= newX - startX))) {
-        spinClockwise1()
-      } else if ((newX > startX && (startX - newX <= newY - startY)) || (newY > startY && (startY - newY <= newX - startX))) {
-        spinCounterClockwise1()
-      }
-    } else if (dragElement.classList.contains("deg180")) {
-      if (newY < startY) {
-        spinClockwise1()
-      } else if (newY > startY) {
-        spinCounterClockwise1()
-      }
-    } else if (dragElement.classList.contains("deg90")) {
-      if (newX < startX) {
-        spinClockwise1()
-      } else if (newX > startX) {
-        spinCounterClockwise1()
-      }
-    } 
-  } else if (dragElement.classList.contains("ring-2-letter")) {
-    if (dragElement.classList.contains("deg300") || dragElement.classList.contains("deg330")) {
-      if ((newX > startX && (newX - startX >= startY - newY)) || (newY > startY && (newY - startY >= startX - newX))) {
-        spinClockwise2()
-      } else if ((newX < startX && (newX - startX <= startY - newY)) || (newY < startY && (newY - startY <= startX - newX))) {
-        spinCounterClockwise2()
-      }
-    } else if (dragElement.classList.contains("deg240") || dragElement.classList.contains("deg210")) {
-      if ((newX > startX && (newX - startX >= newY - startY)) || (newY > startY && (newY - startY >= newX - startX))) {
-        spinClockwise2()
-      } else if ((newX < startX && (newX - startX <= newY - startY)) || (newY < startY && (newY - startY <= newX - startX))) {
-        spinCounterClockwise2()
-      }
-    } else if (dragElement.classList.contains("deg0")) {
-      if (newY > startY) {
-        spinClockwise2()
-      } else if (newY < startY) {
-        spinCounterClockwise2()
-      }
-    } else if (dragElement.classList.contains("deg270")) {
-      if (newX > startX) {
-        spinClockwise2()
-      } else if (newX < startX) {
-        spinCounterClockwise2()
-      }
-    } else if (dragElement.classList.contains("deg60") || dragElement.classList.contains("deg30")) {
-      if ((newX < startX && (startX - newX >= startY - newY)) || (newY < startY && (startY - newY >= startX - newX))) {
-        spinClockwise2()
-      } else if ((newX > startX && (startX - newX <= startY - newY)) || (newY > startY && (startY - newY <= startX - newX))) {
-        spinCounterClockwise2()
-      }
-    } else if (dragElement.classList.contains("deg120") || dragElement.classList.contains("deg150")) {
-      if ((newX < startX && (startX - newX >= newY - startY)) || (newY < startY && (startY - newY >= newX - startX))) {
-        spinClockwise2()
-      } else if ((newX > startX && (startX - newX <= newY - startY)) || (newY > startY && (startY - newY <= newX - startX))) {
-        spinCounterClockwise2()
-      }
-    } else if (dragElement.classList.contains("deg180")) {
-      if (newY < startY) {
-        spinClockwise2()
-      } else if (newY > startY) {
-        spinCounterClockwise2()
-      }
-    } else if (dragElement.classList.contains("deg90")) {
-      if (newX < startX) {
-        spinClockwise2()
-      } else if (newX > startX) {
-        spinCounterClockwise2()
-      }
-    } 
-  } else if (dragElement.classList.contains("ring-3-letter")) {
-    if (dragElement.classList.contains("deg300") || dragElement.classList.contains("deg330")) {
-      if ((newX > startX && (newX - startX >= startY - newY)) || (newY > startY && (newY - startY >= startX - newX))) {
-        spinClockwise3()
-      } else if ((newX < startX && (newX - startX <= startY - newY)) || (newY < startY && (newY - startY <= startX - newX))) {
-        spinCounterClockwise3()
-      }
-    } else if (dragElement.classList.contains("deg240") || dragElement.classList.contains("deg210")) {
-      if ((newX > startX && (newX - startX >= newY - startY)) || (newY > startY && (newY - startY >= newX - startX))) {
-        spinClockwise3()
-      } else if ((newX < startX && (newX - startX <= newY - startY)) || (newY < startY && (newY - startY <= newX - startX))) {
-        spinCounterClockwise3()
-      }
-    } else if (dragElement.classList.contains("deg0")) {
-      if (newY > startY) {
-        spinClockwise3()
-      } else if (newY < startY) {
-        spinCounterClockwise3()
-      }
-    } else if (dragElement.classList.contains("deg270")) {
-      if (newX > startX) {
-        spinClockwise3()
-      } else if (newX < startX) {
-        spinCounterClockwise3()
-      }
-    } else if (dragElement.classList.contains("deg60") || dragElement.classList.contains("deg30")) {
-      if ((newX < startX && (startX - newX >= startY - newY)) || (newY < startY && (startY - newY >= startX - newX))) {
-        spinClockwise3()
-      } else if ((newX > startX && (startX - newX <= startY - newY)) || (newY > startY && (startY - newY <= startX - newX))) {
-        spinCounterClockwise3()
-      }
-    } else if (dragElement.classList.contains("deg120") || dragElement.classList.contains("deg150")) {
-      if ((newX < startX && (startX - newX >= newY - startY)) || (newY < startY && (startY - newY >= newX - startX))) {
-        spinClockwise3()
-      } else if ((newX > startX && (startX - newX <= newY - startY)) || (newY > startY && (startY - newY <= newX - startX))) {
-        spinCounterClockwise3()
-      }
-    } else if (dragElement.classList.contains("deg180")) {
-      if (newY < startY) {
-        spinClockwise3()
-      } else if (newY > startY) {
-        spinCounterClockwise3()
-      }
-    } else if (dragElement.classList.contains("deg90")) {
-      if (newX < startX) {
-        spinClockwise3()
-      } else if (newX > startX) {
-        spinCounterClockwise3()
-      }
-    } 
-  } else if (dragElement.id === "inner") {
+  console.log(newRingX, newRingY)
+
+  if (dragElement.id === "inner" || dragElement.classList.contains("ring-1-letter")) {
     if (startPointerX > yAxis && startPointerY < xAxis) {
-      if ((newRingX > startPointerX && (newRingX - startPointerX >= startPointerY - newRingY)) || (newRingY > startPointerY && (newRingY - startPointerY >= startPointerX - newRingX))) {
+      console.log("Top right")
+      if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the right and/or mainly down")
         spinClockwise1()
-      } else if ((newRingX < startPointerX && (newRingX - startPointerX <= startPointerY - newRingY)) || (newRingY < startPointerY && (newRingY - startPointerY <= startPointerX - newRingX))) {
+      } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY < startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the left and/or mainly up")
         spinCounterClockwise1()
       }
     } else if (startPointerX > yAxis && startPointerY > xAxis) {
-      if ((newRingX < startPointerX && (startPointerX - newRingX >= startPointerY - newRingY)) || (newRingY < startPointerY && (startPointerY - newRingY >= startPointerX - newRingX))) {
+      console.log("Bottom right")
+      if ((newRingX < startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the left and/or mainly down")
         spinClockwise1()
-      } else if ((newRingX > startPointerX && (startPointerX - newRingX <= startPointerY - newRingY)) || (newRingY > startPointerY && (startPointerY - newRingY <= startPointerX - newRingX))) {
+      } else if ((newRingX > startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(startPointerY - newRingY))) || (newRingY < startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the right and/or mainly up")
         spinCounterClockwise1()
       }
     } else if (startPointerX < yAxis && startPointerY > xAxis) {
-      if ((newRingX < startPointerX && (startPointerX - newRingX >= newRingY - startPointerY)) || (newRingY < startPointerY && (startPointerY - newRingY >= newRingX - startPointerX))) {
+      console.log("Bottom left")
+      if ((newRingX < startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(newRingY - startPointerY))) || (newRingY < startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the left and/or mainly up")
         spinClockwise1()
-      } else if ((newRingX > startPointerX && (startPointerX - newRingX <= newRingY - startPointerY)) || (newRingY > startPointerY && (startPointerY - newRingY <= newRingX - startPointerX))) {
+      } else if ((newRingX > startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the right and/or mainly down")
         spinCounterClockwise1()
       }
     } else if (startPointerX < yAxis && startPointerY < xAxis) {
-      if ((newRingX > startPointerX && (newRingX - startPointerX >= newRingY - startPointerY)) || (newRingY > startPointerY && (newRingY - startPointerY >= newRingX - startPointerX))) {
+      console.log("Top left")
+      if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY < startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the right and/or mainly up")
         spinClockwise1()
-      } else if ((newRingX < startPointerX && (newRingX - startPointerX <= newRingY - startPointerY)) || (newRingY < startPointerY && (newRingY - startPointerY <= newRingX - startPointerX))) {
+      } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the left and/or mainly down")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerX > yAxis && startPointerY === xAxis) {
+      console.log("Center right")
+      if (newRingY > startPointerY) {
+        console.log("Down")
+        spinClockwise1()
+      } else if (newRingY < startPointerY) {
+        console.log("Up")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerX < yAxis && startPointerY === xAxis) {
+      console.log("Center left")
+      if (newRingY < startPointerY) {
+        console.log("Up")
+        spinClockwise1()
+      } else if (newRingY > startPointerY) {
+        console.log("Down")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerY > xAxis && startPointerX === yAxis) {
+      console.log("Bottom center")
+      if (newRingX < startPointerX) {
+        console.log("Left")
+        spinClockwise1()
+      } else if (newRingX > startPointerX) {
+        console.log("Right")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerY < xAxis && startPointerX === yAxis) {
+      console.log("Top center")
+      if (newRingX > startPointerX) {
+        console.log("Right")
+        spinClockwise1()
+      } else if (newRingX < startPointerX) {
+        console.log("Left")
         spinCounterClockwise1()
       }
     }
-  } else if (dragElement.id === "middle") {
+  } else if (dragElement.id === "middle" || dragElement.classList.contains("ring-2-letter")) {
     if (startPointerX > yAxis && startPointerY < xAxis) {
-      if ((newRingX > startPointerX && (newRingX - startPointerX >= startPointerY - newRingY)) || (newRingY > startPointerY && (newRingY - startPointerY >= startPointerX - newRingX))) {
+      console.log("Top right")
+      if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the right and/or mainly down")
         spinClockwise2()
-      } else if ((newRingX < startPointerX && (newRingX - startPointerX <= startPointerY - newRingY)) || (newRingY < startPointerY && (newRingY - startPointerY <= startPointerX - newRingX))) {
+      } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY < startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the left and/or mainly up")
         spinCounterClockwise2()
       }
     } else if (startPointerX > yAxis && startPointerY > xAxis) {
-      if ((newRingX < startPointerX && (startPointerX - newRingX >= startPointerY - newRingY)) || (newRingY < startPointerY && (startPointerY - newRingY >= startPointerX - newRingX))) {
+      console.log("Bottom right")
+      if ((newRingX < startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the left and/or mainly down")
         spinClockwise2()
-      } else if ((newRingX > startPointerX && (startPointerX - newRingX <= startPointerY - newRingY)) || (newRingY > startPointerY && (startPointerY - newRingY <= startPointerX - newRingX))) {
+      } else if ((newRingX > startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(startPointerY - newRingY))) || (newRingY < startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the right and/or mainly up")
         spinCounterClockwise2()
       }
     } else if (startPointerX < yAxis && startPointerY > xAxis) {
-      if ((newRingX < startPointerX && (startPointerX - newRingX >= newRingY - startPointerY)) || (newRingY < startPointerY && (startPointerY - newRingY >= newRingX - startPointerX))) {
+      console.log("Bottom left")
+      if ((newRingX < startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(newRingY - startPointerY))) || (newRingY < startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the left and/or mainly up")
         spinClockwise2()
-      } else if ((newRingX > startPointerX && (startPointerX - newRingX <= newRingY - startPointerY)) || (newRingY > startPointerY && (startPointerY - newRingY <= newRingX - startPointerX))) {
+      } else if ((newRingX > startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the right and/or mainly down")
         spinCounterClockwise2()
       }
     } else if (startPointerX < yAxis && startPointerY < xAxis) {
-      if ((newRingX > startPointerX && (newRingX - startPointerX >= newRingY - startPointerY)) || (newRingY > startPointerY && (newRingY - startPointerY >= newRingX - startPointerX))) {
+      console.log("Top left")
+      if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY < startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the right and/or mainly up")
         spinClockwise2()
-      } else if ((newRingX < startPointerX && (newRingX - startPointerX <= newRingY - startPointerY)) || (newRingY < startPointerY && (newRingY - startPointerY <= newRingX - startPointerX))) {
+      } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the left and/or mainly down")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerX > yAxis && startPointerY === xAxis) {
+      console.log("Center right")
+      if (newRingY > startPointerY) {
+        console.log("Down")
+        spinClockwise2()
+      } else if (newRingY < startPointerY) {
+        console.log("Up")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerX < yAxis && startPointerY === xAxis) {
+      console.log("Center left")
+      if (newRingY < startPointerY) {
+        console.log("Up")
+        spinClockwise2()
+      } else if (newRingY > startPointerY) {
+        console.log("Down")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerY > xAxis && startPointerX === yAxis) {
+      console.log("Bottom center")
+      if (newRingX < startPointerX) {
+        console.log("Left")
+        spinClockwise2()
+      } else if (newRingX > startPointerX) {
+        console.log("Right")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerY < xAxis && startPointerX === yAxis) {
+      console.log("Top center")
+      if (newRingX > startPointerX) {
+        console.log("Right")
+        spinClockwise2()
+      } else if (newRingX < startPointerX) {
+        console.log("Left")
         spinCounterClockwise2()
       }
     }
-  } else if (dragElement.id === "outer") {
+  } else if (dragElement.id === "outer" || dragElement.classList.contains("ring-3-letter")) {
     if (startPointerX > yAxis && startPointerY < xAxis) {
-      if ((newRingX > startPointerX && (newRingX - startPointerX >= startPointerY - newRingY)) || (newRingY > startPointerY && (newRingY - startPointerY >= startPointerX - newRingX))) {
+      console.log("Top right")
+      if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the right and/or mainly down")
         spinClockwise3()
-      } else if ((newRingX < startPointerX && (newRingX - startPointerX <= startPointerY - newRingY)) || (newRingY < startPointerY && (newRingY - startPointerY <= startPointerX - newRingX))) {
+      } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY < startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the left and/or mainly up")
         spinCounterClockwise3()
       }
     } else if (startPointerX > yAxis && startPointerY > xAxis) {
-      if ((newRingX < startPointerX && (startPointerX - newRingX >= startPointerY - newRingY)) || (newRingY < startPointerY && (startPointerY - newRingY >= startPointerX - newRingX))) {
+      console.log("Bottom right")
+      if ((newRingX < startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the left and/or mainly down")
         spinClockwise3()
-      } else if ((newRingX > startPointerX && (startPointerX - newRingX <= startPointerY - newRingY)) || (newRingY > startPointerY && (startPointerY - newRingY <= startPointerX - newRingX))) {
+      } else if ((newRingX > startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(startPointerY - newRingY))) || (newRingY < startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(startPointerX - newRingX)))) {
+        console.log("Mainly to the right and/or mainly up")
         spinCounterClockwise3()
       }
     } else if (startPointerX < yAxis && startPointerY > xAxis) {
-      if ((newRingX < startPointerX && (startPointerX - newRingX >= newRingY - startPointerY)) || (newRingY < startPointerY && (startPointerY - newRingY >= newRingX - startPointerX))) {
+      console.log("Bottom left")
+      if ((newRingX < startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(newRingY - startPointerY))) || (newRingY < startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the left and/or mainly up")
         spinClockwise3()
-      } else if ((newRingX > startPointerX && (startPointerX - newRingX <= newRingY - startPointerY)) || (newRingY > startPointerY && (startPointerY - newRingY <= newRingX - startPointerX))) {
+      } else if ((newRingX > startPointerX && (Math.abs(startPointerX - newRingX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(startPointerY - newRingY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the right and/or mainly down")
         spinCounterClockwise3()
       }
     } else if (startPointerX < yAxis && startPointerY < xAxis) {
-      if ((newRingX > startPointerX && (newRingX - startPointerX >= newRingY - startPointerY)) || (newRingY > startPointerY && (newRingY - startPointerY >= newRingX - startPointerX))) {
+      console.log("Top left")
+      if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY < startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the right and/or mainly up")
         spinClockwise3()
-      } else if ((newRingX < startPointerX && (newRingX - startPointerX <= newRingY - startPointerY)) || (newRingY < startPointerY && (newRingY - startPointerY <= newRingX - startPointerX))) {
+      } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
+        console.log("Mainly to the left and/or mainly down")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerX > yAxis && startPointerY === xAxis) {
+      console.log("Center right")
+      if (newRingY > startPointerY) {
+        console.log("Down")
+        spinClockwise3()
+      } else if (newRingY < startPointerY) {
+        console.log("Up")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerX < yAxis && startPointerY === xAxis) {
+      console.log("Center left")
+      if (newRingY < startPointerY) {
+        console.log("Up")
+        spinClockwise3()
+      } else if (newRingY > startPointerY) {
+        console.log("Down")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerY > xAxis && startPointerX === yAxis) {
+      console.log("Bottom center")
+      if (newRingX < startPointerX) {
+        console.log("Left")
+        spinClockwise3()
+      } else if (newRingX > startPointerX) {
+        console.log("Right")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerY < xAxis && startPointerX === yAxis) {
+      console.log("Top center")
+      if (newRingX > startPointerX) {
+        console.log("Right")
+        spinClockwise3()
+      } else if (newRingX < startPointerX) {
+        console.log("Left")
         spinCounterClockwise3()
       }
     }
@@ -914,270 +910,6 @@ function moveAt(clientX, clientY) {
   newRingX = clientX;
   newRingY = clientY;
 }
-
-// document.addEventListener('pointerdown', function (event) {
-//   dragElement = event.target.closest('.animated-letter');
-
-//   if (!dragElement) return;
-
-//   event.preventDefault();
-
-//   dragElement.ondragstart = function() {
-//     return false;
-//   };
-
-//   startX = dragElement.getBoundingClientRect().left;
-//   startY = dragElement.getBoundingClientRect().top;
-//   startDrag2(event.clientX, event.clientY);
-// })
-
-// function onPointerUp2(event) {
-//   finishDrag2();
-// }
-
-// function startDrag2(clientX, clientY) {
-//   if (isDragging) {
-//     return;
-//   }
-
-//   isDragging = true;
-
-//   if (dragElement.classList.contains("ring-1-letter")) {
-//     ring = 1
-//   } else if (dragElement.classList.contains("ring-2-letter")) {
-//     ring = 2
-//   } else if (dragElement.classList.contains("ring-3-letter")) {
-//     ring = 3
-//   }
-
-//   document.addEventListener('pointermove', onPointerMove);
-//   document.addEventListener('pointerup', onPointerUp2);
-
-//   shiftX = clientX - dragElement.getBoundingClientRect().left;
-//   shiftY = clientY - dragElement.getBoundingClientRect().top;
-
-//   moveAt(clientX, clientY);
-// }
-
-// function finishDrag2() {
-//   if (!isDragging) {
-//     return;
-//   }
-
-//   isDragging = false;
-
-//   document.removeEventListener('pointermove', onPointerMove);
-//   document.removeEventListener('pointerup', onPointerUp2);
-
-//   if (dragElement.classList.contains("ring-1-letter")) {
-//     if (dragElement.classList.contains("deg330") || dragElement.classList.contains("deg210")) {
-//       if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
-//         spinClockwise1()
-//       } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
-//         spinCounterClockwise1()
-//       }
-//     } else if (dragElement.classList.contains("deg270")) {
-//       if (newX > startX) {
-//         spinClockwise1()
-//       } else if (newX < startX) {
-//         spinCounterClockwise1()
-//       }
-//     } else if (dragElement.classList.contains("deg30") || dragElement.classList.contains("deg150")) {
-//       if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
-//         spinClockwise1()
-//       } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
-//         spinCounterClockwise1()
-//       }
-//     } else if (dragElement.classList.contains("deg90")) {
-//       if (newX < startX) {
-//         spinClockwise1()
-//       } else if (newX > startX) {
-//         spinCounterClockwise1()
-//       }
-//     } 
-//   } else if (dragElement.classList.contains("ring-2-letter")) {
-//     if (dragElement.classList.contains("deg330") || dragElement.classList.contains("deg210")) {
-//       if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
-//         spinClockwise2()
-//       } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
-//         spinCounterClockwise2()
-//       }
-//     } else if (dragElement.classList.contains("deg270")) {
-//       if (newX > startX) {
-//         spinClockwise2()
-//       } else if (newX < startX) {
-//         spinCounterClockwise2()
-//       }
-//     } else if (dragElement.classList.contains("deg30") || dragElement.classList.contains("deg150")) {
-//       if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
-//         spinClockwise2()
-//       } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
-//         spinCounterClockwise2()
-//       }
-//     } else if (dragElement.classList.contains("deg90")) {
-//       if (newX < startX) {
-//         spinClockwise2()
-//       } else if (newX > startX) {
-//         spinCounterClockwise2()
-//       }
-//     }
-//   } else if (dragElement.classList.contains("ring-3-letter")) {
-//     if (dragElement.classList.contains("deg330") || dragElement.classList.contains("deg210")) {
-//       if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
-//         spinClockwise3()
-//       } else if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
-//         spinCounterClockwise3()
-//       }
-//     } else if (dragElement.classList.contains("deg270")) {
-//       if (newX > startX) {
-//         spinClockwise3()
-//       } else if (newX < startX) {
-//         spinCounterClockwise3()
-//       }
-//     } else if (dragElement.classList.contains("deg30") || dragElement.classList.contains("deg150")) {
-//       if ((newX < startX && newY <= startY) || (newY < startY && newX <= startX)) {
-//         spinClockwise3()
-//       } else if ((newX > startX && newY >= startY) || (newY > startY && newX >= startX)) {
-//         spinCounterClockwise3()
-//       }
-//     } else if (dragElement.classList.contains("deg90")) {
-//       if (newX < startX) {
-//         spinClockwise3()
-//       } else if (newX > startX) {
-//         spinCounterClockwise3()
-//       }
-//     }
-//   }
-// }
-
-// // Function to start dragging
-// function startDrag(event) {
-//   isDragging = true;
-//   initialMouseX = event.clientX;
-//   initialMouseY = event.clientY;
-//   currentElement = this;
-
-//   if (currentElement.classList.contains("ring-1-letter")) {
-//     ring = 1
-//   } else if (currentElement.classList.contains("ring-2-letter")) {
-//     ring = 2
-//   } else if (currentElement.classList.contains("ring-3-letter")) {
-//     ring = 3
-//   }
-
-//   // Add global event listeners for pointermove and pointerup
-//   document.body.addEventListener('pointermove', handleDrag);
-//   document.body.addEventListener('pointerup', endDrag);
-// }
-
-// // Function to handle dragging
-// function handleDrag(event) {
-//   if (!isDragging) return;
-
-//   // Calculate the mouse movement
-//   deltaX = event.clientX - initialMouseX;
-//   deltaY = event.clientY - initialMouseY;
-
-//   newX = event.clientX
-//   newY = event.clientY
-// }
-
-// // Function to end dragging
-// function endDrag() {
-//   if (!isDragging) return;
-
-//   // Remove the global event listeners
-//   document.body.removeEventListener('pointermove', handleDrag);
-//   document.body.removeEventListener('pointerup', endDrag);
-
-//   console.log(initialMouseX, initialMouseY)
-//   console.log(deltaX, deltaY)
-//   console.log(newX, newY)
-
-//   if (currentElement.classList.contains("ring-1-letter")) {
-//     if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
-//       if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
-//         spinClockwise1()
-//       } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
-//         spinCounterClockwise1()
-//       }
-//     } else if (currentElement.classList.contains("deg0")) {
-//       if (newY > initialMouseY) {
-//         spinClockwise1()
-//       } else if (newY < initialMouseY) {
-//         spinCounterClockwise1()
-//       }
-//     } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
-//       if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
-//         spinClockwise1()
-//       } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
-//         spinCounterClockwise1()
-//       }
-//     } else if (currentElement.classList.contains("deg180")) {
-//       if (newY < initialMouseY) {
-//         spinClockwise1()
-//       } else if (newY > initialMouseY) {
-//         spinCounterClockwise1()
-//       }
-//     } 
-//   } else if (currentElement.classList.contains("ring-2-letter")) {
-//     if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
-//       if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
-//         spinClockwise2()
-//       } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
-//         spinCounterClockwise2()
-//       }
-//     } else if (currentElement.classList.contains("deg0")) {
-//       if (newY > initialMouseY) {
-//         spinClockwise2()
-//       } else if (newY < initialMouseY) {
-//         spinCounterClockwise2()
-//       }
-//     } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
-//       if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
-//         spinClockwise2()
-//       } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
-//         spinCounterClockwise2()
-//       }
-//     } else if (currentElement.classList.contains("deg180")) {
-//       if (newY < initialMouseY) {
-//         spinClockwise2()
-//       } else if (newY > initialMouseY) {
-//         spinCounterClockwise2()
-//       }
-//     } 
-//   } else if (currentElement.classList.contains("ring-3-letter")) {
-//     if (currentElement.classList.contains("deg300") || currentElement.classList.contains("deg240")) {
-//       if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
-//         spinClockwise3()
-//       } else if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
-//         spinCounterClockwise3()
-//       }
-//     } else if (currentElement.classList.contains("deg0")) {
-//       if (newY > initialMouseY) {
-//         spinClockwise3()
-//       } else if (newY < initialMouseY) {
-//         spinCounterClockwise3()
-//       }
-//     } else if (currentElement.classList.contains("deg60") || currentElement.classList.contains("deg120")) {
-//       if ((newX < initialMouseX && newY <= initialMouseY) || (newY < initialMouseY && newX <= initialMouseX)) {
-//         spinClockwise3()
-//       } else if ((newX > initialMouseX && newY >= initialMouseY) || (newY > initialMouseY && newX >= initialMouseX)) {
-//         spinCounterClockwise3()
-//       }
-//     } else if (currentElement.classList.contains("deg180")) {
-//       if (newY < initialMouseY) {
-//         spinClockwise3()
-//       } else if (newY > initialMouseY) {
-//         spinCounterClockwise3()
-//       }
-//     } 
-//   }
-
-//   // Reset the dragging state
-//   isDragging = false;
-//   currentElement = null;
-// }
 
 // Adds event listener to every letter that either removes event listeners from every spin button element or adds them
 document.querySelectorAll('a').forEach(character => {
@@ -1311,6 +1043,3 @@ const checkRing = () => {
 }
 
 check.addEventListener("click", checkRing)
-
-timeToMidnight()
-
