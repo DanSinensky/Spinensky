@@ -322,7 +322,42 @@ hamburger.addEventListener("click", e => {
   yAxis = center.getBoundingClientRect().left + (center.getBoundingClientRect().right - center.getBoundingClientRect().left)/2
   xAxis = center.getBoundingClientRect().top + (center.getBoundingClientRect().bottom - center.getBoundingClientRect().top) / 2
   
-  console.log(xAxis, yAxis, radius)
+console.log(xAxis, yAxis, radius)
+  
+// for resize
+function set_body_size() {
+  let w = window.innerWidth;
+  let h = window.innerHeight;
+  body.setAttribute("style", `width: ${w}; height: ${h}`);
+  yAxis = center.getBoundingClientRect().left + (center.getBoundingClientRect().right - center.getBoundingClientRect().left)/2
+  xAxis = center.getBoundingClientRect().top + (center.getBoundingClientRect().bottom - center.getBoundingClientRect().top) / 2
+  console.log("Resize")
+}
+
+set_body_size();
+window.addEventListener("resize", resizeThrottler, false);
+var resizeTimeout;
+
+function resizeThrottler() {
+  // ignore resize events as long as a deferred execution is in the queue
+  if (!resizeTimeout) {
+    resizeTimeout = setTimeout(function () {
+      resizeTimeout = null;
+      set_body_size();
+    }, 100);
+  }
+}
+
+// Define a function that will be called when the screen scrolls
+function handleScrollEvent() {
+  yAxis = center.getBoundingClientRect().left + (center.getBoundingClientRect().right - center.getBoundingClientRect().left)/2
+  xAxis = center.getBoundingClientRect().top + (center.getBoundingClientRect().bottom - center.getBoundingClientRect().top) / 2
+  console.log("Scrolling...");
+}
+
+// Attach the scroll event listener to the window
+window.addEventListener('scroll', handleScrollEvent);
+
 
   // Makes DOM elements for all other letters, including empty keyframes
   // Modeled off of code on how to make wordle from https://www.freecodecamp.org/news/build-a-wordle-clone-in-javascript/
