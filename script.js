@@ -105,14 +105,6 @@ const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime()) / (10
 const tomorrow = new Date(todaysDate.getTime() + (1000 * 60 * 60 * 24));
 const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 
-// Calculates time to midnightTomorrow
-const timeToMidnight = () => {
-  const timeRemaining = midnightTomorrow.getTime() - new Date().getTime()
-  console.log(timeRemaining)
-}
-
-timeToMidnight()
-
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
 const copyTodaysScore = () => {
@@ -712,9 +704,45 @@ function finishDrag1() {
   document.removeEventListener('pointerup', onPointerUp1);
 
   console.log(newRingX, newRingY)
-
+  
   if (dragElement.id === "inner" || dragElement.classList.contains("ring-1-letter")) {
-    if (startPointerX > yAxis && startPointerY < xAxis) {
+    if (startPointerX > yAxis && (startPointerY >= xAxis - 10 && startPointerY <= xAxis + 10)) {
+      console.log("Center right")
+      if (newRingY > startPointerY) {
+        console.log("Down")
+        spinClockwise1()
+      } else if (newRingY < startPointerY) {
+        console.log("Up")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerX < yAxis && (startPointerY >= xAxis - 10 && startPointerY <= xAxis + 10)) {
+      console.log("Center left")
+      if (newRingY < startPointerY) {
+        console.log("Up")
+        spinClockwise1()
+      } else if (newRingY > startPointerY) {
+        console.log("Down")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerY > xAxis && (startPointerX >= yAxis - 10 && startPointerX <= yAxis + 10)) {
+      console.log("Bottom center")
+      if (newRingX < startPointerX) {
+        console.log("Left")
+        spinClockwise1()
+      } else if (newRingX > startPointerX) {
+        console.log("Right")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerY < xAxis && (startPointerX >= yAxis - 10 && startPointerX <= yAxis + 10)) {
+      console.log("Top center")
+      if (newRingX > startPointerX) {
+        console.log("Right")
+        spinClockwise1()
+      } else if (newRingX < startPointerX) {
+        console.log("Left")
+        spinCounterClockwise1()
+      }
+    } else if (startPointerX > yAxis && startPointerY < xAxis) {
       console.log("Top right")
       if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
         console.log("Mainly to the right and/or mainly down")
@@ -748,47 +776,47 @@ function finishDrag1() {
         spinClockwise1()
       } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
         console.log("Mainly to the left and/or mainly down")
-        spinCounterClockwise1()
-      }
-    } else if (startPointerX > yAxis && startPointerY === xAxis) {
-      console.log("Center right")
-      if (newRingY > startPointerY) {
-        console.log("Down")
-        spinClockwise1()
-      } else if (newRingY < startPointerY) {
-        console.log("Up")
-        spinCounterClockwise1()
-      }
-    } else if (startPointerX < yAxis && startPointerY === xAxis) {
-      console.log("Center left")
-      if (newRingY < startPointerY) {
-        console.log("Up")
-        spinClockwise1()
-      } else if (newRingY > startPointerY) {
-        console.log("Down")
-        spinCounterClockwise1()
-      }
-    } else if (startPointerY > xAxis && startPointerX === yAxis) {
-      console.log("Bottom center")
-      if (newRingX < startPointerX) {
-        console.log("Left")
-        spinClockwise1()
-      } else if (newRingX > startPointerX) {
-        console.log("Right")
-        spinCounterClockwise1()
-      }
-    } else if (startPointerY < xAxis && startPointerX === yAxis) {
-      console.log("Top center")
-      if (newRingX > startPointerX) {
-        console.log("Right")
-        spinClockwise1()
-      } else if (newRingX < startPointerX) {
-        console.log("Left")
         spinCounterClockwise1()
       }
     }
   } else if (dragElement.id === "middle" || dragElement.classList.contains("ring-2-letter")) {
-    if (startPointerX > yAxis && startPointerY < xAxis) {
+    if (startPointerX > yAxis && (startPointerY >= xAxis - 10 && startPointerY <= xAxis + 10)) {
+      console.log("Center right")
+      if (newRingY > startPointerY) {
+        console.log("Down")
+        spinClockwise2()
+      } else if (newRingY < startPointerY) {
+        console.log("Up")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerX < yAxis && (startPointerY >= xAxis - 10 && startPointerY <= xAxis + 10)) {
+      console.log("Center left")
+      if (newRingY < startPointerY) {
+        console.log("Up")
+        spinClockwise2()
+      } else if (newRingY > startPointerY) {
+        console.log("Down")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerY > xAxis && (startPointerX >= yAxis - 10 && startPointerX <= yAxis + 10)) {
+      console.log("Bottom center")
+      if (newRingX < startPointerX) {
+        console.log("Left")
+        spinClockwise2()
+      } else if (newRingX > startPointerX) {
+        console.log("Right")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerY < xAxis && (startPointerX >= yAxis - 10 && startPointerX <= yAxis + 10)) {
+      console.log("Top center")
+      if (newRingX > startPointerX) {
+        console.log("Right")
+        spinClockwise2()
+      } else if (newRingX < startPointerX) {
+        console.log("Left")
+        spinCounterClockwise2()
+      }
+    } else if (startPointerX > yAxis && startPointerY < xAxis) {
       console.log("Top right")
       if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
         console.log("Mainly to the right and/or mainly down")
@@ -822,47 +850,47 @@ function finishDrag1() {
         spinClockwise2()
       } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
         console.log("Mainly to the left and/or mainly down")
-        spinCounterClockwise2()
-      }
-    } else if (startPointerX > yAxis && startPointerY === xAxis) {
-      console.log("Center right")
-      if (newRingY > startPointerY) {
-        console.log("Down")
-        spinClockwise2()
-      } else if (newRingY < startPointerY) {
-        console.log("Up")
-        spinCounterClockwise2()
-      }
-    } else if (startPointerX < yAxis && startPointerY === xAxis) {
-      console.log("Center left")
-      if (newRingY < startPointerY) {
-        console.log("Up")
-        spinClockwise2()
-      } else if (newRingY > startPointerY) {
-        console.log("Down")
-        spinCounterClockwise2()
-      }
-    } else if (startPointerY > xAxis && startPointerX === yAxis) {
-      console.log("Bottom center")
-      if (newRingX < startPointerX) {
-        console.log("Left")
-        spinClockwise2()
-      } else if (newRingX > startPointerX) {
-        console.log("Right")
-        spinCounterClockwise2()
-      }
-    } else if (startPointerY < xAxis && startPointerX === yAxis) {
-      console.log("Top center")
-      if (newRingX > startPointerX) {
-        console.log("Right")
-        spinClockwise2()
-      } else if (newRingX < startPointerX) {
-        console.log("Left")
         spinCounterClockwise2()
       }
     }
   } else if (dragElement.id === "outer" || dragElement.classList.contains("ring-3-letter")) {
-    if (startPointerX > yAxis && startPointerY < xAxis) {
+    if (startPointerX > yAxis && (startPointerY >= xAxis - 10 && startPointerY <= xAxis + 10)) {
+      console.log("Center right")
+      if (newRingY > startPointerY) {
+        console.log("Down")
+        spinClockwise3()
+      } else if (newRingY < startPointerY) {
+        console.log("Up")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerX < yAxis && (startPointerY >= xAxis - 10 && startPointerY <= xAxis + 10)) {
+      console.log("Center left")
+      if (newRingY < startPointerY) {
+        console.log("Up")
+        spinClockwise3()
+      } else if (newRingY > startPointerY) {
+        console.log("Down")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerY > xAxis && (startPointerX >= yAxis - 10 && startPointerX <= yAxis + 10)) {
+      console.log("Bottom center")
+      if (newRingX < startPointerX) {
+        console.log("Left")
+        spinClockwise3()
+      } else if (newRingX > startPointerX) {
+        console.log("Right")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerY < xAxis && (startPointerX >= yAxis - 10 && startPointerX <= yAxis + 10)) {
+      console.log("Top center")
+      if (newRingX > startPointerX) {
+        console.log("Right")
+        spinClockwise3()
+      } else if (newRingX < startPointerX) {
+        console.log("Left")
+        spinCounterClockwise3()
+      }
+    } else if (startPointerX > yAxis && startPointerY < xAxis) {
       console.log("Top right")
       if ((newRingX > startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(startPointerY - newRingY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(startPointerX - newRingX)))) {
         console.log("Mainly to the right and/or mainly down")
@@ -896,42 +924,6 @@ function finishDrag1() {
         spinClockwise3()
       } else if ((newRingX < startPointerX && (Math.abs(newRingX - startPointerX) >= Math.abs(newRingY - startPointerY))) || (newRingY > startPointerY && (Math.abs(newRingY - startPointerY) >= Math.abs(newRingX - startPointerX)))) {
         console.log("Mainly to the left and/or mainly down")
-        spinCounterClockwise3()
-      }
-    } else if (startPointerX > yAxis && startPointerY === xAxis) {
-      console.log("Center right")
-      if (newRingY > startPointerY) {
-        console.log("Down")
-        spinClockwise3()
-      } else if (newRingY < startPointerY) {
-        console.log("Up")
-        spinCounterClockwise3()
-      }
-    } else if (startPointerX < yAxis && startPointerY === xAxis) {
-      console.log("Center left")
-      if (newRingY < startPointerY) {
-        console.log("Up")
-        spinClockwise3()
-      } else if (newRingY > startPointerY) {
-        console.log("Down")
-        spinCounterClockwise3()
-      }
-    } else if (startPointerY > xAxis && startPointerX === yAxis) {
-      console.log("Bottom center")
-      if (newRingX < startPointerX) {
-        console.log("Left")
-        spinClockwise3()
-      } else if (newRingX > startPointerX) {
-        console.log("Right")
-        spinCounterClockwise3()
-      }
-    } else if (startPointerY < xAxis && startPointerX === yAxis) {
-      console.log("Top center")
-      if (newRingX > startPointerX) {
-        console.log("Right")
-        spinClockwise3()
-      } else if (newRingX < startPointerX) {
-        console.log("Left")
         spinCounterClockwise3()
       }
     }
