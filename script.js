@@ -53,21 +53,58 @@ const bars = ["bar1", "bar2", "bar3"];
 let ring = 0;
 let spins = 0;
 let checks = 0;
-let time = "";
+let time = 0;
+let timeDisplay = "";
+let elapsedTimeInSeconds = 0;
 let won = false;
 
   // for data storage
 let playedBefore = false;
 let averageSpins = 0;
 let averageChecks = 0;
+let averageTime = 0;
 let gamesPlayed = 0;
 let gamesWon = [];
 let gamesWonSoFar = [];
+let positions = [];
+console.log(positions)
 const havePlayedBefore = localStorage.getItem("playedBefore");
 const getAverageSpins = localStorage.getItem("averageSpins");
 const getAverageChecks = localStorage.getItem("averageChecks");
+const getAverageTime = localStorage.getItem("averageTime");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
 const previousGamesWon = localStorage.getItem("gamesWon");
+const runningPostions = localStorage.getItem("positions");
+const runningSpins = localStorage.getItem("spins");
+const runningChecks = localStorage.getItem("checks");
+const runningTime = localStorage.getItem("time");
+
+// Checks for stored data and updates global variables accordingly
+// TODO - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
+if (havePlayedBefore) {
+  playedBefore = true
+}
+if (getAverageSpins) {
+  averageSpins = JSON.parse(getAverageSpins)
+}
+if (getAverageChecks) {
+  averageChecks = JSON.parse(getAverageChecks)
+}
+if (getAverageTime) {
+  averageTime = JSON.parse(getAverageTime)
+  console.log(averageTime)
+}
+if (previousGamesPlayed) {
+  gamesPlayed = JSON.parse(previousGamesPlayed) + 1
+} else {
+  gamesPlayed = 1
+}
+const gamesPlayedNow = JSON.stringify(gamesPlayed)
+localStorage.setItem("gamesPlayed", gamesPlayedNow)
+
+if (previousGamesWon) {
+gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
+}
 
 // for timer
 let timerInterval;
@@ -78,19 +115,20 @@ const startTimer = () => {
 };
 const updateTimer = () => {
   const currentTime = new Date().getTime();
-  const elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
+  elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
 
   const hoursTimer = Math.floor(elapsedTimeInSeconds / 3600);
   const minutesTimer = Math.floor((elapsedTimeInSeconds % 3600) / 60);
-  const secondsTimer = elapsedTimeInSeconds % 60;
+  const secondsTimer = Math.floor(elapsedTimeInSeconds % 60);
 
   hoursCounterTimer.innerHTML = String(hoursTimer).padStart(2, '0');
   minutesCounterTimer.innerHTML = String(minutesTimer).padStart(3, ':0');
   secondsCounterTimer.innerHTML = String(secondsTimer).padStart(3, ':0');
+  timeDisplay = timer.innerText
 };
 const stopTimer = () => {
   clearInterval(timerInterval);
-  time = timer.innerText
+  timeDisplay = timer.innerText
 };
 window.addEventListener('load', () => {
   if (!won) {
@@ -105,35 +143,34 @@ const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime()) / (10
 const tomorrow = new Date(todaysDate.getTime() + (1000 * 60 * 60 * 24));
 const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 
+// Rounds averages to nearest hundredth
+// Copied with slight modification from https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+const round = num => {
+  let p = Math.pow(10, 2);
+  let n = (num * p).toPrecision(15);
+  return Math.round(n) / p;
+}
+
+
+const averageCountdown = () => {
+  const tempAverageTime = round((averageTime * previousGamesPlayed + elapsedTimeInSeconds) / gamesPlayed)
+  const tempHours = Math.floor(tempAverageTime / 3600)
+  const tempMinutes = Math.floor((tempAverageTime % 3600) / 60)
+  const tempSeconds = Math.floor(tempAverageTime % 60)
+  const tempDisplayHours = String(tempHours).padStart(2, '0')
+  const tempDisplayMinutes = String(tempMinutes).padStart(3, ':0')
+  const tempDisplaySeconds = String(tempSeconds).padStart(3, ':0')
+  return `${tempDisplayHours}${tempDisplayMinutes}${tempDisplaySeconds}`
+}
+const averageInterval = setInterval(averageCountdown, 1000)
+
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
 const copyTodaysScore = () => {
-  todaysScore = `Spinensky ${todaysIndex}\n\nSpins: ${spins}\nChecks: ${checks}\nTime: ${time}\n\nhttps://dansinensky.github.io/spinensky/`
+  todaysScore = `#Spinensky ${todaysIndex}\n\nSpins: ${spins}\nChecks: ${checks}\nTime: ${timeDisplay}\n\nhttps://dansinensky.github.io/spinensky/`
   navigator.clipboard.writeText(todaysScore)
 }
 
-  // Checks for stored data and updates global variables accordingly
-  // TODO - Save daily data (where letters were left if stopped playing before winning, if already won today, etc.)
-  if (havePlayedBefore) {
-    playedBefore = true
-  }
-  if (getAverageSpins) {
-    averageSpins = JSON.parse(getAverageSpins)
-  }
-  if (getAverageChecks) {
-    averageChecks = JSON.parse(getAverageChecks)
-  }
-  if (previousGamesPlayed) {
-    gamesPlayed = JSON.parse(previousGamesPlayed) + 1
-  } else {
-    gamesPlayed = 1
-  }
-  const gamesPlayedNow = JSON.stringify(gamesPlayed)
-localStorage.setItem("gamesPlayed", gamesPlayedNow)
-  
-if (previousGamesWon) {
-  gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
-}
 
   // Generates DOM element with info about game, but only if first game
    // TODO - make DRYer (a modal?)
@@ -158,13 +195,6 @@ info.innerHTML = `Spin rings of letters in order to unscramble four-letter words
 infoPopUp.appendChild(info)
 body.appendChild(infoPopUp)
 
-// Rounds averages to nearest hundredth
-// Copied with slight modification from https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
-const round = num => {
-  let p = Math.pow(10, 2);
-  let n = (num * p).toPrecision(15);
-  return Math.round(n) / p;
-}
 
 const statsPopUp = document.createElement("section")
 statsPopUp.className = "stats-pop-up"
@@ -180,7 +210,7 @@ exit1.className = "exit"
 fakeHeader1.appendChild(exit1)
 const score = document.createElement("p")
 score.className = "score"
-score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed}`
+score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
 statsPopUp.appendChild(score)
 const countdown = document.createElement("div")
 countdown.className = "countdown"
@@ -1024,13 +1054,16 @@ const checkRing = () => {
     localStorage.setItem("averageChecks", round(setAverageChecks))
     const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins) / gamesPlayed)
     localStorage.setItem("averageSpins", round(setAverageSpins))
+    const setAverageTime = JSON.stringify((averageTime * previousGamesPlayed + elapsedTimeInSeconds) / gamesPlayed)
+    localStorage.setItem("averageTime", round(setAverageTime))
     // Creates pop-up with stats
     sleep(750).then(() => {
       const whole = document.querySelector("main")
       whole.style.display = "none"
       statsPopUp.style.visibility = "visible"
       copyTodaysScore()
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
+
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
       statsPopUp.style.zIndex = 7
     })
   }
