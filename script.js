@@ -53,8 +53,7 @@ const bars = ["bar1", "bar2", "bar3"];
 let ring = 0;
 let spins = 0;
 let checks = 0;
-let time = 0;
-let timeDisplay = "";
+let timeDisplay = "00:00:00";
 let elapsedTimeInSeconds = 0;
 let won = false;
 
@@ -92,7 +91,6 @@ if (getAverageChecks) {
 }
 if (getAverageTime) {
   averageTime = JSON.parse(getAverageTime)
-  console.log(averageTime)
 }
 if (previousGamesPlayed) {
   gamesPlayed = JSON.parse(previousGamesPlayed) + 1
@@ -103,7 +101,7 @@ const gamesPlayedNow = JSON.stringify(gamesPlayed)
 localStorage.setItem("gamesPlayed", gamesPlayedNow)
 
 if (previousGamesWon) {
-gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
+  gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
 }
 
 // for timer
@@ -162,7 +160,6 @@ const averageCountdown = () => {
   const tempDisplaySeconds = String(tempSeconds).padStart(3, ':0')
   return `${tempDisplayHours}${tempDisplayMinutes}${tempDisplaySeconds}`
 }
-const averageInterval = setInterval(averageCountdown, 1000)
 
 // Copies todays score to clipboard, learned from MDN
 let todaysScore = ""
@@ -172,8 +169,8 @@ const copyTodaysScore = () => {
 }
 
 
-  // Generates DOM element with info about game, but only if first game
-   // TODO - make DRYer (a modal?)
+// Generates DOM element with info about game, but only if first game
+// TODO - make DRYer (a modal?)
 const infoPopUp = document.createElement("section")
 infoPopUp.className = "info-pop-up"
 if (playedBefore === false) {
@@ -225,6 +222,11 @@ secondsCounter.setAttribute("id", "seconds")
 countdown.appendChild(secondsCounter)
 statsPopUp.appendChild(countdown)
 body.appendChild(statsPopUp)
+
+const updateScore = () => {
+  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+}
+const averageInterval = setInterval(updateScore, 1000)
 
 exit.addEventListener("click", e => {
   infoPopUp.style.visibility = "hidden"
@@ -1062,8 +1064,6 @@ const checkRing = () => {
       whole.style.display = "none"
       statsPopUp.style.visibility = "visible"
       copyTodaysScore()
-
-      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed} </br> </br> Today's score copied to clipboard!`
       statsPopUp.style.zIndex = 7
     })
   }
