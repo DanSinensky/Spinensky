@@ -103,8 +103,7 @@ if (previousGamesPlayedArray) {
   gamesPlayedArray = gamesPlayedArray.concat(JSON.parse(previousGamesPlayedArray))
 }
 
-const gamesPlayedNow = JSON.stringify(gamesPlayed)
-localStorage.setItem("gamesPlayed", gamesPlayedNow)
+
 
 if (previousGamesWon) {
   gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
@@ -118,8 +117,23 @@ if (previousGamesWon) {
  const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
  
  if (gamesWonSoFar.includes(todaysIndex)) {
-   won = true
+  won = true
+  gamesPlayed--
+  if (runningPostions) {
+    positions = positions.concat(JSON.parse(runningPostions))
+  }
+  if (runningSpins) {
+    spins = JSON.parse(runningSpins)
+    console.log(spins)
+  }
+  if (runningChecks) {
+    checks = JSON.parse(runningChecks)
+  }
+  if (runningTime) {
+    carriedTime = JSON.parse(runningTime)
+  }
  } else if (!(gamesWonSoFar.includes(todaysIndex)) && gamesPlayedArray.includes(todaysIndex)) {
+   gamesPlayed--
   if (runningPostions) {
     positions = positions.concat(JSON.parse(runningPostions))
   }
@@ -143,7 +157,10 @@ if (!gamesPlayedArray.includes(todaysIndex)) {
    localStorage.removeItem("spins")
    localStorage.removeItem("checks")
    localStorage.removeItem("time")
- }
+}
+ 
+const gamesPlayedNow = JSON.stringify(gamesPlayed)
+localStorage.setItem("gamesPlayed", gamesPlayedNow)
 
 // for timer
 let timerInterval;
@@ -295,7 +312,11 @@ exit1.addEventListener("click", e => {
   // Updates common variable for today's start positions
   for (let i = 0; i < letters.length; i++){
     for (let j = 0; j < solution[i].length; j++){
-      letters[i][j] = importLetters[i][j]
+      if (positions.length === 0) {
+        letters[i][j] = importLetters[i][j]
+      } else {
+        letters[i][j] = positions[i][j]
+      }
     }
   }
 
@@ -602,11 +623,14 @@ const rotateFinish = (e) => {
   innerRing = letters[1]
   middleRing = letters[2]
   outerRing = letters[3]
+  positions = letters
   if (won === false) {
     spins++
     spinsText.innerText = spins
     const madeSpins = JSON.stringify(spins)
     localStorage.setItem("spins", madeSpins)
+    const currentPositions = JSON.stringify(positions)
+    localStorage.setItem("positions", currentPositions)
   }
   //e.stopPropagation()
 }
