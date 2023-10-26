@@ -55,6 +55,7 @@ let spins = 0;
 let checks = 0;
 let timeDisplay = "00:00:00";
 let elapsedTimeInSeconds = 0;
+let carriedTime = 0;
 let won = false;
 
   // for data storage
@@ -63,15 +64,16 @@ let averageSpins = 0;
 let averageChecks = 0;
 let averageTime = 0;
 let gamesPlayed = 0;
+let gamesPlayedArray = [];
 let gamesWon = [];
 let gamesWonSoFar = [];
 let positions = [];
-console.log(positions)
 const havePlayedBefore = localStorage.getItem("playedBefore");
 const getAverageSpins = localStorage.getItem("averageSpins");
 const getAverageChecks = localStorage.getItem("averageChecks");
 const getAverageTime = localStorage.getItem("averageTime");
 const previousGamesPlayed = localStorage.getItem("gamesPlayed");
+const previousGamesPlayedArray = localStorage.getItem("gamesPlayedArray");
 const previousGamesWon = localStorage.getItem("gamesWon");
 const runningPostions = localStorage.getItem("positions");
 const runningSpins = localStorage.getItem("spins");
@@ -97,6 +99,10 @@ if (previousGamesPlayed) {
 } else {
   gamesPlayed = 1
 }
+if (previousGamesPlayedArray) {
+  gamesPlayedArray = gamesPlayedArray.concat(JSON.parse(previousGamesPlayedArray))
+}
+
 const gamesPlayedNow = JSON.stringify(gamesPlayed)
 localStorage.setItem("gamesPlayed", gamesPlayedNow)
 
@@ -104,16 +110,64 @@ if (previousGamesWon) {
   gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
 }
 
+ // for chosing today's words and time to tomorrow, learned from MDN
+ const zeroDate = new Date('July 10, 2023');
+ const todaysDate = new Date();
+ const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime()) / (1000 * 60 * 60 * 24));
+ const tomorrow = new Date(todaysDate.getTime() + (1000 * 60 * 60 * 24));
+ const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+ 
+ if (gamesWonSoFar.includes(todaysIndex)) {
+   won = true
+ } else if (!(gamesWonSoFar.includes(todaysIndex)) && gamesPlayedArray.includes(todaysIndex)) {
+  if (runningPostions) {
+    positions = positions.concat(JSON.parse(runningPostions))
+  }
+  if (runningSpins) {
+    spins = JSON.parse(runningSpins)
+    console.log(spins)
+  }
+  if (runningChecks) {
+    checks = JSON.parse(runningChecks)
+  }
+  if (runningTime) {
+    carriedTime = JSON.parse(runningTime)
+  }
+ }
+
+if (!gamesPlayedArray.includes(todaysIndex)) {
+   gamesPlayedArray.unshift(todaysIndex)
+   const gamesPlayedArrayNow = JSON.stringify(gamesPlayedArray)
+   localStorage.setItem("gamesPlayedArray", gamesPlayedArrayNow)
+   localStorage.removeItem("postions")
+   localStorage.removeItem("spins")
+   localStorage.removeItem("checks")
+   localStorage.removeItem("time")
+ }
+
 // for timer
 let timerInterval;
 let startTime;
 const startTimer = () => {
   startTime = new Date().getTime();
   timerInterval = setInterval(updateTimer, 1000);
+  // if (carriedTime !== 0) {
+  //   const hoursTimer = Math.floor(carriedTime / 3600);
+  //   const minutesTimer = Math.floor((carriedTime % 3600) / 60);
+  //   const secondsTimer = Math.floor(carriedTime % 60);
+  //   hoursCounterTimer.innerHTML = String(hoursTimer).padStart(2, '0');
+  //   minutesCounterTimer.innerHTML = String(minutesTimer).padStart(3, ':0');
+  //   secondsCounterTimer.innerHTML = String(secondsTimer).padStart(3, ':0');
+  //   timeDisplay = timer.innerText
+  // }
 };
 const updateTimer = () => {
   const currentTime = new Date().getTime();
-  elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
+  if (carriedTime === 0) {
+    elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
+  } else {
+    elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000 + carriedTime);
+  }
 
   const hoursTimer = Math.floor(elapsedTimeInSeconds / 3600);
   const minutesTimer = Math.floor((elapsedTimeInSeconds % 3600) / 60);
@@ -123,6 +177,8 @@ const updateTimer = () => {
   minutesCounterTimer.innerHTML = String(minutesTimer).padStart(3, ':0');
   secondsCounterTimer.innerHTML = String(secondsTimer).padStart(3, ':0');
   timeDisplay = timer.innerText
+  const elapsedTime = JSON.stringify(elapsedTimeInSeconds)
+  localStorage.setItem("time", elapsedTime)
 };
 const stopTimer = () => {
   clearInterval(timerInterval);
@@ -133,13 +189,6 @@ window.addEventListener('load', () => {
     startTimer();
   }
 });
-
- // for chosing today's words and time to tomorrow, learned from MDN
-const zeroDate = new Date('July 10, 2023');
-const todaysDate = new Date();
-const todaysIndex = Math.floor((todaysDate.getTime() - zeroDate.getTime()) / (1000 * 60 * 60 * 24));
-const tomorrow = new Date(todaysDate.getTime() + (1000 * 60 * 60 * 24));
-const midnightTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 
 // Rounds averages to nearest hundredth
 // Copied with slight modification from https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
@@ -296,15 +345,28 @@ exit1.addEventListener("click", e => {
   timer.className = "timer"
   const hoursCounterTimer = document.createElement("span")
   hoursCounterTimer.setAttribute("id", "hours-timer")
-  hoursCounterTimer.innerHTML = String(0).padStart(2, '0')
+  // hoursCounterTimer.innerHTML = String(0).padStart(2, '0')
   timer.appendChild(hoursCounterTimer)
   const minutesCounterTimer = document.createElement("span")
   minutesCounterTimer.setAttribute("id", "minutes-timer")
-  minutesCounterTimer.innerHTML = String(0).padStart(3, ':0')
+  // minutesCounterTimer.innerHTML = String(0).padStart(3, ':0')
   timer.appendChild(minutesCounterTimer)
   const secondsCounterTimer = document.createElement("span")
   secondsCounterTimer.setAttribute("id", "seconds-timer")
-  secondsCounterTimer.innerHTML = String(0).padStart(3, ':0')
+  // secondsCounterTimer.innerHTML = String(0).padStart(3, ':0')
+  if (carriedTime !== 0) {
+    const hoursTimer = Math.floor(carriedTime / 3600);
+    const minutesTimer = Math.floor((carriedTime % 3600) / 60);
+    const secondsTimer = Math.floor(carriedTime % 60);
+    hoursCounterTimer.innerHTML = String(hoursTimer).padStart(2, '0');
+    minutesCounterTimer.innerHTML = String(minutesTimer).padStart(3, ':0');
+    secondsCounterTimer.innerHTML = String(secondsTimer).padStart(3, ':0');
+    timeDisplay = timer.innerText
+  } else {
+    hoursCounterTimer.innerHTML = String(0).padStart(2, '0')
+    minutesCounterTimer.innerHTML = String(0).padStart(3, ':0')
+    secondsCounterTimer.innerHTML = String(0).padStart(3, ':0')
+  }
   timer.appendChild(secondsCounterTimer)
   header.appendChild(timer)
   whole.prepend(header)
@@ -333,7 +395,7 @@ hamburger.addEventListener("click", e => {
   // Makes DOM elements for information that will update during game
   const notes = document.createElement("div")
   notes.className = "notes"
-  notes.innerHTML = '<div class="ring-title-and-checked"><h3><span id="ring-title">Click on a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">0</span> Checks: <span id="checks">0</span></p></br><div class="check-button"><button id="check">Check</button></div></br>'
+  notes.innerHTML = `<div class="ring-title-and-checked"><h3><span id="ring-title">Click on a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">${spins}</span> Checks: <span id="checks">${checks}</span></p></br><div class="check-button"><button id="check">Check</button></div></br>`
   whole.appendChild(notes)
 
   // Makes DOM element for central letter
@@ -543,6 +605,8 @@ const rotateFinish = (e) => {
   if (won === false) {
     spins++
     spinsText.innerText = spins
+    const madeSpins = JSON.stringify(spins)
+    localStorage.setItem("spins", madeSpins)
   }
   //e.stopPropagation()
 }
@@ -1015,6 +1079,8 @@ const updateChecks = () => {
   if (ring !== 0) {
     checks++
     checksText.innerText = checks
+    const madeChecks = JSON.stringify(checks)
+    localStorage.setItem("checks", madeChecks)
   }
 }
 
