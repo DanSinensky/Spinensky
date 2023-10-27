@@ -103,8 +103,6 @@ if (previousGamesPlayedArray) {
   gamesPlayedArray = gamesPlayedArray.concat(JSON.parse(previousGamesPlayedArray))
 }
 
-
-
 if (previousGamesWon) {
   gamesWonSoFar = gamesWon.concat(JSON.parse(previousGamesWon))
 }
@@ -139,7 +137,6 @@ if (previousGamesWon) {
   }
   if (runningSpins) {
     spins = JSON.parse(runningSpins)
-    console.log(spins)
   }
   if (runningChecks) {
     checks = JSON.parse(runningChecks)
@@ -149,7 +146,7 @@ if (previousGamesWon) {
   }
  }
 
-if (!gamesPlayedArray.includes(todaysIndex)) {
+if (!gamesPlayedArray.includes(todaysIndex) && gamesWonSoFar.includes(todaysIndex-1)) {
    gamesPlayedArray.unshift(todaysIndex)
    const gamesPlayedArrayNow = JSON.stringify(gamesPlayedArray)
    localStorage.setItem("gamesPlayedArray", gamesPlayedArrayNow)
@@ -157,6 +154,9 @@ if (!gamesPlayedArray.includes(todaysIndex)) {
    localStorage.removeItem("spins")
    localStorage.removeItem("checks")
    localStorage.removeItem("time")
+} else if (!gamesPlayedArray.includes(todaysIndex) && !gamesWonSoFar.includes(todaysIndex - 1)) {
+  localStorage.clear()
+  gamesPlayed = 1
 }
  
 const gamesPlayedNow = JSON.stringify(gamesPlayed)
@@ -308,6 +308,30 @@ exit1.addEventListener("click", e => {
   // Modeled off of lesson on local storage
   const solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
   const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex]))
+
+let carriedFromYesterday = false
+for (let i = 0; i < letters.length; i++){
+  console.log(positions[i].toSorted(), JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i])).toSorted())
+  // const todaysI = positions[i].toSorted()
+  // const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i])).toSorted()
+  const todaysI = positions[i]
+  const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i]))
+  if (todaysI.sort().join(',') === yesterdaysI.sort().join(',')) {
+    carriedFromYesterday = true
+  }
+}
+
+if (carriedFromYesterday === true) {
+  localStorage.removeItem("postions")
+  localStorage.removeItem("spins")
+  localStorage.removeItem("checks")
+  localStorage.removeItem("time")
+  positions = []
+  spins = 0
+  checks = 0
+  elapsedTimeInSeconds = elapsedTimeInSeconds - carriedTime
+  carriedTime = 0
+}
 
   // Updates common variable for today's start positions
   for (let i = 0; i < letters.length; i++){
