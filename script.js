@@ -317,7 +317,7 @@ for (let i = 0; i < letters.length; i++){
   const todaysI = positions[i]
   const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i]))
   console.log(todaysI, yesterdaysI)
-  if (todaysI.toSorted() === yesterdaysI.toSorted()) {
+  if (todaysI.sort().join(',') === yesterdaysI.sort().join(',')) {
     carriedFromYesterday = true
     console.log("played yesterday, haven't played yet today")
   }
