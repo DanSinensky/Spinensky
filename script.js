@@ -118,11 +118,10 @@ if (previousGamesWon) {
   won = true
   gamesPlayed--
   if (runningPostions) {
-    positions = positions.concat(JSON.parse(runningPostions))
+    positions = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
   }
   if (runningSpins) {
     spins = JSON.parse(runningSpins)
-    console.log(spins)
   }
   if (runningChecks) {
     checks = JSON.parse(runningChecks)
@@ -309,18 +308,21 @@ exit1.addEventListener("click", e => {
   const solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
   const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex]))
 
+  console.log(positions)
 let carriedFromYesterday = false
 for (let i = 0; i < letters.length; i++){
-  console.log(positions[i].toSorted(), JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i])).toSorted())
   // const todaysI = positions[i].toSorted()
   // const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i])).toSorted()
   const todaysI = positions[i]
   const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i]))
-  if (todaysI.sort().join(',') === yesterdaysI.sort().join(',')) {
+  console.log(todaysI, yesterdaysI)
+  if (todaysI.toSorted() === yesterdaysI.sort().join(',')) {
     carriedFromYesterday = true
+    console.log("hit")
   }
 }
 
+console.log(carriedFromYesterday)
 if (carriedFromYesterday === true) {
   localStorage.removeItem("postions")
   localStorage.removeItem("spins")
@@ -333,14 +335,33 @@ if (carriedFromYesterday === true) {
   carriedTime = 0
 }
 
+console.log(positions.length)
   // Updates common variable for today's start positions
   for (let i = 0; i < letters.length; i++){
     for (let j = 0; j < solution[i].length; j++){
       if (positions.length === 0) {
         letters[i][j] = importLetters[i][j]
+        console.log("positions.length === 0")
+      } else if (won === true) {
+        letters[i][j] = SOLUTIONS[todaysIndex][i][j]
+        console.log("won === true")
       } else {
         letters[i][j] = positions[i][j]
+        console.log("else")
       }
+    }
+    if (won === true) {
+      const thisRing = letters[i]
+      const correction = Math.round(thisRing.length / 2)
+      const rotatedRing = thisRing.splice(correction, thisRing.length - correction)
+      const newRing = []
+      for (let j = 0; j < rotatedRing.length; j++) {
+        newRing.push(rotatedRing[j])
+      }
+      for (let j = 0; j < thisRing.length; j++) {
+        newRing.push(thisRing[j])
+      }
+      letters[i] = newRing
     }
   }
 
