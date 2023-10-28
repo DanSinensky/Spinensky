@@ -155,6 +155,9 @@ if (!gamesPlayedArray.includes(todaysIndex) && gamesWonSoFar.includes(todaysInde
    localStorage.removeItem("time")
 } else if (!gamesPlayedArray.includes(todaysIndex) && !gamesWonSoFar.includes(todaysIndex - 1)) {
   localStorage.clear()
+  gamesPlayedArray.unshift(todaysIndex)
+  const gamesPlayedArrayNow = JSON.stringify(gamesPlayedArray)
+  localStorage.setItem("gamesPlayedArray", gamesPlayedArrayNow)
   gamesPlayed = 1
   playedBefore = false
 }
