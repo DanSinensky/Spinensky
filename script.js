@@ -171,15 +171,6 @@ let startTime;
 const startTimer = () => {
   startTime = new Date().getTime();
   timerInterval = setInterval(updateTimer, 1000);
-  // if (carriedTime !== 0) {
-  //   const hoursTimer = Math.floor(carriedTime / 3600);
-  //   const minutesTimer = Math.floor((carriedTime % 3600) / 60);
-  //   const secondsTimer = Math.floor(carriedTime % 60);
-  //   hoursCounterTimer.innerHTML = String(hoursTimer).padStart(2, '0');
-  //   minutesCounterTimer.innerHTML = String(minutesTimer).padStart(3, ':0');
-  //   secondsCounterTimer.innerHTML = String(secondsTimer).padStart(3, ':0');
-  //   timeDisplay = timer.innerText
-  // }
 };
 const updateTimer = () => {
   const currentTime = new Date().getTime();
@@ -458,6 +449,7 @@ console.log(positions.length)
   timer.appendChild(minutesCounterTimer)
   const secondsCounterTimer = document.createElement("span")
   secondsCounterTimer.setAttribute("id", "seconds-timer")
+  timer.appendChild(secondsCounterTimer)
   // secondsCounterTimer.innerHTML = String(0).padStart(3, ':0')
   if (carriedTime !== 0) {
     const hoursTimer = Math.floor(carriedTime / 3600);
@@ -471,8 +463,8 @@ console.log(positions.length)
     hoursCounterTimer.innerHTML = String(0).padStart(2, '0')
     minutesCounterTimer.innerHTML = String(0).padStart(3, ':0')
     secondsCounterTimer.innerHTML = String(0).padStart(3, ':0')
+    timeDisplay = timer.innerText
   }
-  timer.appendChild(secondsCounterTimer)
   header.appendChild(timer)
   whole.prepend(header)
 
