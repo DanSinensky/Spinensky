@@ -156,6 +156,7 @@ if (!gamesPlayedArray.includes(todaysIndex) && gamesWonSoFar.includes(todaysInde
 } else if (!gamesPlayedArray.includes(todaysIndex) && !gamesWonSoFar.includes(todaysIndex - 1)) {
   localStorage.clear()
   gamesPlayed = 1
+  playedBefore = false
 }
  
 const gamesPlayedNow = JSON.stringify(gamesPlayed)
@@ -316,9 +317,9 @@ for (let i = 0; i < letters.length; i++){
   const todaysI = positions[i]
   const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i]))
   console.log(todaysI, yesterdaysI)
-  if (todaysI.toSorted() === yesterdaysI.sort().join(',')) {
+  if (todaysI.toSorted() === yesterdaysI.toSorted()) {
     carriedFromYesterday = true
-    console.log("hit")
+    console.log("played yesterday, haven't played yet today")
   }
 }
 
