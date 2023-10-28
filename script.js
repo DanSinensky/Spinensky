@@ -287,6 +287,39 @@ const secondsCounter = document.createElement("span")
 secondsCounter.setAttribute("id", "seconds")
 countdown.appendChild(secondsCounter)
 statsPopUp.appendChild(countdown)
+if (won === true) {
+  // Function to update the countdown clock
+  function updateClock() {
+
+    const { hours, minutes, seconds } = timeToNewGame();
+  
+    hoursCounter.innerHTML = String(hours).padStart(2, '0');
+    minutesCounter.innerHTML = String(minutes).padStart(3, ':0');
+    secondsCounter.innerHTML = String(seconds).padStart(3, ':0');
+  
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+      clearInterval(countdownInterval);
+    }
+  }
+
+  // Update the countdown immediately and then every 1 second
+  updateClock();
+  const countdownInterval = setInterval(updateClock, 1000);
+
+  // Function to calculate time to new game
+  function timeToNewGame() {
+    const timeRemaining = midnightTomorrow.getTime() - new Date().getTime();
+    const seconds = Math.floor((timeRemaining / 1000) % 60);
+    const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+    const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+    return {
+      total: timeRemaining,
+      hours,
+      minutes,
+      seconds,
+    };
+  }
+}
 body.appendChild(statsPopUp)
 
 const updateScore = () => {
@@ -309,7 +342,9 @@ exit1.addEventListener("click", e => {
   const solution = JSON.parse(JSON.stringify(SOLUTIONS[todaysIndex]))
   const importLetters = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex]))
 
-  console.log(positions)
+if (positions.length === 0) {
+    positions = importLetters
+  }
 let carriedFromYesterday = false
 for (let i = 0; i < letters.length; i++){
   // const todaysI = positions[i].toSorted()
