@@ -267,7 +267,11 @@ exit1.className = "exit"
 fakeHeader1.appendChild(exit1)
 const score = document.createElement("p")
 score.className = "score"
-score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+if (won === true) {
+ score.innerHTML = `Spins: ${spins} </br> Average Spins: ${averageSpins} </br> </br> Checks: ${checks} </br> Average Checks: ${averageChecks} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+} else {
+  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+}
 statsPopUp.appendChild(score)
 const countdown = document.createElement("div")
 countdown.className = "countdown"
@@ -317,7 +321,11 @@ if (won === true) {
 body.appendChild(statsPopUp)
 
 const updateScore = () => {
-  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+  if (won === true) {
+   score.innerHTML = `Spins: ${spins} </br> Average Spins: ${averageSpins} </br> </br> Checks: ${checks} </br> Average Checks: ${averageChecks} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+  } else {
+    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+  }
 }
 const averageInterval = setInterval(updateScore, 1000)
 
@@ -707,6 +715,8 @@ const rotateFinish = (e) => {
     localStorage.setItem("spins", madeSpins)
     const currentPositions = JSON.stringify(positions)
     localStorage.setItem("positions", currentPositions)
+    const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins) / gamesPlayed)
+    localStorage.setItem("averageSpins", round(setAverageSpins))
   }
   //e.stopPropagation()
 }
@@ -1181,6 +1191,8 @@ const updateChecks = () => {
     checksText.innerText = checks
     const madeChecks = JSON.stringify(checks)
     localStorage.setItem("checks", madeChecks)
+    const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
+    localStorage.setItem("averageChecks", round(setAverageChecks))
   }
 }
 
