@@ -469,7 +469,7 @@ section {
   height: 2rem;
 }
 
-.check-button {
+.check-button, .share-button {
   display: flex;
 }
 

@@ -286,6 +286,11 @@ secondsCounter.setAttribute("id", "seconds")
 countdown.appendChild(secondsCounter)
 statsPopUp.appendChild(countdown)
 if (won === true) {
+  const shareButton = document.createElement("div")
+  shareButton.className = "share-button"
+  shareButton.innerHTML = "<button id='share'>Share</button>"
+  statsPopUp.appendChild(shareButton)
+  const share = document.querySelector("#share")
   // Function to update the countdown clock
   function updateClock() {
 
@@ -1241,7 +1246,12 @@ const checkRing = () => {
       const whole = document.querySelector("main")
       whole.style.display = "none"
       statsPopUp.style.visibility = "visible"
-      copyTodaysScore()
+      const shareButton = document.createElement("div")
+      shareButton.className = "share-button"
+      shareButton.innerHTML = "<button id='share'>Share</button>"
+      statsPopUp.appendChild(shareButton)
+      const share = document.querySelector("#share")
+      share.addEventListener("click", copyTodaysScore)
       statsPopUp.style.zIndex = 7
     })
   }
@@ -1281,3 +1291,4 @@ const checkRing = () => {
 }
 
 check.addEventListener("click", checkRing)
+share.addEventListener("click", copyTodaysScore)
