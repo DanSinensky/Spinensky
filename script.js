@@ -57,6 +57,7 @@ let timeDisplay = "00:00:00";
 let elapsedTimeInSeconds = 0;
 let carriedTime = 0;
 let won = false;
+let wonThisOpening = false;
 
   // for data storage
 let playedBefore = false;
@@ -268,7 +269,7 @@ fakeHeader1.appendChild(exit1)
 const score = document.createElement("p")
 score.className = "score"
 if (won === true) {
- score.innerHTML = `Spins: ${spins} </br> Average Spins: ${averageSpins} </br> </br> Checks: ${checks} </br> Average Checks: ${averageChecks} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${averageSpins} </br> </br> Checks: ${checks} </br> Average Checks: ${averageChecks} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
 } else {
   score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
 }
@@ -326,10 +327,12 @@ if (won === true) {
 body.appendChild(statsPopUp)
 
 const updateScore = () => {
-  if (won === true) {
+  if (wonThisOpening === true) {
+    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+  } else if (won === true) {
    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${averageSpins} </br> </br> Checks: ${checks} </br> Average Checks: ${averageChecks} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
   } else {
-    score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
+  score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
   }
 }
 const averageInterval = setInterval(updateScore, 1000)
@@ -1215,6 +1218,7 @@ const checkRing = () => {
     if (right === true) {
       checked.innerHTML = "You win!"
       won = true
+      wonThisOpening = true
       updateChecks()
     } else if (solution[ring][0] === letters[ring][0] && solution[ring][1] === letters[ring][1] && solution[ring][2] === letters[ring][2] && solution[ring][3] === letters[ring][3] && solution[ring][4] === letters[ring][4] && solution[ring][5] === letters[ring][5] && ring !== 0){
       checked.innerHTML = `is off by three`
@@ -1245,6 +1249,7 @@ const checkRing = () => {
     sleep(750).then(() => {
       const whole = document.querySelector("main")
       whole.style.display = "none"
+      score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
       statsPopUp.style.visibility = "visible"
       const shareButton = document.createElement("div")
       shareButton.className = "share-button"
