@@ -355,7 +355,8 @@ exit1.addEventListener("click", e => {
 if (positions.length === 0) {
     positions = importLetters
   }
-let carriedFromYesterday = false
+
+let carriedFromYesterdayCounter = 0
 for (let i = 0; i < letters.length; i++){
   // const todaysI = positions[i].toSorted()
   // const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i])).toSorted()
@@ -363,13 +364,13 @@ for (let i = 0; i < letters.length; i++){
   const yesterdaysI = JSON.parse(JSON.stringify(SPUNSOLUTIONS[todaysIndex - 1][i]))
   console.log(todaysI, yesterdaysI)
   if (todaysI.sort().join(',') === yesterdaysI.sort().join(',')) {
-    carriedFromYesterday = true
+    carriedFromYesterdayCounter++
     console.log("played yesterday, haven't played yet today")
   }
 }
 
 console.log(carriedFromYesterday)
-if (carriedFromYesterday === true) {
+if (carriedFromYesterdayCounter === 4) {
   localStorage.removeItem("postions")
   localStorage.removeItem("spins")
   localStorage.removeItem("checks")
