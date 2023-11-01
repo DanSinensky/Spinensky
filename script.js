@@ -823,30 +823,30 @@ const spinClockwise3 = (e) => {
   rotateFinish(e)
 }
 
-// Adds event listener to every element in spin buttons when a ring with multiple letters or one of those letters is clicked
-const updateAndAdd = () => {
-  ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
-  checked.innerHTML = ""
-  for (let i=0; i<counterclockwise.length; i++){
-    counterclockwise[i].addEventListener("click", rotateCounterClockwise)
-  }
-  for (let i=0; i<clockwise.length; i++){
-    clockwise[i].addEventListener("click", rotateClockwise)
-  }
-}
+// // Adds event listener to every element in spin buttons when a ring with multiple letters or one of those letters is clicked
+// const updateAndAdd = () => {
+//   ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+//   checked.innerHTML = ""
+//   for (let i=0; i<counterclockwise.length; i++){
+//     counterclockwise[i].addEventListener("click", rotateCounterClockwise)
+//   }
+//   for (let i=0; i<clockwise.length; i++){
+//     clockwise[i].addEventListener("click", rotateClockwise)
+//   }
+// }
 
-// Removes event listener from every element in spin buttons when the central ring or the letter in it is clicked
-const updateAndRemove = () => {
-  ring_title.innerHTML = "Click on a"
-  checked.innerHTML = ""
-  ring = 0
-      for (let i=0; i<counterclockwise.length; i++){
-          counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
-      }
-      for (let i=0; i<clockwise.length; i++){
-          clockwise[i].removeEventListener("click", rotateClockwise)
-      }
-}
+// // Removes event listener from every element in spin buttons when the central ring or the letter in it is clicked
+// const updateAndRemove = () => {
+//   ring_title.innerHTML = "Click on a"
+//   checked.innerHTML = ""
+//   ring = 0
+//       for (let i=0; i<counterclockwise.length; i++){
+//           counterclockwise[i].removeEventListener("click", rotateCounterClockwise)
+//       }
+//       for (let i=0; i<clockwise.length; i++){
+//           clockwise[i].removeEventListener("click", rotateClockwise)
+//       }
+// }
 
   // // adds drag function to each letter
   // document.querySelectorAll('.letter').forEach(letter => {
@@ -888,10 +888,13 @@ function startDrag1(clientX, clientY, event) {
 
   if (dragElement.classList.contains("ring-1-letter") || dragElement.id === "inner") {
     ring = 1
+    ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
   } else if (dragElement.classList.contains("ring-2-letter") || dragElement.id === "middle") {
     ring = 2
+    ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
   } else if (dragElement.classList.contains("ring-3-letter") || dragElement.id === "outer") {
     ring = 3
+    ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
   }
 
   document.addEventListener('pointermove', onPointerMove);
@@ -1155,41 +1158,41 @@ function moveAt(clientX, clientY) {
   newRingY = clientY;
 }
 
-// Adds event listener to every letter that either removes event listeners from every spin button element or adds them
-document.querySelectorAll('a').forEach(character => {
-  character.addEventListener('click', e => {
-    if (e.target.classList.contains("center")) {
-      updateAndRemove()
-    } else if (e.target.classList.contains("ring-1-letter")){
-      ring = 1
-      updateAndAdd()  
-    } else if (e.target.classList.contains("ring-2-letter")){
-      ring = 2
-      updateAndAdd()
-    } else if (e.target.classList.contains("ring-3-letter")){
-      ring = 3
-      updateAndAdd()
-    }
-  }, true)
-})
+// // Adds event listener to every letter that either removes event listeners from every spin button element or adds them
+// document.querySelectorAll('a').forEach(character => {
+//   character.addEventListener('click', e => {
+//     if (e.target.classList.contains("center")) {
+//       updateAndRemove()
+//     } else if (e.target.classList.contains("ring-1-letter")){
+//       ring = 1
+//       updateAndAdd()  
+//     } else if (e.target.classList.contains("ring-2-letter")){
+//       ring = 2
+//       updateAndAdd()
+//     } else if (e.target.classList.contains("ring-3-letter")){
+//       ring = 3
+//       updateAndAdd()
+//     }
+//   }, true)
+// })
 
-// Adds event listener to every ring that either removes event listeners from every spin button element or adds them
-document.querySelectorAll('.ring').forEach(circle => {
-  circle.addEventListener('click', e => {
-    if (e.target.id !== "zeroth") {
-      if (e.target.id === "inner"){
-        ring = 1
-      } else if (e.target.id === "middle"){
-        ring = 2
-      } else if (e.target.id === "outer"){
-        ring = 3
-      }
-      updateAndAdd()
-    } else if (e.target.id === "zeroth") {
-      updateAndRemove()
-    }
-  }, true)
-})
+// // Adds event listener to every ring that either removes event listeners from every spin button element or adds them
+// document.querySelectorAll('.ring').forEach(circle => {
+//   circle.addEventListener('click', e => {
+//     if (e.target.id !== "zeroth") {
+//       if (e.target.id === "inner"){
+//         ring = 1
+//       } else if (e.target.id === "middle"){
+//         ring = 2
+//       } else if (e.target.id === "outer"){
+//         ring = 3
+//       }
+//       updateAndAdd()
+//     } else if (e.target.id === "zeroth") {
+//       updateAndRemove()
+//     }
+//   }, true)
+// })
 
 // Selects DOM elements that update when checked
 const check = document.querySelector("#check")
