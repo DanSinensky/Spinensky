@@ -888,14 +888,14 @@ function startDrag1(clientX, clientY, event) {
 
   if (dragElement.classList.contains("ring-1-letter") || dragElement.id === "inner") {
     ring = 1
-    ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
   } else if (dragElement.classList.contains("ring-2-letter") || dragElement.id === "middle") {
     ring = 2
-    ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
   } else if (dragElement.classList.contains("ring-3-letter") || dragElement.id === "outer") {
     ring = 3
-    ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
   }
+
+  ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+  checked.innerHTML = ""
 
   document.addEventListener('pointermove', onPointerMove);
   document.addEventListener('pointerup', onPointerUp1);
