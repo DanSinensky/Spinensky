@@ -58,6 +58,7 @@ let elapsedTimeInSeconds = 0;
 let carriedTime = 0;
 let won = false;
 let wonThisOpening = false;
+let sharable = false;
 
   // for data storage
 let playedBefore = false;
@@ -287,11 +288,13 @@ secondsCounter.setAttribute("id", "seconds")
 countdown.appendChild(secondsCounter)
 statsPopUp.appendChild(countdown)
 if (won === true) {
-  const shareButton = document.createElement("div")
-  shareButton.className = "share-button"
-  shareButton.innerHTML = "<button id='share'>Share</button>"
-  statsPopUp.appendChild(shareButton)
+    const shareButton = document.createElement("div")
+    shareButton.className = "share-button"
+    shareButton.innerHTML = "<button id='share'>Share</button>"
+    statsPopUp.appendChild(shareButton)
   const share = document.querySelector("#share")
+  sharable = true
+//    share.addEventListener("click", copyTodaysScore)
   // Function to update the countdown clock
   function updateClock() {
 
@@ -369,7 +372,6 @@ for (let i = 0; i < letters.length; i++){
   }
 }
 
-console.log(carriedFromYesterday)
 if (carriedFromYesterdayCounter === 4) {
   localStorage.removeItem("postions")
   localStorage.removeItem("spins")
@@ -1237,9 +1239,11 @@ const checkRing = () => {
   // Updates stored data
   if (won === true) {
     stopTimer();
-    gamesWonSoFar.push(todaysIndex)
-    const gamesWonNow = JSON.stringify(gamesWonSoFar)
-    localStorage.setItem("gamesWon", gamesWonNow)
+    if (!gamesWonSoFar.includes(todaysIndex)) {
+      gamesWonSoFar.push(todaysIndex)
+      const gamesWonNow = JSON.stringify(gamesWonSoFar)
+      localStorage.setItem("gamesWon", gamesWonNow)
+    }
     const setAverageChecks = JSON.stringify((averageChecks * previousGamesPlayed + checks) / gamesPlayed)
     localStorage.setItem("averageChecks", round(setAverageChecks))
     const setAverageSpins = JSON.stringify((averageSpins * previousGamesPlayed + spins) / gamesPlayed)
@@ -1252,12 +1256,15 @@ const checkRing = () => {
       whole.style.display = "none"
       score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
       statsPopUp.style.visibility = "visible"
-      const shareButton = document.createElement("div")
-      shareButton.className = "share-button"
-      shareButton.innerHTML = "<button id='share'>Share</button>"
-      statsPopUp.appendChild(shareButton)
-      const share = document.querySelector("#share")
-      share.addEventListener("click", copyTodaysScore)
+      if (sharable === false) {
+        sharable = true
+        const shareButton = document.createElement("div")
+        shareButton.className = "share-button"
+        shareButton.innerHTML = "<button id='share'>Share</button>"
+        statsPopUp.appendChild(shareButton)
+        const share = document.querySelector("#share")
+        share.addEventListener("click", copyTodaysScore)
+      }
       statsPopUp.style.zIndex = 7
     })
   }
