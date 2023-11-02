@@ -250,7 +250,7 @@ exit.className = "exit"
 fakeHeader.appendChild(exit)
 const info = document.createElement("p")
 info.className = "info"
-info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. When solved, all six four-letter words will read left to right. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> <img src="/FourPositions.png"> </br> </br> Drag a ring partially around the center and release it to spin all of the letters in that ring one position clockwise or counterclockwise. Click "Check" to see how close that ring is to the correct position. If you click "Check" when all of the rings are in the correct position, you win! Have fun!`
+info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. When solved, all six four-letter words will read left to right. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> </br> <img src="FourPositions.png"> </br> </br> Drag a ring partially around the center and release it to spin all of the letters in that ring one position clockwise or counterclockwise. Click "Check" to see how close that ring is to the correct position. If you click "Check" when all of the rings are in the correct position, you win! Have fun!`
 infoPopUp.appendChild(info)
 body.appendChild(infoPopUp)
 
