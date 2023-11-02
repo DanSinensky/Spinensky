@@ -118,7 +118,7 @@ button {
   position: relative;
   border: solid 1px;
   border-radius: 50%;
-  margin: 2rem auto;
+  margin: 3rem auto;
   box-sizing: border-box;
   touch-action: none;
 }
@@ -126,7 +126,7 @@ button {
 .ring a {
   display: block;
   position: absolute;
-  margin: -2rem;
+  margin: -3rem;
   z-index: 6;
   touch-action: none;
 }
@@ -134,160 +134,160 @@ button {
 .center {
   font: 2em sans-serif;
   position: absolute;
-  top: 9rem;
-  left: 9.365rem;
+  top: 13rem;
+  left: 13.365rem;
 }
 
 .ring-1-letter,
 .ring-2-letter,
 .ring-3-letter {
   font: 1em sans-serif;
-  top: 9.65rem;
-  left: 9.65rem;
+  top: 13.65rem;
+  left: 13.65rem;
 }
 
 .deg0-3 {
-  transform: translate(7rem);
+  transform: translate(9.5rem);
 }
 
 .deg30-3 {
-  transform: rotate(30deg) translate(7rem) rotate(-30deg);
+  transform: rotate(30deg) translate(9.5rem) rotate(-30deg);
 }
 
 .deg60-3 {
-  transform: rotate(60deg) translate(7rem) rotate(-60deg);
+  transform: rotate(60deg) translate(9.5rem) rotate(-60deg);
 }
 
 .deg90-3 {
-  transform: rotate(90deg) translate(7rem) rotate(-90deg);
+  transform: rotate(90deg) translate(9.5rem) rotate(-90deg);
 }
 
 .deg120-3 {
-  transform: rotate(120deg) translate(7rem) rotate(-120deg);
+  transform: rotate(120deg) translate(9.5rem) rotate(-120deg);
 }
 
 .deg150-3 {
-  transform: rotate(150deg) translate(7rem) rotate(-150deg);
+  transform: rotate(150deg) translate(9.5rem) rotate(-150deg);
 }
 
 .deg180-3 {
-  transform: rotate(180deg) translate(7rem) rotate(-180deg);
+  transform: rotate(180deg) translate(9.5rem) rotate(-180deg);
 }
 
 .deg210-3 {
-  transform: rotate(210deg) translate(7rem) rotate(-210deg);
+  transform: rotate(210deg) translate(9.5rem) rotate(-210deg);
 }
 
 .deg240-3 {
-  transform: rotate(240deg) translate(7rem) rotate(-240deg);
+  transform: rotate(240deg) translate(9.5rem) rotate(-240deg);
 }
 
 .deg270-3 {
-  transform: rotate(270deg) translate(7rem) rotate(-270deg);
+  transform: rotate(270deg) translate(9.5rem) rotate(-270deg);
 }
 
 .deg300-3 {
-  transform: rotate(300deg) translate(7rem) rotate(-300deg);
+  transform: rotate(300deg) translate(9.5rem) rotate(-300deg);
 }
 
 .deg330-3 {
-  transform: rotate(330deg) translate(7rem) rotate(-330deg);
+  transform: rotate(330deg) translate(9.5rem) rotate(-330deg);
 }
 
 .deg0-2 {
-  transform: translate(5rem);
+  transform: translate(6.5rem);
 }
 
 .deg30-2 {
-  transform: rotate(30deg) translate(5rem) rotate(-30deg);
+  transform: rotate(30deg) translate(6.5rem) rotate(-30deg);
 }
 
 .deg60-2 {
-  transform: rotate(60deg) translate(5rem) rotate(-60deg);
+  transform: rotate(60deg) translate(6.5rem) rotate(-60deg);
 }
 
 .deg90-2 {
-  transform: rotate(90deg) translate(5rem) rotate(-90deg);
+  transform: rotate(90deg) translate(6.5rem) rotate(-90deg);
 }
 
 .deg120-2 {
-  transform: rotate(120deg) translate(5rem) rotate(-120deg);
+  transform: rotate(120deg) translate(6.5rem) rotate(-120deg);
 }
 
 .deg150-2 {
-  transform: rotate(150deg) translate(5rem) rotate(-150deg);
+  transform: rotate(150deg) translate(6.5rem) rotate(-150deg);
 }
 
 .deg180-2 {
-  transform: rotate(180deg) translate(5rem) rotate(-180deg);
+  transform: rotate(180deg) translate(6.5rem) rotate(-180deg);
 }
 
 .deg210-2 {
-  transform: rotate(210deg) translate(5rem) rotate(-210deg);
+  transform: rotate(210deg) translate(6.5rem) rotate(-210deg);
 }
 
 .deg240-2 {
-  transform: rotate(240deg) translate(5rem) rotate(-240deg);
+  transform: rotate(240deg) translate(6.5rem) rotate(-240deg);
 }
 
 .deg270-2 {
-  transform: rotate(270deg) translate(5rem) rotate(-270deg);
+  transform: rotate(270deg) translate(6.5rem) rotate(-270deg);
 }
 
 .deg300-2 {
-  transform: rotate(300deg) translate(5rem) rotate(-300deg);
+  transform: rotate(300deg) translate(6.5rem) rotate(-300deg);
 }
 
 .deg330-2 {
-  transform: rotate(330deg) translate(5rem) rotate(-330deg);
+  transform: rotate(330deg) translate(6.5rem) rotate(-330deg);
 }
 
 .deg0-1 {
-  transform: translate(3rem);
+  transform: translate(3.5rem);
 }
 
 .deg30-1 {
-  transform: rotate(30deg) translate(3rem) rotate(-30deg);
+  transform: rotate(30deg) translate(3.5rem) rotate(-30deg);
 }
 
 .deg60-1 {
-  transform: rotate(60deg) translate(3rem) rotate(-60deg);
+  transform: rotate(60deg) translate(3.5rem) rotate(-60deg);
 }
 
 .deg90-1 {
-  transform: rotate(90deg) translate(3rem) rotate(-90deg);
+  transform: rotate(90deg) translate(3.5rem) rotate(-90deg);
 }
 
 .deg120-1 {
-  transform: rotate(120deg) translate(3rem) rotate(-120deg);
+  transform: rotate(120deg) translate(3.5rem) rotate(-120deg);
 }
 
 .deg150-1 {
-  transform: rotate(150deg) translate(3rem) rotate(-150deg);
+  transform: rotate(150deg) translate(3.5rem) rotate(-150deg);
 }
 
 .deg180-1 {
-  transform: rotate(180deg) translate(3rem) rotate(-180deg);
+  transform: rotate(180deg) translate(3.5rem) rotate(-180deg);
 }
 
 .deg210-1 {
-  transform: rotate(210deg) translate(3rem) rotate(-210deg);
+  transform: rotate(210deg) translate(3.5rem) rotate(-210deg);
 }
 
 .deg240-1 {
-  transform: rotate(240deg) translate(3rem) rotate(-240deg);
+  transform: rotate(240deg) translate(3.5rem) rotate(-240deg);
 }
 
 .deg270-1 {
-  transform: rotate(270deg) translate(3rem) rotate(-270deg);
+  transform: rotate(270deg) translate(3.5rem) rotate(-270deg);
 }
 
 .deg300-1 {
-  transform: rotate(300deg) translate(3rem) rotate(-300deg);
+  transform: rotate(300deg) translate(3.5rem) rotate(-300deg);
 }
 
 .deg330-1 {
-  transform: rotate(330deg) translate(3rem) rotate(-330deg);
+  transform: rotate(330deg) translate(3.5rem) rotate(-330deg);
 }
 
 #zeroth {
@@ -299,23 +299,23 @@ button {
 
 #inner {
   background-color: lightyellow;
-  width: 8rem;
+  width: 10rem;
   z-index: 4;
-  height: 8rem;
+  height: 10rem;
 }
 
 #middle {
   background-color: lightgreen;
-  width: 12rem;
+  width: 16rem;
   z-index: 3;
-  height: 12rem;
+  height: 16rem;
 }
 
 #outer {
   background-color: lightblue;
-  width: 16rem;
+  width: 22rem;
   z-index: 2;
-  height: 16rem;
+  height: 22rem;
 }
 
 .buttons {
