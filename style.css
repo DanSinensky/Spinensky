@@ -113,6 +113,10 @@ button {
   margin: 0 0.25rem;
 }
 
+img {
+  width: 100%
+}
+
 /* Used an example that is no longer available online on how to position elements in a circle as a guide for both the letters and the spin buttons. It was instructions from the creator of Chirpty. Similar instructions can be found at https://stackoverflow.com/questions/12813573/position-icons-into-circle#:~:text=There%20is%20no%20way%20to,left%20to%20target%20it's%20place.*/
 .ring {
   position: relative;
