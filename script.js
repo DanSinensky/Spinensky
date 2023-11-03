@@ -290,7 +290,7 @@ statsPopUp.appendChild(countdown)
 if (won === true) {
     const shareButton = document.createElement("div")
     shareButton.className = "share-button"
-    shareButton.innerHTML = "<button id='share'>Share</button>"
+    shareButton.innerHTML = "<button id='share'>Copy score to clipboard</button>"
     statsPopUp.appendChild(shareButton)
   const share = document.querySelector("#share")
   sharable = true
@@ -1290,7 +1290,7 @@ const checkRing = () => {
         sharable = true
         const shareButton = document.createElement("div")
         shareButton.className = "share-button"
-        shareButton.innerHTML = "<button id='share'>Share</button>"
+        shareButton.innerHTML = "<button id='share'>Copy score to clipboard</button>"
         statsPopUp.appendChild(shareButton)
         const share = document.querySelector("#share")
         share.addEventListener("click", copyTodaysScore)
