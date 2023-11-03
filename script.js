@@ -329,6 +329,23 @@ if (won === true) {
 }
 body.appendChild(statsPopUp)
 
+const settingsPopUp = document.createElement("section")
+settingsPopUp.className = "settings-pop-up"
+const fakeHeader2 = document.createElement("div")
+fakeHeader2.className = "fake-header"
+settingsPopUp.appendChild(fakeHeader2)
+const emptyDiv2 = document.createElement("div")
+emptyDiv2.className = "empty-div"
+fakeHeader2.appendChild(emptyDiv2)
+const exit2 = document.createElement("button")
+exit2.innerText = "X"
+exit2.className = "exit"
+fakeHeader2.appendChild(exit2)
+const settingses = document.createElement("div")
+settingses.innerHTML = `<a href="https://forms.gle/7YqUDpDd7T7ZsfTr7">Send in feedback using this form!</a></br></br><a>More settings to come in future updates!</a>`
+settingsPopUp.appendChild(settingses)
+body.appendChild(settingsPopUp)
+
 const updateScore = () => {
   if (wonThisOpening === true) {
     score.innerHTML = `Spins: ${spins} </br> Average Spins: ${round((averageSpins * previousGamesPlayed + spins) / gamesPlayed)} </br> </br> Checks: ${checks} </br> Average Checks: ${round((averageChecks * previousGamesPlayed + checks) / gamesPlayed)} </br> </br> Time: ${timeDisplay} </br> Average Time: ${averageCountdown()} </br> </br> Games Played: ${gamesPlayed}`
@@ -347,6 +364,11 @@ exit.addEventListener("click", e => {
 
 exit1.addEventListener("click", e => {
   statsPopUp.style.visibility = "hidden"
+  whole.style.display = "block"
+})
+
+exit2.addEventListener("click", e => {
+  settingsPopUp.style.visibility = "hidden"
   whole.style.display = "block"
 })
 
@@ -441,6 +463,10 @@ console.log(positions.length)
   })
   // TODO - make settings popup that lets you play in dark mode, maybe other settings???
   const settings = document.querySelector(".settings")
+  settings.addEventListener("click", e => {
+    whole.style.display = "none"
+    settingsPopUp.style.visibility = "visible"
+  })
 
   // Makes DOM element for first ring that contains other rings and letter
   const outerRingElement = document.createElement("div")
@@ -619,6 +645,7 @@ window.addEventListener('scroll', handleScrollEvent);
     exit.addEventListener("click", e => {
       infoPopUp.style.zIndex = -1
       statsPopUp.style.zIndex = -2
+      settingsPopUp.style.zIndex = -3
       whole.style.display = "block"
       playedBefore = true
       const setPlayedBefore = JSON.stringify(playedBefore)

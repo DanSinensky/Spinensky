@@ -3,12 +3,16 @@ body {
   grid-template-rows: 2rem repeat(7, auto);
 }
 
-.info-pop-up, .stats-pop-up {
+.info-pop-up, .stats-pop-up, .settings-pop-up {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); 
   visibility: hidden;
+}
+
+.settings-pop-up {
+  text-align: center;
 }
 
 /* /* Headers and elements in them
@@ -465,7 +469,7 @@ img {
 /*Info and stats*/
 section {
   border: 0.0625rem solid black;
-  width: 16rem;
+  width: 20rem;
   margin: 0 auto;
 }
 
