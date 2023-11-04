@@ -250,7 +250,7 @@ exit.className = "exit"
 fakeHeader.appendChild(exit)
 const info = document.createElement("p")
 info.className = "info"
-info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. When solved, all six four-letter words will read left to right. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> <img src="FourPositions.png"> </br> Drag a ring partially around the center and release it to spin all of the letters in that ring one position clockwise or counterclockwise. Click "Check" to see how close that ring is to the correct position. If you click "Check" when all of the rings are in the correct position, you win! Have fun!`
+info.innerHTML = `Spin rings of letters in order to unscramble four-letter words using as few spins as possible. When solved, all six four-letter words will read left to right. The central letter is the last letter of the words on the left and the first letter of the words on the right. </br> <img src="FourPositions.png"> </br> Drag a ring partially around the center and release it to spin its letters one position clockwise or counterclockwise, or use the buttons to select and spin the rings. Click "Check" to see how close that ring is to the right position. If you click "Check" when all of the rings are right, you win! Have fun!`
 infoPopUp.appendChild(info)
 body.appendChild(infoPopUp)
 
@@ -536,7 +536,7 @@ hamburger.addEventListener("click", e => {
   // Makes DOM elements for information that will update during game
   const notes = document.createElement("div")
   notes.className = "notes"
-  notes.innerHTML = `<div class="alt-buttons"><button id="counterclockwise-button">Counterclockwise</button><button class="ring-button" id="inner-button">Inner</button><button class="ring-button" id="middle-button">Middle</button><button class="ring-button" id="outer-button">Outer</button><button id="clockwise-button">Clockwise</button></div><div class="ring-title-and-checked"><h3><span id="ring-title">Click on a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">${spins}</span> Checks: <span id="checks">${checks}</span></p></br><div class="check-button"><button id="check">Check</button></div></br>`
+  notes.innerHTML = `<div class="alt-buttons"><button class="ring-button" id="inner-button">Inner Ring</button><button class="ring-button" id="middle-button">Middle Ring</button><button class="ring-button" id="outer-button">Outer Ring</button></br><button class="direction-button" id="counterclockwise-button">Counterclockwise</button><button class="direction-button" id="clockwise-button">Clockwise</button></div><div class="ring-title-and-checked"><h3><span id="ring-title">Select a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">${spins}</span> Checks: <span id="checks">${checks}</span></p></br><div class="check-button"><button id="check">Check</button></div></br>`
   whole.appendChild(notes)
   const counterClockwiseButton = document.querySelector("#counterclockwise-button")
   const clockwiseButton = document.querySelector("#clockwise-button")
@@ -1388,11 +1388,11 @@ const checkRing = () => {
   }
 }
 
-check.addEventListener("click", checkRing)
-share.addEventListener("click", copyTodaysScore)
 counterClockwiseButton.addEventListener("click", spinCounterClockwise)
 clockwiseButton.addEventListener("click", spinClockwise)
 document.querySelectorAll(".ring-button").forEach(ringButton => {
   ringButton.addEventListener('click', setRing)
   console.log('hello')
   })
+check.addEventListener("click", checkRing)
+share.addEventListener("click", copyTodaysScore)

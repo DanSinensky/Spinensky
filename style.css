@@ -150,7 +150,7 @@ img {
 .ring-2-letter,
 .ring-3-letter {
   font: 1.25em sans-serif;
-  top: 13.65rem;
+  top: 13.55rem;
   left: 13.55rem;
 }
 
@@ -488,5 +488,12 @@ section {
 
 .alt-buttons {
   text-align: center;
-  margin: 0.5rem 0;
+}
+
+.direction-button {
+  margin: 0.5em 0.5em;
+}
+
+.ring-button {
+  margin: 0 0.5em;
 }
