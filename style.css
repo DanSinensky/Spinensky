@@ -149,9 +149,9 @@ img {
 .ring-1-letter,
 .ring-2-letter,
 .ring-3-letter {
-  font: 1em sans-serif;
+  font: 1.25em sans-serif;
   top: 13.65rem;
-  left: 13.65rem;
+  left: 13.55rem;
 }
 
 .deg0-3 {
@@ -324,6 +324,7 @@ img {
   width: 22rem;
   z-index: 2;
   height: 22rem;
+  margin-bottom: 1rem;
 }
 
 .buttons {
@@ -483,4 +484,9 @@ section {
 
 .countdown {
   text-align: center;
+}
+
+.alt-buttons {
+  text-align: center;
+  margin: 0.5rem 0;
 }

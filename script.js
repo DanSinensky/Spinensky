@@ -294,7 +294,6 @@ if (won === true) {
     statsPopUp.appendChild(shareButton)
   const share = document.querySelector("#share")
   sharable = true
-//    share.addEventListener("click", copyTodaysScore)
   // Function to update the countdown clock
   function updateClock() {
 
@@ -537,8 +536,24 @@ hamburger.addEventListener("click", e => {
   // Makes DOM elements for information that will update during game
   const notes = document.createElement("div")
   notes.className = "notes"
-  notes.innerHTML = `<div class="ring-title-and-checked"><h3><span id="ring-title">Click on a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">${spins}</span> Checks: <span id="checks">${checks}</span></p></br><div class="check-button"><button id="check">Check</button></div></br>`
+  notes.innerHTML = `<div class="alt-buttons"><button id="counterclockwise-button">Counterclockwise</button><button class="ring-button" id="inner-button">Inner</button><button class="ring-button" id="middle-button">Middle</button><button class="ring-button" id="outer-button">Outer</button><button id="clockwise-button">Clockwise</button></div><div class="ring-title-and-checked"><h3><span id="ring-title">Click on a</span> ring</h3><p id="checked"> </p></div></br><p>Spins: <span id="spins">${spins}</span> Checks: <span id="checks">${checks}</span></p></br><div class="check-button"><button id="check">Check</button></div></br>`
   whole.appendChild(notes)
+  const counterClockwiseButton = document.querySelector("#counterclockwise-button")
+  const clockwiseButton = document.querySelector("#clockwise-button")
+  const ringButtons = document.querySelectorAll(".ring-button")
+  
+const setRing = (e) => {
+    if (e.target.getAttribute('id') === "inner-button") {
+      ring = 1
+    } else if (e.target.getAttribute('id') === "middle-button") {
+      ring = 2
+    } else if (e.target.getAttribute('id') === "outer-button") {
+      ring = 3
+    }
+  
+    ring_title.innerHTML = `${layers[3-ring].charAt(0).toUpperCase() + layers[3-ring].slice(1)}`
+    checked.innerHTML = ""
+  }
 
   // Makes DOM element for central letter
   let center = document.createElement("a")
@@ -738,6 +753,24 @@ const spin3 = d => {
   }, 500)
 }
 
+const spin = d => {
+  checked.innerHTML = ""
+  if (direction === turn[0]) {
+    animatedDegree = animateCounterClockwise[d]
+  } else if (direction === turn[1]) {
+    animatedDegree = animateClockwise[d]
+  }
+  const degree = degrees[d]
+  const letter = document.querySelector(`.deg${degree}-${ring}`)
+  const animatedLetter = document.querySelector(`.deg${animatedDegree}-${ring}`)
+  letter.innerHTML = ""
+  animatedLetter.innerHTML = letters[ring][d].toUpperCase()
+  setTimeout(() => {
+    animatedLetter.innerHTML = ""
+    letter.innerHTML = letters[ring][d].toUpperCase()
+  }, 500)
+}
+
 // Resets rings and updates spin count once per button click
 // stopPropagation learned from bubbling lesson
 const rotateFinish = (e) => {
@@ -804,6 +837,17 @@ const spinCounterClockwise3 = (e) => {
   rotateFinish(e)
 }
 
+const spinCounterClockwise = (e) => {
+  const firstLetter = letters[ring][0]
+  letters[ring].shift()
+  letters[ring].push(firstLetter)
+  direction = turn[0]
+  for (let d = 0; d < degrees.length; d++){
+    spin(d)
+  }
+  rotateFinish(e)
+}
+
 // Spins clockwise by moving a letter from the end of the array to the beginning and choosing correct animation
 const rotateClockwise = (e) => {
   const lastLetter = letters[ring][5]
@@ -846,6 +890,17 @@ const spinClockwise3 = (e) => {
   direction = turn[1]
   for (let d = 0; d < degrees.length; d++){
     spin3(d)
+  }
+  rotateFinish(e)
+}
+
+const spinClockwise = (e) => {
+  const lastLetter = letters[ring][5]
+  letters[ring].pop()
+  letters[ring].unshift(lastLetter)
+  direction = turn[1]
+  for (let d = 0; d < degrees.length; d++){
+    spin(d)
   }
   rotateFinish(e)
 }
@@ -1335,3 +1390,9 @@ const checkRing = () => {
 
 check.addEventListener("click", checkRing)
 share.addEventListener("click", copyTodaysScore)
+counterClockwiseButton.addEventListener("click", spinCounterClockwise)
+clockwiseButton.addEventListener("click", spinClockwise)
+document.querySelectorAll(".ring-button").forEach(ringButton => {
+  ringButton.addEventListener('click', setRing)
+  console.log('hello')
+  })
