@@ -325,7 +325,7 @@ img {
   z-index: 2;
   height: 22rem;
   margin-bottom: 1rem;
-  margin-top: 1em;
+  margin-top: 0;
 }
 
 .buttons {
@@ -481,6 +481,14 @@ section {
 
 .check-button, .share-button {
   display: flex;
+}
+
+.spins-and-checks {
+  margin-bottom: 0;
+}
+
+#check {
+  margin-top: 0;
 }
 
 .countdown {
