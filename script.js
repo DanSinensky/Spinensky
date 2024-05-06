@@ -287,15 +287,15 @@ infoModalButton.setAttribute("type", "button")
 infoModalButton.setAttribute("data-bs-dismiss", "modal")
 infoModalButton.setAttribute("aria-label", "Close")
 infoModalHeader.appendChild(infoModalButton)
-const infoModalBody = document.createElement("div")
-infoModalBody.className = "modal-body position-relative"
-infoModalBody.innerHTML = '<p>Rotate the three rings of six letters to spell six four-letter words from left to right (three end with the center letter and three start with the center letter). Select one of the three rings of six letters by clicking the corresponding button, then click the "Check" button to determine if it is in the right position or how many positions that ring is off by.</p><p>After selecting a ring, rotate the letters in it either clockwise or clockwise by clicking the respective button. Click it once for every time you want to rotate the letters.</p><p>When all of the letters are in the correct position and six words are spelled out, clicking the "Check" button will give a winning score with the number of Checks and Spins performed and how long it took to win. The countdown shows how long until midnight when the new Spinensky is available to play. Click the "Copy score to clipboard" button so you can paste your score in a message or social media post to share with friends!</p>'
-infoModalContent.appendChild(infoModalBody)
 const infoGIF = document.createElement("img")
 infoGIF.setAttribute("src", "FullVideo.gif")
 infoGIF.setAttribute("alt", "GIF of gameplay")
 infoGIF.className = "d-block w-100"
 infoModalContent.appendChild(infoGIF)
+const infoModalBody = document.createElement("div")
+infoModalBody.className = "modal-body position-relative"
+infoModalBody.innerHTML = '<p>Rotate the three rings of six letters to spell six four-letter words from left to right (three end with the center letter and three start with the center letter). Select one of the three rings of six letters by clicking the corresponding button, then click the "Check" button to determine if it is in the right position or how many positions that ring is off by.</p><p>After selecting a ring, rotate the letters in it either clockwise or clockwise by clicking the respective button. Click it once for every time you want to rotate the letters.</p><p>When all of the letters are in the correct position and six words are spelled out, clicking the "Check" button will give a winning score with the number of Checks and Spins performed and how long it took to win. The countdown shows how long until midnight when the new Spinensky is available to play. Click the "Copy score to clipboard" button so you can paste your score in a message or social media post to share with friends!</p>'
+infoModalContent.appendChild(infoModalBody)
 body.appendChild(infoModal)
 
 const statsModal = document.createElement("div")
