@@ -1,132 +1,21 @@
-body {
-  grid-template-columns: 3.75rem 1fr 3.75rem;
-  grid-template-rows: 2rem repeat(7, auto);
-}
-
-.info-pop-up, .stats-pop-up, .settings-pop-up {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); 
-  visibility: hidden;
-}
-
-.settings-pop-up {
-  text-align: center;
-}
-
-/* /* Headers and elements in them
-TODO - Make DRYer */
-header {
-  grid-row: 1;
-  grid-column: 1/ span 3;
-  display: flex;
-  flex-direction: row;
+.navbar {
   justify-content: space-between;
 }
 
-.fake-header {
-  width: 100%;
-  display: flex;
-  flex: row;
-  justify-content: space-between;
+.navbar-brand {
+  margin: 0 auto;
 }
 
-.empty-div {
-  width: 3.25rem;
-  height: 1.25rem;
+#timer {
+  margin-right: auto;
+  text-decoration: none;
 }
 
-/* Hamburger code copied and modified from https://codepen.io/designcouch/pen/ExvwPY */
-.hamburger {
-  width: 3.25rem;
-  height: 1.35rem;
-}
-
-.bar1,
-.bar2,
-.bar3 {
-  width: 3rem;
-  height: 0.25rem;
-  background-color: black;
-  margin: 0.2rem 0;
-  transition: 1s;
-}
-
-.change .bar1 {
-  transform: translate(0, 0.5rem) rotate(-45deg);
-}
-
-.change .bar2 {
-  opacity: 0;
-}
-
-.change .bar3 {
-  transform: translate(0, -0.5rem) rotate(45deg);
-}
-
-ul {
-  list-style: none;
-  /* grid-row: 2;
-  grid-column: 3/ span 1; */
-  width: 3.75rem;
-}
-
-li {
-  border: 0.0625rem solid black;
-  width: 3.75rem;
-}
-
-aside {
-  position: fixed;
-  right: 0;
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.exit {
-  width: 1.25rem;
-  height: 1.25rem;
-  text-align: center;
-  font-family: sans-serif;
-  color: black;
-  margin-right: 0.25rem;
-  margin-top: 0.25rem;
-}
-
-main {
-  display: none;
-}
-
-h1,
-h3,
-h5,
-p {
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-button {
-  margin: auto;
-}
-
-.info {
-  margin: 0 0.25rem;
-}
-
-img {
-  width: 100%
-}
-
-/* Used an example that is no longer available online on how to position elements in a circle as a guide for both the letters and the spin buttons. It was instructions from the creator of Chirpty. Similar instructions can be found at https://stackoverflow.com/questions/12813573/position-icons-into-circle#:~:text=There%20is%20no%20way%20to,left%20to%20target%20it's%20place.*/
 .ring {
   position: relative;
   border: solid 1px;
   border-radius: 50%;
-  margin: 3rem auto;
+  margin: 3rem 3rem;
   box-sizing: border-box;
   touch-action: none;
 }
@@ -137,6 +26,8 @@ img {
   margin: -3rem;
   z-index: 6;
   touch-action: none;
+  color: black;
+  text-decoration: none;
 }
 
 .center {
@@ -312,6 +203,7 @@ img {
   height: 10rem;
 }
 
+
 #middle {
   background-color: rgb(230	159	0);
   width: 16rem;
@@ -324,185 +216,112 @@ img {
   width: 22rem;
   z-index: 2;
   height: 22rem;
-  margin-bottom: 1rem;
-  margin-top: 0;
+  margin: 1rem auto;
 }
 
-.buttons {
-  width: 16rem;
-  margin: 0 auto;
-  padding: 0;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  justify-content: space-around;
+.ring-title-and-checked, .ring-selector-div, .direction-div, .ring-checked-div, .check-div {
   display: flex;
-  align-items: center;
 }
 
-.button {
-  height: 8rem;
-  width: 8rem;
-  border-radius: 50%;
-  display: inline;
-}
-
-.tail {
-  height: 8rem;
-  width: 8rem;
-  border-radius: 50%;
-  background-color: black;
-  position: relative;
-  z-index: 3;
-}
-
-.middle {
-  height: 4rem;
-  width: 4rem;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
-
-.counterclockwise .top {
-  position: absolute;
-  top: 0%;
-  left: 40%;
-  transform: translate(-50%, -0%);
-}
-
-.counterclockwise .bottom {
-  position: absolute;
-  top: 80%;
-  left: 60%;
-  transform: translate(-50%, -25%);
-}
-
-.counterclockwise .left {
-  position: absolute;
-  top: 60%;
-  left: 0%;
-  transform: translate(-0%, -50%);
-}
-
-.counterclockwise .right {
-  position: absolute;
-  top: 40%;
-  left: 80%;
-  transform: translate(-25%, -50%);
-}
-
-.clockwise .top {
-  position: absolute;
-  top: 0%;
-  left: 60%;
-  transform: translate(-50%, -0%);
-}
-
-.clockwise .bottom {
-  position: absolute;
-  top: 80%;
-  left: 40%;
-  transform: translate(-50%, -25%);
-}
-
-.clockwise .left {
-  position: absolute;
-  top: 40%;
-  left: 0%;
-  transform: translate(-0%, -50%);
-}
-
-.clockwise .right {
-  position: absolute;
-  top: 60%;
-  left: 80%;
-  transform: translate(-25%, -50%);
-}
-
-/*Copied code on triangles from https://css-tricks.com/the-shapes-of-css/*/
-.triangle-left {
-  width: 0;
-  height: 0;
-  border-top: 1.12rem solid transparent;
-  border-right: 1.6rem solid gray;
-  border-bottom: 1.12rem solid transparent;
-}
-
-.triangle-right {
-  width: 0;
-  height: 0;
-  border-top: 1.12rem solid transparent;
-  border-left: 1.6rem solid gray;
-  border-bottom: 1.12rem solid transparent;
-}
-
-.triangle-up {
-  width: 0;
-  height: 0;
-  border-left: 1.12rem solid transparent;
-  border-right: 1.12rem solid transparent;
-  border-bottom: 1.6rem solid gray;
-}
-
-.triangle-down {
-  width: 0;
-  height: 0;
-  border-left: 1.12rem solid transparent;
-  border-right: 1.12rem solid transparent;
-  border-top: 1.6rem solid gray;
-}
-
-.arrow {
-  z-index: 3;
-}
-
-.middle-text {
-  position: fixed;
-  top: 35%;
-  left: 30%;
-}
-
-/*Info and stats*/
-section {
-  border: 0.0625rem solid black;
-  width: 20rem;
-  margin: 0 auto;
+.ring-selector-div, .direction-div, .ring-checked-div, .check-div {
+  width: 22rem;
+  margin: auto;
+  justify-content: space-around;
+  text-align: center;
 }
 
 .ring-title-and-checked {
+  flex-direction: column;
   height: 2rem;
 }
 
-.check-button, .share-button {
-  display: flex;
+.ring-checked-div {
+  align-items: center;
 }
 
 .spins-and-checks {
-  margin-bottom: 0;
+  margin-top: 1.25rem;
 }
 
-#check {
-  margin-top: 0;
+.direction-div {
+  margin-top: 1rem;
 }
 
-.countdown {
+.check-button {
+  margin-top: 1.25rem;
+}
+
+.navbar, .ring-selector-div, .direction-div, .ring-checked-div, #check {
+  font-family: serif;
+}
+
+.title, .timer {
+  text-decoration: none;
+}
+
+main {
+  background: white;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.modal-body {
   text-align: center;
-}
-
-.alt-buttons {
-  text-align: center;
-}
-
-.direction-button {
-  margin: 0.5em 0.5em;
-}
-
-.ring-button {
-  margin: 0 0.5em;
 }
